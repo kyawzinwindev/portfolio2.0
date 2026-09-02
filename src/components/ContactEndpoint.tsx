@@ -2,7 +2,17 @@
 
 import React, { useState } from "react";
 
-export default function ContactEndpoint() {
+interface ContactEndpointProps {
+  githubUrl?: string;
+  linkedinUrl?: string;
+  contactEmail?: string;
+}
+
+export default function ContactEndpoint({
+  githubUrl = "https://github.com/kyawzinwin",
+  linkedinUrl = "https://linkedin.com/in/kyawzinwin",
+  contactEmail = "contact@kyawzinwin.dev",
+}: ContactEndpointProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,18 +26,19 @@ export default function ContactEndpoint() {
     timestamp: string;
     sender: string | null;
     isSent: boolean;
+    error?: string;
   }>({
     status: "idle",
     statusCode: 200,
     replyWithin: "48h",
-    timestamp: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"),
+    timestamp: "2025-01-14T09:32Z",
     sender: null,
     isSent: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
       alert("Please fill in name, email, and message before sending request.");
@@ -35,17 +46,36 @@ export default function ContactEndpoint() {
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setResponseState({
-        status: "received",
-        statusCode: 200,
-        replyWithin: "24-48h",
-        timestamp: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"),
-        sender: formData.name,
-        isSent: true,
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
-    }, 450);
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setResponseState({
+          status: "received",
+          statusCode: 200,
+          replyWithin: data.reply_within || "24-48h",
+          timestamp: data.timestamp || new Date().toISOString().replace(/\.\d{3}Z$/, "Z"),
+          sender: data.sender || formData.name,
+          isSent: true,
+        });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        alert(data.error || "Failed to deliver contact request.");
+      }
+    } catch {
+      alert("Network error: Could not reach backend contact endpoint.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -148,12 +178,12 @@ export default function ContactEndpoint() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-primary w-full mt-3 flex items-center justify-center gap-2"
+                  className="btn-primary w-full mt-3 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
                       <span className="status-dot !bg-white" />
-                      <span>Sending HTTP Request...</span>
+                      <span>Transmitting HTTP POST payload...</span>
                     </>
                   ) : (
                     <span>Send Request →</span>
@@ -171,14 +201,16 @@ export default function ContactEndpoint() {
             <div className="bg-[#0A100A] border border-[#166534] rounded-xl overflow-hidden shadow-lg">
               <div className="px-[14px] py-2 border-b border-[#14532D] bg-[#071307]">
                 <span className="font-mono text-[10px] text-[#22C55E]">
-                  HTTP/1.1 200 OK
+                  HTTP/1.1 {responseState.statusCode} OK
                 </span>
               </div>
 
               <div className="p-[14px]">
                 <div className="font-mono text-[11px] leading-[2.2]">
                   <div>
-                    <span className="text-[#22C55E]">HTTP/1.1 200 OK</span>
+                    <span className="text-[#22C55E]">
+                      HTTP/1.1 {responseState.statusCode} OK
+                    </span>
                   </div>
                   <div>
                     <span className="text-[#71717A]">Content-Type:</span>{" "}
@@ -191,7 +223,7 @@ export default function ContactEndpoint() {
                     <span className="text-[#F59E0B]">&quot;status&quot;</span>
                     <span className="text-[#71717A]">: </span>
                     <span className="text-[#22C55E]">
-                      &quot;{responseState.isSent ? "received" : "received"}&quot;
+                      &quot;{responseState.status}&quot;
                     </span>
                     <span className="text-[#3F3F46]">,</span>
                   </div>
@@ -211,6 +243,18 @@ export default function ContactEndpoint() {
                     <span className="text-[#38BDF8]">
                       &quot;{responseState.timestamp}&quot;
                     </span>
+                    {responseState.sender && (
+                      <>
+                        <span className="text-[#3F3F46]">,</span>
+                        <div className="mt-0.5">
+                          <span className="text-[#F59E0B]">&quot;sender&quot;</span>
+                          <span className="text-[#71717A]">: </span>
+                          <span className="text-[#22C55E]">
+                            &quot;{responseState.sender}&quot;
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="text-[#3F3F46]">{"}"}</div>
@@ -225,16 +269,16 @@ export default function ContactEndpoint() {
               </div>
               <div className="font-mono text-[11px] text-[#38BDF8] flex items-center gap-2 flex-wrap">
                 <a
-                  href="https://github.com"
+                  href={githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline"
                 >
-                  github.com/kyawzinwin
+                  {githubUrl.replace(/^https?:\/\//, "")}
                 </a>
                 <span className="text-[#3F3F46]">·</span>
                 <a
-                  href="https://linkedin.com"
+                  href={linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline"
@@ -243,10 +287,10 @@ export default function ContactEndpoint() {
                 </a>
                 <span className="text-[#3F3F46]">·</span>
                 <a
-                  href="mailto:contact@kyawzinwin.dev"
-                  className="hover:underline"
+                  href={`mailto:${contactEmail}`}
+                  className="hover:underline text-[#22C55E]"
                 >
-                  kyawzinwin.dev
+                  {contactEmail}
                 </a>
               </div>
             </div>

@@ -1,0 +1,72 @@
+// Prisma Schema for KZW OS Portfolio & Admin Panel
+// Compatible with SQLite & PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String
+  content     String
+  tags        String    @default("[]") // JSON string array e.g. ["laravel", "architecture"]
+  isPublished Boolean   @default(false)
+  readingTime String    @default("5 min read")
+  publishedAt DateTime? @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("posts")
+}
+
+model VisitorLog {
+  id          String   @id @default(cuid())
+  ipAddress   String
+  userAgent   String
+  deviceType  String   @default("Desktop") // Desktop, Mobile, Tablet, Bot
+  browser     String   @default("Unknown")
+  os          String   @default("Unknown")
+  visitedPath String   @default("/")
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("visitor_logs")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  status    String   @default("UNREAD") // UNREAD, READ, REPLIED
+  createdAt DateTime @default(now())
+
+  @@index([status])
+  @@map("contact_messages")
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}

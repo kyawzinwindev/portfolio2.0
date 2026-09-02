@@ -1,17 +1,27 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 interface CommandItem {
   id: string;
   label: string;
   description: string;
-  category: "Navigation" | "Action" | "External";
+  category: "Navigation" | "Action" | "External" | "Admin";
   badge?: string;
   action: () => void;
 }
 
-export default function CommandPalette() {
+interface CommandPaletteProps {
+  githubUrl?: string;
+  contactEmail?: string;
+}
+
+export default function CommandPalette({
+  githubUrl = "https://github.com/kyawzinwin",
+  contactEmail = "contact@kyawzinwin.dev",
+}: CommandPaletteProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -67,25 +77,36 @@ export default function CommandPalette() {
       },
     },
     {
+      id: "admin",
+      label: "admin.console",
+      description: "Access backend administrative control plane & CRUD operations",
+      category: "Admin",
+      badge: "root",
+      action: () => {
+        router.push("/admin/dashboard");
+        setIsOpen(false);
+      },
+    },
+    {
       id: "github",
-      label: "github.com/kyawzinwin",
+      label: `github: ${githubUrl.replace(/^https?:\/\//, "")}`,
       description: "Open GitHub profile in new tab",
       category: "External",
       badge: "git",
       action: () => {
-        window.open("https://github.com", "_blank");
+        window.open(githubUrl, "_blank");
         setIsOpen(false);
       },
     },
     {
       id: "copy-email",
-      label: "copy: email address",
+      label: `copy: ${contactEmail}`,
       description: "Copy contact email to clipboard",
       category: "Action",
       badge: "exec",
       action: () => {
-        navigator.clipboard.writeText("contact@kyawzinwin.dev");
-        alert("Copied contact@kyawzinwin.dev to clipboard!");
+        navigator.clipboard.writeText(contactEmail);
+        alert(`Copied ${contactEmail} to clipboard!`);
         setIsOpen(false);
       },
     },
@@ -165,7 +186,7 @@ export default function CommandPalette() {
               <div className="flex-1 bg-[#09090B] border border-[#27272A] group-hover:border-[#3F3F46] rounded-[8px] py-[7px] px-3 flex items-center gap-2 transition-all">
                 <span className="font-mono text-[13px] text-[#3F3F46]">/</span>
                 <span className="font-mono text-[11px] text-[#3F3F46] truncate group-hover:text-[#71717A] transition-colors">
-                  type a command — about.sys · projects.log · system.notes · contact.endpoint
+                  type a command — about.sys · projects.log · system.notes · contact.endpoint · admin
                 </span>
               </div>
             </div>
