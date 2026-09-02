@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #09090b;
+  --color-surface: #111113;
+  --color-elevated: #18181b;
+  --color-hover: #1c1c1f;
+  
+  --color-border: #27272a;
+  --color-border-dim: #1e1e21;
+
+  --color-text-primary: #fafafa;
+  --color-text-dim: #71717a;
+  --color-text-muted: #3f3f46;
+  --color-text-subtle: #52525b;
+
+  --color-violet: #8b5cf6;
+  --color-green: #22c55e;
+  --color-amber: #f59e0b;
+  --color-sky: #38bdf8;
+  --color-teal: #2dd4bf;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
+:root {
+  --bg-void: #09090b;
+  --bg-surface: #111113;
+  --bg-elevated: #18181b;
+  --bg-hover: #1c1c1f;
+
+  --border: #27272a;
+  --border-dim: #1e1e21;
+
+  --text-primary: #fafafa;
+  --text-dim: #71717a;
+  --text-muted: #3f3f46;
+  --text-subtle: #52525b;
+
+  --violet: #8b5cf6;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --sky: #38bdf8;
+  --teal: #2dd4bf;
+
+  --glow-violet: rgba(139, 92, 246, 0.1);
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mono {
+  font-family: var(--font-mono), monospace;
+}
+
+.wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Grid background */
+.grid-bg {
+  background-color: var(--bg-void);
+  background-image: linear-gradient(rgba(39, 39, 42, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39, 39, 42, 0.5) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Blinking cursor */
+.boot-cursor {
+  color: var(--violet);
+  animation: blink 530ms step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Pulsing status dot */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Section label */
+.sec-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+}
+
+/* Divider */
+.divider {
+  height: 0.5px;
+  background: var(--border-dim);
+  width: 100%;
+}
+
+/* Tags */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  border: 0.5px solid;
+  transition: all 0.15s ease;
+}
+
+.tag-violet {
+  color: var(--violet);
+  border-color: #3b3063;
+  background: #1a1628;
+}
+
+.tag-sky {
+  color: var(--sky);
+  border-color: #1a3a4a;
+  background: #0f1f2a;
+}
+
+.tag-green {
+  color: var(--green);
+  border-color: #1a3a2a;
+  background: #0f1f18;
+}
+
+.tag-amber {
+  color: var(--amber);
+  border-color: #3a2e10;
+  background: #1e1a0a;
+}
+
+.tag-dim {
+  color: var(--text-dim);
+  border-color: var(--border);
+  background: var(--bg-elevated);
+}
+
+/* Keyboard badge */
+.kbd {
+  background: var(--bg-elevated);
+  border: 0.5px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 11px;
+  color: #a1a1aa;
+  font-family: var(--font-mono), monospace;
+}
+
+/* Card */
+.card {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.card-head {
+  padding: 10px 14px;
+  border-bottom: 0.5px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Primary Button */
+.btn-primary {
+  background: var(--violet);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 18px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

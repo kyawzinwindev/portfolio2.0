@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KZW OS — Design Direction & Page Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET ─── */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ─── DESIGN TOKENS ─── */
+:root{
+  /* Background scale */
+  --bg-void:     #09090B;
+  --bg-surface:  #111113;
+  --bg-elevated: #18181B;
+  --bg-hover:    #1C1C1F;
+
+  /* Borders */
+  --border:      #27272A;
+  --border-dim:  #1E1E21;
+
+  /* Text */
+  --text-primary: #FAFAFA;
+  --text-dim:     #71717A;
+  --text-muted:   #3F3F46;
+
+  /* Accents */
+  --violet:  #8B5CF6;
+  --green:   #22C55E;
+  --amber:   #F59E0B;
+  --sky:     #38BDF8;
+  --teal:    #2DD4BF;
+
+  /* Glow */
+  --glow-violet: rgba(139,92,246,0.10);
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius:    8px;
+  --radius-lg: 12px;
+}
+
+body{
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.mono{ font-family: var(--font-mono); }
+
+/* ─── LAYOUT ─── */
+.wrapper{
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── GRID BACKGROUND (boot section) ─── */
+.grid-bg{
+  background-color: var(--bg-void);
+  background-image:
+    linear-gradient(rgba(39,39,42,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39,39,42,0.5) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─── TOP CHROME ─── */
+.chrome{
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(9,9,11,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid var(--border-dim);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chrome-dots{ display:flex; gap:6px; }
+.dot{
+  width:8px; height:8px; border-radius:50%;
+}
+.dot-r{background:#FF5F57;}
+.dot-y{background:#FFBD2E;}
+.dot-g{background:#28C840;}
+.chrome-url{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.status-badge{
+  display:flex; align-items:center; gap:6px;
+  font-family: var(--font-mono); font-size:11px; color: var(--green);
+}
+.status-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1} 50%{opacity:0.4}
+}
+
+/* ─── SECTION LABELS ─── */
+.sec-label{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+}
+
+/* ─── DIVIDER ─── */
+.divider{
+  height: 0.5px;
+  background: var(--border-dim);
+  width: 100%;
+}
+
+/* ─── TAGS ─── */
+.tag{
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  border: 0.5px solid;
+}
+.tag-violet{ color:var(--violet); border-color:#3B3063; background:#1A1628; }
+.tag-sky{    color:var(--sky);    border-color:#1A3A4A; background:#0F1F2A; }
+.tag-green{  color:var(--green);  border-color:#1A3A2A; background:#0F1F18; }
+.tag-amber{  color:var(--amber);  border-color:#3A2E10; background:#1E1A0A; }
+.tag-dim{    color:var(--text-dim); border-color:var(--border); background:var(--bg-elevated); }
+
+/* ─── CARD ─── */
+.card{
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.card-head{
+  padding: 10px 14px;
+  border-bottom: 0.5px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ─── BUTTON ─── */
+.btn-primary{
+  background: var(--violet);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════════
+   SECTION 00 — DESIGN TOKENS PAGE
+══════════════════════════════════════════ */
+.tokens-page{
+  background: var(--bg-void);
+  padding: 48px 0 64px;
+}
+.tokens-page h1{
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.tokens-page .subtitle{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+}
+.token-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.token-block{
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+.token-block h3{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+.color-swatch{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.swatch{
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  border: 0.5px solid var(--border);
+  flex-shrink: 0;
+}
+.swatch-info{ flex: 1; }
+.swatch-name{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-primary);
+  display: block;
+}
+.swatch-hex{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.swatch-role{
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.type-sample{
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid var(--border-dim);
+}
+.type-sample:last-child{ border-bottom: none; margin-bottom:0; padding-bottom:0; }
+.type-label{
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+/* ══════════════════════════════════════════
+   SECTION 01 — BOOT.INIT
+══════════════════════════════════════════ */
+.boot-section{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 0;
+  position: relative;
+}
+.boot-section .wrapper{ position: relative; z-index: 1; }
+.boot-eyebrow{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.boot-name{
+  font-family: var(--font-sans);
+  font-size: 42px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.boot-cursor{
+  color: var(--violet);
+  animation: blink 530ms step-end infinite;
+}
+@keyframes blink{ 0%,100%{opacity:1} 50%{opacity:0} }
+.boot-sub{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+}
+.boot-terminal{
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  max-width: 500px;
+  margin-bottom: 32px;
+}
+.term-line{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 2.2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.term-prompt{ color: var(--text-muted); }
+.term-cmd{ color: var(--green); }
+.term-arg{ color: var(--text-dim); }
+.term-bar{
+  display: inline-block;
+  color: var(--amber);
+  letter-spacing: -2px;
+}
+.term-online{ color: var(--sky); }
+.cmd-hint{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.kbd{
+  background: var(--bg-elevated);
+  border: 0.5px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 11px;
+  color: #A1A1AA;
+}
+
+/* ══════════════════════════════════════════
+   COMMAND PALETTE BAR
+══════════════════════════════════════════ */
+.palette-bar{
+  background: var(--bg-surface);
+  border-top: 0.5px solid var(--border-dim);
+  border-bottom: 0.5px solid var(--border-dim);
+  padding: 10px 0;
+}
+.palette-inner{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.palette-key{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--violet);
+}
+.palette-input{
+  flex: 1;
+  background: var(--bg-void);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.palette-slash{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.palette-placeholder{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.palette-nav{
+  display: flex;
+  gap: 4px;
+}
+.palette-nav a{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background 0.15s;
+}
+.palette-nav a:hover{
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+/* ══════════════════════════════════════════
+   SECTION 02 — ABOUT.SYS
+══════════════════════════════════════════ */
+.about-section{
+  padding: 64px 0;
+}
+.about-grid{
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.9fr;
+  gap: 24px;
+}
+.about-col h3{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+.about-name{
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.about-role{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.about-bio{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 2;
+}
+.about-comment{ color: var(--text-muted); }
+.stack-tags{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.stack-note{
+  background: var(--bg-elevated);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+.stack-note-label{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.stack-note-value{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--violet);
+}
+.timeline{
+  border-left: 1px solid var(--border);
+  padding-left: 14px;
+}
+.timeline-item{
+  position: relative;
+  margin-bottom: 16px;
+}
+.timeline-item:last-child{ margin-bottom: 0; }
+.timeline-dot{
+  position: absolute;
+  left: -18px;
+  top: 5px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+}
+.tl-date{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.tl-title{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 1px;
+}
+.tl-sub{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* ══════════════════════════════════════════
+   SECTION 03 — PROJECTS.LOG
+══════════════════════════════════════════ */
+.projects-section{ padding: 64px 0; }
+.projects-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.project-card{
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.project-card:hover{ border-color: var(--border); }
+.project-head{
+  padding: 10px 14px;
+  border-bottom: 0.5px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.project-name{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.badge-deployed{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#052010;border:0.5px solid #14532D;
+  border-radius:var(--radius-sm);padding:2px 8px;
+  font-family:var(--font-mono);font-size:9px;color:var(--green);
+}
+.badge-prod{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#1C1006;border:0.5px solid #78350F;
+  border-radius:var(--radius-sm);padding:2px 8px;
+  font-family:var(--font-mono);font-size:9px;color:var(--amber);
+}
+.project-body{ padding: 14px; }
+.project-desc{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+.arch-list{
+  list-style: none;
+  margin-bottom: 12px;
+}
+.arch-list li{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #52525B;
+  line-height: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.arch-list li::before{
+  content: '→';
+  color: var(--sky);
+}
+.project-stack{
+  padding-top: 10px;
+  border-top: 0.5px solid var(--border-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--violet);
+}
+
+/* Request flow strip */
+.flow-strip{
+  background: #0D0D10;
+  border: 0.5px solid var(--border-dim);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.flow-label{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+.flow-arrow{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* ══════════════════════════════════════════
+   SECTION 04 — SYSTEM.NOTES
+══════════════════════════════════════════ */
+.notes-section{ padding: 64px 0; }
+.notes-log{
+  border-left: 1px solid var(--border);
+  padding-left: 20px;
+}
+.note-item{
+  position: relative;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 0.5px solid var(--border-dim);
+}
+.note-item:last-child{
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.note-dot{
+  position: absolute;
+  left: -24px;
+  top: 6px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.note-meta{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.note-ts{ color: var(--amber); }
+.note-tag{
+  background: var(--bg-elevated);
+  border: 0.5px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 9px;
+  color: var(--text-muted);
+}
+.note-title{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+.note-excerpt{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #52525B;
+  line-height: 1.7;
+}
+
+/* ══════════════════════════════════════════
+   SECTION 05 — CONTACT.ENDPOINT
+══════════════════════════════════════════ */
+.contact-section{ padding: 64px 0; }
+.contact-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.contact-panel-label{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.req-panel{
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.res-panel{
+  background: #0A100A;
+  border: 0.5px solid #166534;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.panel-head{
+  padding: 8px 14px;
+  border-bottom: 0.5px solid var(--border-dim);
+}
+.res-panel .panel-head{
+  border-bottom-color: #14532D;
+}
+.panel-body{ padding: 14px; }
+.code-block{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 2.2;
+}
+.kw-method{ color: var(--violet); }
+.kw-path{   color: var(--sky); }
+.kw-proto{  color: var(--text-dim); }
+.kw-key{    color: var(--amber); }
+.kw-val{    color: var(--green); }
+.kw-url{    color: var(--text-primary); }
+.kw-brace{  color: var(--text-muted); }
+.kw-ok{     color: var(--green); }
+.kw-ts{     color: var(--sky); }
+.cursor-input{
+  border-right: 1px solid var(--green);
+  padding-right: 1px;
+}
+.contact-links{
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+}
+.contact-link-label{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.contact-link-val{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--sky);
+}
+
+/* ══════════════════════════════════════════
+   BOTTOM STATUS BAR
+══════════════════════════════════════════ */
+.statusbar{
+  background: var(--bg-surface);
+  border-top: 0.5px solid var(--border-dim);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+}
+.statusbar-left,
+.statusbar-right{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.statusbar-center{
+  display: flex;
+  gap: 20px;
+}
+.statusbar-center a{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.statusbar-center a:hover{ color: var(--text-dim); }
+.statusbar-online{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--green);
+}
+
+/* ══════════════════════════════════════════
+   PAGE LABELS (for the design doc)
+══════════════════════════════════════════ */
+.page-marker{
+  background: var(--bg-surface);
+  border-top: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-marker-id{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--violet);
+}
+.page-marker-desc{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ══════════════════════════════════════════
+   DESIGN TOKENS SECTION STYLES
+══════════════════════════════════════════ */
+.tokens-section{
+  padding: 64px 0;
+  border-bottom: 0.5px solid var(--border-dim);
+}
+.full-token-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.spacing-row{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.spacing-bar{
+  height: 4px;
+  background: var(--violet);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+.spacing-label{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<!-- ── CHROME BAR ── -->
+<div class="chrome">
+  <div class="chrome-dots">
+    <div class="dot dot-r"></div>
+    <div class="dot dot-y"></div>
+    <div class="dot dot-g"></div>
+  </div>
+  <span class="chrome-url">kyawzinwin.dev</span>
+  <div class="status-badge">
+    <div class="status-dot"></div>
+    online
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DESIGN TOKENS PAGE
+══════════════════════════════════════════ -->
+<div class="page-marker">
+  <span class="page-marker-id">design.tokens</span>
+  <span class="page-marker-desc">Color palette · Typography · Spacing · Design reference</span>
+</div>
+
+<div class="tokens-section">
+  <div class="wrapper">
+    <div class="sec-label">// design system — KZW OS</div>
+    <h1 style="font-family:var(--font-sans);font-size:22px;font-weight:500;letter-spacing:-0.02em;margin-bottom:4px;color:var(--text-primary)">Design Tokens</h1>
+    <p style="font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin-bottom:36px">Complete visual specification for KZW OS — use these in your Next.js + Tailwind config</p>
+
+    <div class="token-grid">
+
+      <!-- Background Colors -->
+      <div class="token-block">
+        <h3>BACKGROUND SCALE</h3>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#09090B;border-color:#27272A"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">bg-void</span>
+            <span class="swatch-hex">#09090B</span>
+            <span class="swatch-role">Page background · zinc-950</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#111113"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">bg-surface</span>
+            <span class="swatch-hex">#111113</span>
+            <span class="swatch-role">Cards, panels</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#18181B"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">bg-elevated</span>
+            <span class="swatch-hex">#18181B</span>
+            <span class="swatch-role">Hover states · zinc-900</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#27272A;border-color:#3F3F46"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">border</span>
+            <span class="swatch-hex">#27272A</span>
+            <span class="swatch-role">All borders · 0.5px · zinc-800</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Colors -->
+      <div class="token-block">
+        <h3>TEXT SCALE</h3>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#FAFAFA"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">text-primary</span>
+            <span class="swatch-hex">#FAFAFA</span>
+            <span class="swatch-role">Headlines · zinc-50</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#71717A"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">text-dim</span>
+            <span class="swatch-hex">#71717A</span>
+            <span class="swatch-role">Body, descriptions · zinc-500</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#3F3F46"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">text-muted</span>
+            <span class="swatch-hex">#3F3F46</span>
+            <span class="swatch-role">Comments, labels · zinc-700</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#52525B"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">text-subtle</span>
+            <span class="swatch-hex">#52525B</span>
+            <span class="swatch-role">Inactive items · zinc-600</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accent Colors -->
+      <div class="token-block">
+        <h3>ACCENT COLORS</h3>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#8B5CF6;border-color:#7C3AED"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">violet</span>
+            <span class="swatch-hex">#8B5CF6</span>
+            <span class="swatch-role">Primary accent · nav glow · violet-500</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#22C55E;border-color:#16A34A"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">green</span>
+            <span class="swatch-hex">#22C55E</span>
+            <span class="swatch-role">Online · success · green-500</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#F59E0B;border-color:#D97706"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">amber</span>
+            <span class="swatch-hex">#F59E0B</span>
+            <span class="swatch-role">Timestamps · warnings · amber-400</span>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#38BDF8;border-color:#0284C7"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">sky</span>
+            <span class="swatch-hex">#38BDF8</span>
+            <span class="swatch-role">Links · paths · sky-400</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography -->
+      <div class="token-block">
+        <h3>TYPOGRAPHY</h3>
+        <div class="type-sample">
+          <div class="type-label">DISPLAY — Inter 500 · -0.03em</div>
+          <div style="font-family:var(--font-sans);font-size:24px;font-weight:500;letter-spacing:-0.03em;color:var(--text-primary);line-height:1.1">KZW <span style="color:var(--violet)">_</span></div>
+        </div>
+        <div class="type-sample">
+          <div class="type-label">HEADING — Inter 500 · -0.02em</div>
+          <div style="font-family:var(--font-sans);font-size:16px;font-weight:500;letter-spacing:-0.02em;color:var(--text-primary)">System architecture</div>
+        </div>
+        <div class="type-sample">
+          <div class="type-label">MONO BODY — JetBrains Mono 400</div>
+          <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-dim);line-height:1.8">$ init --role "backend engineer"</div>
+        </div>
+        <div class="type-sample">
+          <div class="type-label">LABEL — JetBrains Mono · 10px · +0.1em</div>
+          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--amber)">// section.label</div>
+        </div>
+      </div>
+
+      <!-- Spacing -->
+      <div class="token-block">
+        <h3>SPACING SCALE</h3>
+        <div class="spacing-row"><div class="spacing-bar" style="width:4px"></div><span class="spacing-label">4px — xs · gap between inline elements</span></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:8px"></div><span class="spacing-label">8px — sm · padding inside small chips</span></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:12px"></div><span class="spacing-label">12px — md · card internal padding</span></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:16px"></div><span class="spacing-label">16px — lg · grid gaps</span></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:24px"></div><span class="spacing-label">24px — xl · section padding-x</span></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:40px"></div><span class="spacing-label">40px — 2xl · between sections</span></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:64px"></div><span class="spacing-label">64px — 3xl · section padding-y</span></div>
+      </div>
+
+      <!-- Tailwind Config -->
+      <div class="token-block">
+        <h3>TAILWIND CONFIG SNIPPET</h3>
+        <div style="background:var(--bg-void);border-radius:var(--radius);padding:12px;font-family:var(--font-mono);font-size:10px;line-height:2;color:var(--text-dim)">
+          <div style="color:#3F3F46">// tailwind.config.ts</div>
+          <div style="color:var(--sky)">extend: <span style="color:var(--text-dim)">{</span></div>
+          <div style="padding-left:12px;color:var(--sky)">colors: <span style="color:var(--text-dim)">{</span></div>
+          <div style="padding-left:24px"><span style="color:var(--amber)">'void'</span><span style="color:var(--text-dim)">: </span><span style="color:var(--green)">'#09090B'</span><span style="color:var(--text-dim)">,</span></div>
+          <div style="padding-left:24px"><span style="color:var(--amber)">'surface'</span><span style="color:var(--text-dim)">: </span><span style="color:var(--green)">'#111113'</span><span style="color:var(--text-dim)">,</span></div>
+          <div style="padding-left:24px"><span style="color:var(--amber)">'accent'</span><span style="color:var(--text-dim)">: </span><span style="color:var(--green)">'#8B5CF6'</span></div>
+          <div style="padding-left:12px;color:var(--text-dim)">},</div>
+          <div style="padding-left:12px;color:var(--sky)">fontFamily: <span style="color:var(--text-dim)">{</span></div>
+          <div style="padding-left:24px"><span style="color:var(--amber)">'mono'</span><span style="color:var(--text-dim)">: </span><span style="color:var(--green)">'JetBrains Mono'</span></div>
+          <div style="padding-left:12px;color:var(--text-dim)">}</div>
+          <div style="color:var(--text-dim)">}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 01 — BOOT.INIT
+══════════════════════════════════════════ -->
+<div class="page-marker">
+  <span class="page-marker-id">screen.01 — boot.init</span>
+  <span class="page-marker-desc">Entry · hero · first impression</span>
+</div>
+
+<div class="boot-section grid-bg">
+  <div class="wrapper">
+    <div class="boot-eyebrow">// system init · 2025 · v1.0.0</div>
+    <div class="boot-name">KZW <span class="boot-cursor">_</span></div>
+    <div class="boot-sub">Backend engineer · System thinker · Myanmar</div>
+    <div class="boot-terminal">
+      <div class="term-line">
+        <span class="term-prompt">$</span>
+        <span class="term-cmd">init</span>
+        <span class="term-arg">--role "backend engineer" --mode "system thinker"</span>
+      </div>
+      <div class="term-line">
+        <span class="term-prompt">$</span>
+        <span class="term-cmd">loading modules</span>
+        <span class="term-bar">████████████</span>
+        <span class="term-arg">100%</span>
+      </div>
+      <div class="term-line">
+        <span class="term-prompt">$</span>
+        <span class="term-online">ready</span>
+        <span class="term-arg">· press</span>
+        <span class="kbd">⌘K</span>
+        <span class="term-arg">to navigate or scroll ↓</span>
+      </div>
+    </div>
+    <div class="cmd-hint">
+      <span class="kbd">⌘K</span>
+      <span>open command palette</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── COMMAND PALETTE BAR ── -->
+<div class="palette-bar">
+  <div class="wrapper">
+    <div class="palette-inner">
+      <span class="palette-key">⌘K</span>
+      <div class="palette-input">
+        <span class="palette-slash">/</span>
+        <span class="palette-placeholder">type a command — about.sys · projects.log · system.notes · contact.endpoint</span>
+      </div>
+      <nav class="palette-nav">
+        <a href="#about">about.sys</a>
+        <a href="#projects">projects.log</a>
+        <a href="#notes">system.notes</a>
+        <a href="#contact">contact.endpoint</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 02 — ABOUT.SYS
+══════════════════════════════════════════ -->
+<div class="page-marker">
+  <span class="page-marker-id">screen.02 — about.sys</span>
+  <span class="page-marker-desc">Identity · stack manifest · timeline</span>
+</div>
+
+<div id="about" class="about-section">
+  <div class="wrapper">
+    <div class="sec-label">// 02 — about.sys</div>
+    <div class="about-grid">
+
+      <!-- Col 1: Bio -->
+      <div class="about-col">
+        <h3>README.md</h3>
+        <div class="about-name">Kyaw Zin Win</div>
+        <div class="about-role">
+          <div class="status-dot"></div>
+          Junior → Mid Backend Engineer
+        </div>
+        <div class="about-bio">
+          <div>Former: Airyno · 2024–2025</div>
+          <div>Currently: NCC Bachelor Computing</div>
+          <div style="margin-top:10px" class="about-comment">// Not a framework user.</div>
+          <div class="about-comment">// A system designer.</div>
+          <div class="about-comment">// Thinking about what happens at scale.</div>
+        </div>
+      </div>
+
+      <!-- Col 2: Stack -->
+      <div class="about-col">
+        <h3>stack.manifest</h3>
+        <div class="stack-tags">
+          <span class="tag tag-violet">Laravel</span>
+          <span class="tag tag-sky">Livewire</span>
+          <span class="tag tag-sky">Alpine.js</span>
+          <span class="tag tag-green">Tailwind CSS</span>
+          <span class="tag tag-amber">MySQL</span>
+          <span class="tag tag-dim">PHP</span>
+          <span class="tag tag-sky">React.js</span>
+          <span class="tag tag-amber">REST APIs</span>
+          <span class="tag tag-dim">Git / GitHub</span>
+          <span class="tag tag-dim">Next.js</span>
+        </div>
+        <div class="stack-note">
+          <div class="stack-note-label">Primary stack</div>
+          <div class="stack-note-value">Tailwind · Alpine · Laravel · Livewire</div>
+        </div>
+      </div>
+
+      <!-- Col 3: Timeline -->
+      <div class="about-col">
+        <h3>git log --timeline</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--violet)"></div>
+            <div class="tl-date">2024–2025</div>
+            <div class="tl-title">Airyno · Jr Backend Dev</div>
+            <div class="tl-sub">CareNest · Jaraye · Chatbot</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--border)"></div>
+            <div class="tl-date">2025–now</div>
+            <div class="tl-title" style="color:var(--text-dim)">NCC Bachelor Computing</div>
+            <div class="tl-sub">Deepening CS fundamentals</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--bg-void);border:1px dashed var(--violet)"></div>
+            <div class="tl-date">next</div>
+            <div class="tl-title" style="color:var(--violet)">Mid-level backend engineer</div>
+            <div class="tl-sub">In progress...</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 03 — PROJECTS.LOG
+══════════════════════════════════════════ -->
+<div class="page-marker">
+  <span class="page-marker-id">screen.03 — projects.log</span>
+  <span class="page-marker-desc">Architecture case studies · system reports</span>
+</div>
+
+<div id="projects" class="projects-section">
+  <div class="wrapper">
+    <div class="sec-label">// 03 — projects.log</div>
+    <div class="projects-grid">
+
+      <!-- CareNest -->
+      <div class="project-card">
+        <div class="project-head">
+          <span class="project-name">CareNest</span>
+          <span class="badge-deployed">● DEPLOYED</span>
+        </div>
+        <div class="project-body">
+          <div class="project-desc">Clinic appointment management system</div>
+          <ul class="arch-list">
+            <li>State machine for appointments</li>
+            <li>4 roles · 23 permissions</li>
+            <li>Service layer architecture</li>
+            <li>Polymorphic notifications</li>
+          </ul>
+          <div class="project-stack">Laravel · Livewire · MySQL · Tailwind</div>
+        </div>
+      </div>
+
+      <!-- Jaraye -->
+      <div class="project-card">
+        <div class="project-head">
+          <span class="project-name">Jaraye</span>
+          <span class="badge-prod">● PRODUCTION</span>
+        </div>
+        <div class="project-body">
+          <div class="project-desc">Educational platform dashboard & backend</div>
+          <ul class="arch-list">
+            <li>Multi-role admin system</li>
+            <li>Dashboard architecture</li>
+            <li>Database schema design</li>
+            <li>User management system</li>
+          </ul>
+          <div class="project-stack">Laravel · Alpine.js · MySQL · Tailwind</div>
+        </div>
+      </div>
+
+      <!-- Chatbot -->
+      <div class="project-card">
+        <div class="project-head">
+          <span class="project-name">Chatbot API</span>
+          <span class="badge-deployed">● DEPLOYED</span>
+        </div>
+        <div class="project-body">
+          <div class="project-desc">Backend support chatbot system</div>
+          <ul class="arch-list">
+            <li>REST API design</li>
+            <li>Auth & session handling</li>
+            <li>Webhook integration</li>
+            <li>Response routing logic</li>
+          </ul>
+          <div class="project-stack">Laravel · PHP · REST APIs · MySQL</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Request Flow Strip -->
+    <div class="flow-strip">
+      <span class="flow-label">request flow</span>
+      <span class="flow-label">·</span>
+      <span class="tag tag-dim" style="font-size:9px">HTTP</span>
+      <span class="flow-arrow">→</span>
+      <span class="tag tag-violet" style="font-size:9px">Auth middleware</span>
+      <span class="flow-arrow">→</span>
+      <span class="tag tag-sky" style="font-size:9px">Controller</span>
+      <span class="flow-arrow">→</span>
+      <span class="tag tag-sky" style="font-size:9px">Service</span>
+      <span class="flow-arrow">→</span>
+      <span class="tag tag-green" style="font-size:9px">Model</span>
+      <span class="flow-arrow">→</span>
+      <span class="tag tag-green" style="font-size:9px">Database</span>
+      <span class="flow-arrow">→</span>
+      <span class="tag tag-amber" style="font-size:9px">200 OK</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 04 — SYSTEM.NOTES
+══════════════════════════════════════════ -->
+<div class="page-marker">
+  <span class="page-marker-id">screen.04 — system.notes</span>
+  <span class="page-marker-desc">Engineering journal · build records · technical writing</span>
+</div>
+
+<div id="notes" class="notes-section">
+  <div class="wrapper">
+    <div class="sec-label">// 04 — system.notes · build records</div>
+    <div class="notes-log">
+
+      <div class="note-item">
+        <div class="note-dot" style="background:var(--violet)"></div>
+        <div class="note-meta">
+          <span class="note-ts">2025-01-10T09:32Z</span>
+          <span>·</span>
+          <span>8 min read</span>
+          <span>·</span>
+          <span class="note-tag">auth</span>
+          <span class="note-tag">laravel</span>
+          <span class="note-tag">architecture</span>
+        </div>
+        <div class="note-title">Designing role-permission systems in Laravel</div>
+        <div class="note-excerpt">How I moved from a simple boolean `is_admin` to a full 23-permission matrix without breaking anything in production. The real challenge wasn't the permissions — it was making it extensible...</div>
+      </div>
+
+      <div class="note-item">
+        <div class="note-dot" style="background:var(--border)"></div>
+        <div class="note-meta">
+          <span class="note-ts">2024-12-28T14:12Z</span>
+          <span>·</span>
+          <span>6 min read</span>
+          <span>·</span>
+          <span class="note-tag">database</span>
+          <span class="note-tag">design</span>
+          <span class="note-tag">thinking</span>
+        </div>
+        <div class="note-title">Thinking beyond CRUD</div>
+        <div class="note-excerpt">Most tutorials teach you to build CRUD apps. No one tells you that real systems are about state transitions, not rows. Here's how I started thinking about data differently...</div>
+      </div>
+
+      <div class="note-item">
+        <div class="note-dot" style="background:var(--border)"></div>
+        <div class="note-meta">
+          <span class="note-ts">2024-11-15T08:00Z</span>
+          <span>·</span>
+          <span>5 min read</span>
+          <span>·</span>
+          <span class="note-tag">junior</span>
+          <span class="note-tag">mistakes</span>
+          <span class="note-tag">lessons</span>
+        </div>
+        <div class="note-title">Mistakes I made as a junior backend developer</div>
+        <div class="note-excerpt">Fat controllers. No service layer. `is_admin = 1`. Hardcoded values everywhere. Here's everything I got wrong in my first year and what I replaced each one with...</div>
+      </div>
+
+      <div class="note-item">
+        <div class="note-dot" style="background:var(--border)"></div>
+        <div class="note-meta">
+          <span class="note-ts">2024-10-02T08:00Z</span>
+          <span>·</span>
+          <span>7 min read</span>
+          <span>·</span>
+          <span class="note-tag">admin</span>
+          <span class="note-tag">scalable</span>
+          <span class="note-tag">systems</span>
+        </div>
+        <div class="note-title">Building scalable admin systems</div>
+        <div class="note-excerpt">What makes an admin dashboard still readable at 10,000 users? What breaks first? Here's how I approached the Jaraye platform dashboard architecture for long-term maintainability...</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 05 — CONTACT.ENDPOINT
+══════════════════════════════════════════ -->
+<div class="page-marker">
+  <span class="page-marker-id">screen.05 — contact.endpoint</span>
+  <span class="page-marker-desc">POST request interface · API-style contact form</span>
+</div>
+
+<div id="contact" class="contact-section">
+  <div class="wrapper">
+    <div class="sec-label">// 05 — contact.endpoint</div>
+    <div class="contact-grid">
+
+      <!-- Request Panel -->
+      <div>
+        <div class="contact-panel-label" style="color:var(--amber)">REQUEST</div>
+        <div class="req-panel">
+          <div class="panel-head">
+            <span class="mono" style="font-size:10px;color:var(--text-dim)">POST /api/contact HTTP/1.1</span>
+          </div>
+          <div class="panel-body">
+            <div class="code-block">
+              <div><span class="kw-method">POST</span> <span class="kw-path">/api/contact</span> <span class="kw-proto">HTTP/1.1</span></div>
+              <div><span class="kw-proto">Host:</span> <span class="kw-url">kyawzinwin.dev</span></div>
+              <div><span class="kw-proto">Content-Type:</span> <span class="kw-url">application/json</span></div>
+              <div style="margin-top:6px"><span class="kw-brace">{</span></div>
+              <div style="padding-left:14px"><span class="kw-key">"name"</span><span class="kw-proto">: </span><span class="kw-val">"<span class="cursor-input"> </span>"</span><span class="kw-brace">,</span></div>
+              <div style="padding-left:14px"><span class="kw-key">"email"</span><span class="kw-proto">: </span><span style="color:var(--text-muted)">"..."</span><span class="kw-brace">,</span></div>
+              <div style="padding-left:14px"><span class="kw-key">"message"</span><span class="kw-proto">: </span><span style="color:var(--text-muted)">"..."</span></div>
+              <div><span class="kw-brace">}</span></div>
+            </div>
+            <button class="btn-primary" style="width:100%;margin-top:12px">Send Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Response Panel -->
+      <div>
+        <div class="contact-panel-label" style="color:var(--green)">RESPONSE</div>
+        <div class="res-panel">
+          <div class="panel-head" style="border-bottom-color:#14532D">
+            <span class="mono" style="font-size:10px;color:var(--green)">HTTP/1.1 200 OK</span>
+          </div>
+          <div class="panel-body">
+            <div class="code-block">
+              <div><span class="kw-ok">HTTP/1.1 200 OK</span></div>
+              <div><span class="kw-proto">Content-Type:</span> <span class="kw-url">application/json</span></div>
+              <div style="margin-top:6px"><span class="kw-brace">{</span></div>
+              <div style="padding-left:14px"><span class="kw-key">"status"</span><span class="kw-proto">: </span><span class="kw-val">"received"</span><span class="kw-brace">,</span></div>
+              <div style="padding-left:14px"><span class="kw-key">"reply_within"</span><span class="kw-proto">: </span><span class="kw-val">"48h"</span><span class="kw-brace">,</span></div>
+              <div style="padding-left:14px"><span class="kw-key">"timestamp"</span><span class="kw-proto">: </span><span class="kw-ts">"2025-01-14T09:32Z"</span></div>
+              <div><span class="kw-brace">}</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-links" style="margin-top:10px">
+          <div class="contact-link-label">Also reachable via</div>
+          <div class="contact-link-val">github.com/kyawzinwin · LinkedIn · kyawzinwin.dev</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── BOTTOM STATUS BAR ── -->
+<div class="statusbar">
+  <span class="statusbar-left">KZW OS · v1.0.0</span>
+  <nav class="statusbar-center">
+    <a href="#about">about.sys</a>
+    <a href="#projects">projects.log</a>
+    <a href="#notes">system.notes</a>
+    <a href="#contact">contact.endpoint</a>
+  </nav>
+  <div class="statusbar-online">
+    <div class="status-dot"></div>
+    all systems operational
+  </div>
+</div>
+
+</body>
+</html>
