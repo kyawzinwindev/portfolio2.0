@@ -1,8 +1,9 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { getSessionUser, hashPassword, verifyPassword } from "@/lib/auth";
+import { getSessionUser, hashPassword, verifyPassword, clearSessionCookie } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 /**
  * Require valid admin authentication in server actions
@@ -360,3 +361,9 @@ export async function changeAdminPassword(data: {
 
   return { success: true, message: "Password updated successfully!" };
 }
+
+export async function logoutAdmin() {
+  await clearSessionCookie();
+  redirect("/admin/login");
+}
+

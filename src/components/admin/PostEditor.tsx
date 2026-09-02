@@ -140,45 +140,45 @@ export default function PostEditor({
     }
   };
 
-  // Simple, fast client-side markdown formatter for preview
+  // Fast client-side markdown formatter for preview
   const renderSimpleMarkdown = (md: string) => {
-    if (!md) return <p className="text-[#71717A] italic">Empty content preview...</p>;
+    if (!md) return <p className="text-[var(--text-muted)] italic">Empty content preview...</p>;
 
     const lines = md.split("\n");
     return (
-      <div className="space-y-3 font-sans text-xs text-[#FAFAFA] leading-relaxed">
+      <div className="space-y-3 font-sans text-xs text-[var(--text-primary)] leading-relaxed">
         {lines.map((line, idx) => {
           if (line.startsWith("### ")) {
             return (
-              <h3 key={idx} className="font-mono text-sm font-semibold text-[#8B5CF6] mt-4 mb-1">
+              <h3 key={idx} className="font-mono text-sm font-semibold text-[var(--violet)] mt-4 mb-1">
                 {line.replace("### ", "")}
               </h3>
             );
           }
           if (line.startsWith("## ")) {
             return (
-              <h2 key={idx} className="font-mono text-base font-semibold text-[#FAFAFA] mt-5 mb-2 pb-1 border-b border-[#27272A]">
+              <h2 key={idx} className="font-mono text-base font-semibold text-[var(--text-primary)] mt-5 mb-2 pb-1 border-b border-[var(--border-dim)]">
                 {line.replace("## ", "")}
               </h2>
             );
           }
           if (line.startsWith("# ")) {
             return (
-              <h1 key={idx} className="font-mono text-lg font-bold text-[#FAFAFA] mt-6 mb-2">
+              <h1 key={idx} className="font-mono text-lg font-bold text-[var(--text-primary)] mt-6 mb-2">
                 {line.replace("# ", "")}
               </h1>
             );
           }
           if (line.startsWith("- ") || line.startsWith("* ")) {
             return (
-              <li key={idx} className="ml-4 font-mono text-xs text-[#A1A1AA] list-disc">
+              <li key={idx} className="ml-4 font-mono text-xs text-[var(--text-dim)] list-disc">
                 {line.replace(/^[-*]\s+/, "")}
               </li>
             );
           }
           if (line.startsWith("```")) {
             return (
-              <div key={idx} className="font-mono text-[11px] text-[#71717A] bg-[#09090B] px-2 py-1 rounded border border-[#1E1E21]">
+              <div key={idx} className="font-mono text-[11px] text-[var(--text-dim)] bg-[var(--bg-elevated)] px-2.5 py-1 rounded border border-[var(--border)]">
                 {line}
               </div>
             );
@@ -187,7 +187,7 @@ export default function PostEditor({
             return <div key={idx} className="h-1" />;
           }
           return (
-            <p key={idx} className="font-mono text-xs text-[#D4D4D8]">
+            <p key={idx} className="font-mono text-xs text-[var(--text-dim)]">
               {line}
             </p>
           );
@@ -199,18 +199,18 @@ export default function PostEditor({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* ── BREADCRUMB & CONTROLS ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#1E1E21]">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--border-dim)]">
         <div>
-          <div className="flex items-center gap-2 font-mono text-xs text-[#71717A] mb-1">
-            <Link href="/admin/posts" className="hover:text-[#FAFAFA]">
+          <div className="flex items-center gap-2 font-mono text-xs text-[var(--text-dim)] mb-1">
+            <Link href="/admin/posts" className="hover:text-[var(--text-primary)]">
               System Notes
             </Link>
             <span>/</span>
-            <span className="text-[#8B5CF6]">
+            <span className="text-[var(--violet)]">
               {isEditing ? "Edit Note" : "Create New Note"}
             </span>
           </div>
-          <h1 className="font-sans text-xl font-semibold text-[#FAFAFA]">
+          <h1 className="font-sans text-xl font-semibold text-[var(--text-primary)]">
             {isEditing ? `Edit: ${title || "Untitled"}` : "Compose System Note"}
           </h1>
         </div>
@@ -218,7 +218,7 @@ export default function PostEditor({
         <div className="flex items-center gap-2.5">
           <Link
             href="/admin/posts"
-            className="px-3.5 py-2 rounded-lg bg-[#18181B] hover:bg-[#27272A] border border-[#27272A] font-mono text-xs text-[#FAFAFA] transition-colors"
+            className="px-3.5 py-2 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] border border-[var(--border)] font-mono text-xs text-[var(--text-primary)] transition-colors shadow-xs"
           >
             Cancel
           </Link>
@@ -241,24 +241,24 @@ export default function PostEditor({
 
       {/* ── STATUS BANNERS ── */}
       {errorMsg && (
-        <div className="p-3 rounded-lg bg-[#7F1D1D]/20 border border-[#DC2626]/40 text-[#EF4444] font-mono text-xs flex items-center gap-2">
+        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/40 text-red-500 font-mono text-xs flex items-center gap-2">
           <span>⚠</span>
           <span>{errorMsg}</span>
         </div>
       )}
       {successMsg && (
-        <div className="p-3 rounded-lg bg-[#052E16]/40 border border-[#16A34A]/40 text-[#22C55E] font-mono text-xs flex items-center gap-2">
+        <div className="p-3 rounded-lg bg-[var(--green)]/10 border border-[var(--green)]/40 text-[var(--green)] font-mono text-xs flex items-center gap-2">
           <span>✓</span>
           <span>{successMsg}</span>
         </div>
       )}
 
       {/* ── METADATA INPUTS ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#111113] border border-[#27272A] rounded-xl p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-5 shadow-xs">
         {/* Title */}
         <div className="md:col-span-2">
-          <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-            <span className="text-[#8B5CF6]">$</span> note.title *
+          <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+            <span className="text-[var(--violet)]">$</span> note.title *
           </label>
           <input
             type="text"
@@ -266,20 +266,20 @@ export default function PostEditor({
             onChange={handleTitleChange}
             required
             placeholder="e.g. Designing role-permission systems in Laravel"
-            className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#FAFAFA] outline-none"
+            className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--text-primary)] outline-none"
           />
         </div>
 
         {/* Slug */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="font-mono text-xs text-[#FAFAFA]">
-              <span className="text-[#8B5CF6]">$</span> note.slug (Unique URL Identifier) *
+            <label className="font-mono text-xs text-[var(--text-primary)]">
+              <span className="text-[var(--violet)]">$</span> note.slug (Unique URL Identifier) *
             </label>
             <button
               type="button"
               onClick={handleAutoSlug}
-              className="font-mono text-[10px] text-[#8B5CF6] hover:underline"
+              className="font-mono text-[10px] text-[var(--violet)] hover:underline cursor-pointer"
             >
               Auto-generate
             </button>
@@ -290,59 +290,59 @@ export default function PostEditor({
             onChange={(e) => setSlug(e.target.value)}
             required
             placeholder="e.g. designing-role-permission-systems"
-            className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#38BDF8] outline-none"
+            className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--sky)] outline-none"
           />
         </div>
 
         {/* Reading Time */}
         <div>
-          <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-            <span className="text-[#8B5CF6]">$</span> note.reading_time
+          <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+            <span className="text-[var(--violet)]">$</span> note.reading_time
           </label>
           <input
             type="text"
             value={readingTime}
             onChange={(e) => setReadingTime(e.target.value)}
             placeholder="e.g. 8 min read"
-            className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#FAFAFA] outline-none"
+            className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--text-primary)] outline-none"
           />
         </div>
 
         {/* Excerpt */}
         <div className="md:col-span-2">
-          <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-            <span className="text-[#8B5CF6]">$</span> note.excerpt
+          <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+            <span className="text-[var(--violet)]">$</span> note.excerpt
           </label>
           <textarea
             value={excerpt}
             onChange={(e) => setExcerpt(e.target.value)}
             rows={2}
             placeholder="Brief summary displayed on the main system notes timeline..."
-            className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg p-3 font-mono text-xs text-[#FAFAFA] outline-none resize-y"
+            className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg p-3 font-mono text-xs text-[var(--text-primary)] outline-none resize-y"
           />
         </div>
 
         {/* Tags */}
         <div>
-          <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-            <span className="text-[#8B5CF6]">$</span> note.tags (comma-separated)
+          <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+            <span className="text-[var(--violet)]">$</span> note.tags (comma-separated)
           </label>
           <input
             type="text"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             placeholder="e.g. laravel, auth, database, scaling"
-            className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#FAFAFA] outline-none"
+            className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--text-primary)] outline-none"
           />
         </div>
 
         {/* Publish Status Toggle */}
-        <div className="flex items-center justify-between p-3 bg-[#09090B] border border-[#27272A] rounded-lg self-end">
+        <div className="flex items-center justify-between p-3 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg self-end">
           <div>
-            <div className="font-mono text-xs text-[#FAFAFA]">
+            <div className="font-mono text-xs text-[var(--text-primary)]">
               Publish Immediately
             </div>
-            <div className="font-mono text-[10px] text-[#71717A]">
+            <div className="font-mono text-[10px] text-[var(--text-dim)]">
               Visible to public visitors on portfolio
             </div>
           </div>
@@ -350,29 +350,29 @@ export default function PostEditor({
             type="checkbox"
             checked={isPublished}
             onChange={(e) => setIsPublished(e.target.checked)}
-            className="w-4 h-4 accent-[#8B5CF6] cursor-pointer"
+            className="w-4 h-4 accent-[var(--violet)] cursor-pointer"
           />
         </div>
       </div>
 
       {/* ── MARKDOWN CONTENT & LIVE PREVIEW ── */}
-      <div className="bg-[#111113] border border-[#27272A] rounded-xl overflow-hidden shadow-xl">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden shadow-xl">
         {/* Editor Toolbar */}
-        <div className="px-4 py-2.5 border-b border-[#1E1E21] bg-[#09090B] flex items-center justify-between flex-wrap gap-2">
-          <div className="font-mono text-xs text-[#FAFAFA] flex items-center gap-2">
-            <span className="text-[#8B5CF6]">$</span>
+        <div className="px-4 py-2.5 border-b border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between flex-wrap gap-2">
+          <div className="font-mono text-xs text-[var(--text-primary)] flex items-center gap-2">
+            <span className="text-[var(--violet)]">$</span>
             <span>note.content.md (Markdown Supported)</span>
           </div>
 
           {/* View mode buttons */}
-          <div className="flex items-center gap-1 bg-[#18181B] border border-[#27272A] p-1 rounded-lg">
+          <div className="flex items-center gap-1 bg-[var(--bg-surface)] border border-[var(--border)] p-1 rounded-lg">
             <button
               type="button"
               onClick={() => setViewMode("write")}
-              className={`px-2.5 py-1 rounded font-mono text-[10px] transition-colors ${
+              className={`px-2.5 py-1 rounded font-mono text-[10px] transition-colors cursor-pointer ${
                 viewMode === "write"
-                  ? "bg-[#27272A] text-[#FAFAFA]"
-                  : "text-[#71717A] hover:text-[#FAFAFA]"
+                  ? "bg-[var(--bg-elevated)] text-[var(--text-primary)] font-medium"
+                  : "text-[var(--text-dim)] hover:text-[var(--text-primary)]"
               }`}
             >
               Write
@@ -380,10 +380,10 @@ export default function PostEditor({
             <button
               type="button"
               onClick={() => setViewMode("split")}
-              className={`px-2.5 py-1 rounded font-mono text-[10px] transition-colors ${
+              className={`px-2.5 py-1 rounded font-mono text-[10px] transition-colors cursor-pointer ${
                 viewMode === "split"
-                  ? "bg-[#27272A] text-[#FAFAFA]"
-                  : "text-[#71717A] hover:text-[#FAFAFA]"
+                  ? "bg-[var(--bg-elevated)] text-[var(--text-primary)] font-medium"
+                  : "text-[var(--text-dim)] hover:text-[var(--text-primary)]"
               }`}
             >
               Split View
@@ -391,10 +391,10 @@ export default function PostEditor({
             <button
               type="button"
               onClick={() => setViewMode("preview")}
-              className={`px-2.5 py-1 rounded font-mono text-[10px] transition-colors ${
+              className={`px-2.5 py-1 rounded font-mono text-[10px] transition-colors cursor-pointer ${
                 viewMode === "preview"
-                  ? "bg-[#27272A] text-[#FAFAFA]"
-                  : "text-[#71717A] hover:text-[#FAFAFA]"
+                  ? "bg-[var(--bg-elevated)] text-[var(--text-primary)] font-medium"
+                  : "text-[var(--text-dim)] hover:text-[var(--text-primary)]"
               }`}
             >
               Live Preview
@@ -412,32 +412,32 @@ export default function PostEditor({
         >
           {/* Write Textarea */}
           {(viewMode === "write" || viewMode === "split") && (
-            <div className="p-4 border-r border-[#1E1E21] bg-[#09090B]/50">
+            <div className="p-4 border-r border-[var(--border-dim)] bg-[var(--bg-base)]/50">
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
                 rows={18}
                 placeholder="Write your system note in Markdown here...&#10;&#10;## Subheading&#10;Explain architectural considerations and state transitions...&#10;&#10;```php&#10;echo 'Hello World';&#10;```"
-                className="w-full h-full min-h-[400px] bg-transparent border-none outline-none font-mono text-xs text-[#FAFAFA] placeholder:text-[#3F3F46] resize-y leading-relaxed"
+                className="w-full h-full min-h-[400px] bg-transparent border-none outline-none font-mono text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] resize-y leading-relaxed"
               />
             </div>
           )}
 
           {/* Preview Panel */}
           {(viewMode === "preview" || viewMode === "split") && (
-            <div className="p-6 bg-[#111113] overflow-y-auto max-h-[600px]">
-              <div className="font-mono text-[10px] text-[#F59E0B] tracking-wider uppercase mb-3 pb-2 border-b border-[#1E1E21]">
+            <div className="p-6 bg-[var(--bg-surface)] overflow-y-auto max-h-[600px]">
+              <div className="font-mono text-[10px] text-[var(--amber)] tracking-wider uppercase mb-3 pb-2 border-b border-[var(--border-dim)]">
                 Live Render Output
               </div>
               <div className="mb-4">
-                <h1 className="font-mono text-base font-semibold text-[#FAFAFA] mb-1">
+                <h1 className="font-mono text-base font-semibold text-[var(--text-primary)] mb-1">
                   {title || "Untitled Post"}
                 </h1>
-                <div className="font-mono text-[10px] text-[#71717A] flex items-center gap-2">
+                <div className="font-mono text-[10px] text-[var(--text-dim)] flex items-center gap-2">
                   <span>{readingTime}</span>
                   <span>·</span>
-                  <span className={isPublished ? "text-[#22C55E]" : "text-[#F59E0B]"}>
+                  <span className={isPublished ? "text-[var(--green)]" : "text-[var(--amber)]"}>
                     {isPublished ? "Published" : "Draft"}
                   </span>
                 </div>

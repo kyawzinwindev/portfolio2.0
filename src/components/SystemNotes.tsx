@@ -67,35 +67,35 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
     return text.split("\n").map((line, idx) => {
       if (line.startsWith("### ")) {
         return (
-          <h3 key={idx} className="font-mono text-sm font-semibold text-[#8B5CF6] mt-4 mb-1">
+          <h3 key={idx} className="font-mono text-sm font-semibold text-[var(--violet)] mt-4 mb-1">
             {line.replace("### ", "")}
           </h3>
         );
       }
       if (line.startsWith("## ")) {
         return (
-          <h2 key={idx} className="font-mono text-base font-semibold text-[#FAFAFA] mt-5 mb-2 pb-1 border-b border-[#27272A]">
+          <h2 key={idx} className="font-mono text-base font-semibold text-[var(--text-primary)] mt-5 mb-2 pb-1 border-b border-[var(--border-dim)]">
             {line.replace("## ", "")}
           </h2>
         );
       }
       if (line.startsWith("# ")) {
         return (
-          <h1 key={idx} className="font-mono text-lg font-bold text-[#FAFAFA] mt-6 mb-2">
+          <h1 key={idx} className="font-mono text-lg font-bold text-[var(--text-primary)] mt-6 mb-2">
             {line.replace("# ", "")}
           </h1>
         );
       }
       if (line.startsWith("- ") || line.startsWith("* ")) {
         return (
-          <li key={idx} className="ml-4 font-mono text-xs text-[#A1A1AA] list-disc">
+          <li key={idx} className="ml-4 font-mono text-xs text-[var(--text-dim)] list-disc">
             {line.replace(/^[-*]\s+/, "")}
           </li>
         );
       }
       if (line.startsWith("```")) {
         return (
-          <div key={idx} className="font-mono text-[11px] text-[#71717A] bg-[#09090B] px-2.5 py-1.5 rounded border border-[#1E1E21] my-1">
+          <div key={idx} className="font-mono text-[11px] text-[var(--text-dim)] bg-[var(--bg-elevated)] px-2.5 py-1.5 rounded border border-[var(--border)] my-1">
             {line}
           </div>
         );
@@ -104,7 +104,7 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
         return <div key={idx} className="h-2" />;
       }
       return (
-        <p key={idx} className="font-mono text-xs text-[#D4D4D8] leading-relaxed">
+        <p key={idx} className="font-mono text-xs text-[var(--text-dim)] leading-relaxed">
           {line}
         </p>
       );
@@ -112,13 +112,13 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
   };
 
   return (
-    <section id="notes" className="py-16 scroll-mt-12">
+    <section id="notes" className="py-16 scroll-mt-12 transition-colors duration-200">
       <div className="wrapper">
         {/* Section label */}
         <div className="sec-label">{"// 04 — system.notes · build records"}</div>
 
         {/* Engineering log entries */}
-        <div className="border-l border-[#27272A] pl-5 relative space-y-6">
+        <div className="border-l border-[var(--border)] pl-5 relative space-y-6">
           {notes.map((note, index) => {
             const isLast = index === notes.length - 1;
             const isLatest = note.isLatest || index === 0;
@@ -130,21 +130,21 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
                   if (note.content) setActiveNote(note);
                 }}
                 className={`relative group ${
-                  !isLast ? "pb-6 border-b border-[#1E1E21]" : ""
+                  !isLast ? "pb-6 border-b border-[var(--border-dim)]" : ""
                 } ${note.content ? "cursor-pointer" : ""}`}
               >
                 {/* Node dot on timeline */}
                 <span
                   className={`absolute -left-[24px] top-[6px] w-2 h-2 rounded-full transition-colors ${
                     isLatest
-                      ? "bg-[#8B5CF6]"
-                      : "bg-[#27272A] group-hover:bg-[#71717A]"
+                      ? "bg-[var(--violet)]"
+                      : "bg-[var(--border)] group-hover:bg-[var(--text-dim)]"
                   }`}
                 />
 
                 {/* Metadata line */}
-                <div className="font-mono text-[10px] text-[#3F3F46] mb-[5px] flex items-center gap-2 flex-wrap">
-                  <span className="text-[#F59E0B]">{note.timestamp}</span>
+                <div className="font-mono text-[10px] text-[var(--text-muted)] mb-[5px] flex items-center gap-2 flex-wrap">
+                  <span className="text-[var(--amber)]">{note.timestamp}</span>
                   <span>·</span>
                   <span>{note.readTime}</span>
                   <span>·</span>
@@ -152,7 +152,7 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
                     {note.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="bg-[#18181B] border border-[#27272A] rounded-[3px] px-1.5 py-[1px] text-[9px] text-[#71717A] group-hover:text-[#FAFAFA] transition-colors"
+                        className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-[3px] px-1.5 py-[1px] text-[9px] text-[var(--text-dim)] group-hover:text-[var(--text-primary)] transition-colors"
                       >
                         {tag}
                       </span>
@@ -161,17 +161,17 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
                 </div>
 
                 {/* Note title */}
-                <h3 className="font-mono text-sm font-medium text-[#FAFAFA] group-hover:text-[#8B5CF6] transition-colors mb-1 leading-[1.4] flex items-center gap-2">
+                <h3 className="font-mono text-sm font-medium text-[var(--text-primary)] group-hover:text-[var(--violet)] transition-colors mb-1 leading-[1.4] flex items-center gap-2">
                   <span>{note.title}</span>
                   {note.content && (
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-[#8B5CF6]">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-[var(--violet)]">
                       [read note ↗]
                     </span>
                   )}
                 </h3>
 
                 {/* Note excerpt */}
-                <p className="font-mono text-[11px] text-[#52525B] leading-[1.7]">
+                <p className="font-mono text-[11px] text-[var(--text-dim)] leading-[1.7]">
                   {note.excerpt}
                 </p>
               </article>
@@ -183,26 +183,26 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
       {/* Note Reader Modal */}
       {activeNote && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150"
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150"
           onClick={() => setActiveNote(null)}
         >
           <div
-            className="w-full max-w-2xl bg-[#111113] border border-[#27272A] rounded-xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
+            className="w-full max-w-2xl bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="px-4 py-3 border-b border-[#1E1E21] bg-[#09090B] flex items-center justify-between">
+            <div className="px-4 py-3 border-b border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-                <span className="font-mono text-[11px] text-[#71717A] ml-2">
+                <span className="font-mono text-[11px] text-[var(--text-dim)] ml-2">
                   cat notes/{activeNote.slug || "record"}.md
                 </span>
               </div>
               <button
                 onClick={() => setActiveNote(null)}
-                className="font-mono text-xs text-[#71717A] hover:text-[#FAFAFA]"
+                className="font-mono text-xs text-[var(--text-dim)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 ✕ ESC
               </button>
@@ -211,10 +211,10 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
             {/* Body */}
             <div className="p-6 overflow-y-auto space-y-4">
               <div>
-                <div className="font-mono text-[10px] text-[#F59E0B] mb-1">
+                <div className="font-mono text-[10px] text-[var(--amber)] mb-1">
                   {activeNote.timestamp} · {activeNote.readTime}
                 </div>
-                <h1 className="font-mono text-lg font-bold text-[#FAFAFA]">
+                <h1 className="font-mono text-lg font-bold text-[var(--text-primary)]">
                   {activeNote.title}
                 </h1>
                 <div className="flex items-center gap-1.5 mt-2 flex-wrap">
@@ -237,11 +237,11 @@ export default function SystemNotes({ initialPosts }: SystemNotesProps) {
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-2 border-t border-[#1E1E21] bg-[#09090B] flex items-center justify-between font-mono text-[10px] text-[#52525B]">
+            <div className="px-4 py-2 border-t border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between font-mono text-[10px] text-[var(--text-muted)]">
               <span>KZW OS System Notes Reader</span>
               <button
                 onClick={() => setActiveNote(null)}
-                className="hover:text-[#FAFAFA]"
+                className="hover:text-[var(--text-primary)] cursor-pointer"
               >
                 Close (ESC)
               </button>

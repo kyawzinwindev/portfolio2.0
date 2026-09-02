@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -41,7 +42,6 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#09090B",
-  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -52,10 +52,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.variable} ${jetbrainsMono.variable} dark`}
     >
-      <body className="min-h-screen bg-[#09090B] text-[#FAFAFA] font-sans antialiased flex flex-col selection:bg-[#8B5CF6]/30 selection:text-white">
-        {children}
+      <body className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] font-sans antialiased flex flex-col selection:bg-[#8B5CF6]/30 selection:text-white transition-colors duration-200">
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

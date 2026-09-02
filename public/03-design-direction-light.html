@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KZW OS — Design Direction (Light Mode)</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+:root{
+  /* ── BACKGROUND SCALE ── */
+  --bg-base:      #F8F8F7;
+  --bg-surface:   #FFFFFF;
+  --bg-elevated:  #F2F2F0;
+  --bg-hover:     #EBEBEA;
+
+  /* ── BORDERS ── */
+  --border:       #E0DFDD;
+  --border-dim:   #ECEAE8;
+
+  /* ── TEXT ── */
+  --text-primary: #1A1A18;
+  --text-dim:     #6B6B67;
+  --text-muted:   #A8A8A4;
+  --text-subtle:  #C4C4BF;
+
+  /* ── ACCENTS ── */
+  --violet:       #6D28D9;
+  --violet-bg:    #EDE9FE;
+  --violet-bdr:   #C4B5FD;
+  --green:        #15803D;
+  --green-bg:     #DCFCE7;
+  --green-bdr:    #86EFAC;
+  --amber:        #B45309;
+  --amber-bg:     #FEF3C7;
+  --amber-bdr:    #FCD34D;
+  --sky:          #0369A1;
+  --sky-bg:       #E0F2FE;
+  --sky-bdr:      #7DD3FC;
+
+  /* ── FONTS ── */
+  --font-sans:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* ── RADIUS ── */
+  --r-sm:  4px;
+  --r:     8px;
+  --r-lg:  12px;
+  --r-xl:  16px;
+}
+
+body{
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.mono{ font-family: var(--font-mono); }
+.wrapper{ max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+/* ── CHROME ── */
+.chrome{
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(248,248,247,0.90);
+  backdrop-filter: blur(14px);
+  border-bottom: 0.5px solid var(--border);
+  padding: 8px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.dots{ display:flex; gap:5px; }
+.dot{ width:8px; height:8px; border-radius:50%; }
+
+/* ── SECTION ── */
+.section{ padding: 56px 0; border-bottom: 0.5px solid var(--border-dim); }
+.section:last-child{ border-bottom: none; }
+.eyebrow{
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--amber); letter-spacing: 0.1em; margin-bottom: 8px;
+}
+.section-title{
+  font-family: var(--font-sans); font-size: 20px; font-weight: 500;
+  letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 4px;
+}
+.section-desc{
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-dim); margin-bottom: 32px; line-height: 1.8;
+}
+
+/* ── CARD ── */
+.card{
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.card-head{
+  padding: 10px 16px;
+  border-bottom: 0.5px solid var(--border-dim);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-elevated);
+}
+.card-head-title{
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-primary); font-weight: 500;
+}
+.card-head-sub{
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
+}
+.card-body{ padding: 16px; }
+
+/* ── HERO ── */
+.hero{
+  padding: 56px 0 40px;
+  border-bottom: 0.5px solid var(--border);
+  background: var(--bg-surface);
+}
+.hero-eyebrow{
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--amber); letter-spacing: 0.1em; margin-bottom: 16px;
+}
+.hero-title{
+  font-family: var(--font-sans); font-size: 30px; font-weight: 500;
+  letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 6px;
+}
+.hero-sub{
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--text-dim); margin-bottom: 24px;
+}
+.hero-badges{ display: flex; gap: 8px; flex-wrap: wrap; }
+.badge{
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: var(--r);
+  border: 0.5px solid var(--border);
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-dim); background: var(--bg-elevated);
+}
+
+/* ── 2-col GRID ── */
+.two-col{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.span-2{ grid-column: span 2; }
+
+/* ── PALETTE STRIP ── */
+.palette-strip{
+  display: flex; height: 44px;
+  border-radius: var(--r); overflow: hidden;
+  border: 0.5px solid var(--border); margin-bottom: 20px;
+}
+
+/* ── COLOR SWATCHES ── */
+.swatch-row{
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+}
+.swatch{
+  width: 36px; height: 36px; border-radius: 6px;
+  border: 0.5px solid var(--border); flex-shrink: 0;
+}
+.sw-name{ font-family:var(--font-mono); font-size:11px; color:var(--text-primary); display:block; margin-bottom:1px; }
+.sw-hex{  font-family:var(--font-mono); font-size:11px; color:var(--sky);          display:block; margin-bottom:1px; }
+.sw-tw{   font-family:var(--font-mono); font-size:10px; color:var(--text-muted);   display:block; margin-bottom:1px; }
+.sw-role{ font-family:var(--font-mono); font-size:9px;  color:var(--text-muted);   display:block; }
+
+/* ── SEMANTIC PILLS ── */
+.sem-pill{
+  border-radius: var(--r); padding: 10px 12px; margin-bottom: 8px;
+}
+.sem-pill:last-child{ margin-bottom:0; }
+.sem-title{ font-family:var(--font-mono); font-size:10px; font-weight:500; margin-bottom:3px; }
+.sem-desc{  font-family:var(--font-mono); font-size:10px; color:var(--text-dim); line-height:1.7; }
+
+/* ── TYPE SAMPLES ── */
+.type-block{
+  background: var(--bg-surface); border: 0.5px solid var(--border);
+  border-radius: var(--r-lg); padding: 16px;
+}
+.type-meta{
+  font-family: var(--font-mono); font-size: 9px;
+  color: var(--text-muted); margin-bottom: 10px; letter-spacing:0.06em;
+}
+.type-pair{
+  display: flex; gap: 12px; align-items: baseline;
+  margin-bottom: 8px; padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--border-dim);
+}
+.type-pair:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.tp-label{ font-family:var(--font-mono); font-size:9px; color:var(--text-muted); width:140px; flex-shrink:0; }
+.tp-val{   font-family:var(--font-mono); font-size:11px; color:var(--sky); }
+
+/* ── SPACING ── */
+.sp-item{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.sp-bar{ height:4px; background:var(--violet); border-radius:2px; opacity:0.5; flex-shrink:0; }
+.sp-info{ font-family:var(--font-mono); font-size:11px; color:var(--text-dim); }
+.sp-token{ color:var(--violet); margin-right:6px; }
+.sp-px{    color:var(--sky);    margin-right:6px; }
+.sp-use{   color:var(--text-muted); }
+
+/* ── RADIUS PREVIEW ── */
+.radius-list{ display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; }
+.radius-item{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+.radius-box{ width:48px; height:48px; background:var(--bg-elevated); border:0.5px solid var(--border); }
+.radius-lbl{ font-family:var(--font-mono); font-size:9px; color:var(--text-muted); text-align:center; line-height:1.6; }
+
+/* ── ANIMATION GRID ── */
+.anim-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.anim-card{
+  background:var(--bg-surface); border:0.5px solid var(--border);
+  border-radius:var(--r-lg); padding:14px;
+}
+.anim-title{ font-family:var(--font-mono); font-size:11px; font-weight:500; color:var(--text-primary); margin-bottom:5px; }
+.anim-val{   font-family:var(--font-mono); font-size:11px; color:var(--violet); margin-bottom:4px; }
+.anim-use{   font-family:var(--font-mono); font-size:10px; color:var(--text-muted); line-height:1.7; }
+
+/* ── CODE BLOCK ── */
+.code-block{
+  background: var(--bg-elevated);
+  border: 0.5px solid var(--border);
+  border-radius: var(--r); padding: 16px;
+  font-family: var(--font-mono); font-size: 11px; line-height: 2;
+  overflow-x: auto;
+}
+.kc{ color:var(--sky); }
+.kk{ color:var(--amber); }
+.ks{ color:var(--green); }
+.kd{ color:var(--text-dim); }
+.km{ color:var(--text-muted); }
+.kv{ color:var(--violet); }
+
+/* ── NAV PREVIEW ── */
+.nav-preview{
+  display:flex; gap:4px; flex-wrap:wrap; margin-bottom:16px;
+  background:var(--bg-surface); border:0.5px solid var(--border);
+  border-radius:var(--r-lg); padding:10px 14px;
+}
+.nav-item{
+  font-family:var(--font-mono); font-size:11px; color:var(--text-dim);
+  padding:5px 12px; border-radius:var(--r-sm);
+  border:0.5px solid transparent; transition:all 0.15s;
+}
+.nav-active{
+  color:var(--violet); border-color:var(--violet-bdr);
+  background:var(--violet-bg);
+}
+
+/* ── TAGS ── */
+.tag{ display:inline-flex; align-items:center; padding:2px 8px; border-radius:var(--r-sm); font-family:var(--font-mono); font-size:10px; border:0.5px solid; }
+.t-violet{ color:var(--violet); border-color:var(--violet-bdr); background:var(--violet-bg); }
+.t-sky{    color:var(--sky);    border-color:var(--sky-bdr);    background:var(--sky-bg);    }
+.t-green{  color:var(--green);  border-color:var(--green-bdr);  background:var(--green-bg);  }
+.t-amber{  color:var(--amber);  border-color:var(--amber-bdr);  background:var(--amber-bg);  }
+.t-dim{    color:var(--text-dim); border-color:var(--border); background:var(--bg-elevated); }
+
+/* ── LIGHT VS DARK COMPARE ── */
+.compare-row{
+  display:grid; grid-template-columns:1fr 1fr; gap:0;
+  border:0.5px solid var(--border); border-radius:var(--r-lg); overflow:hidden;
+  margin-bottom:12px;
+}
+.compare-dark{ background:#09090B; padding:16px; }
+.compare-light{ background:#FFFFFF; padding:16px; border-left:0.5px solid var(--border); }
+.compare-label{
+  font-family:var(--font-mono); font-size:9px; letter-spacing:0.08em;
+  margin-bottom:10px;
+}
+
+/* ── FOOTER ── */
+.footer{ padding:24px 0; text-align:center; border-top:0.5px solid var(--border-dim); }
+.footer-text{ font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+
+/* ── DIFF HIGHLIGHT (what changed dark→light) ── */
+.changed{
+  background: var(--amber-bg);
+  border: 0.5px solid var(--amber-bdr);
+  border-radius:4px; padding:2px 6px;
+  font-family:var(--font-mono); font-size:10px; color:var(--amber);
+}
+</style>
+</head>
+<body>
+
+<!-- CHROME -->
+<div class="chrome">
+  <div class="dots">
+    <div class="dot" style="background:#FF5F57"></div>
+    <div class="dot" style="background:#FFBD2E"></div>
+    <div class="dot" style="background:#28C840"></div>
+  </div>
+  <span class="mono" style="font-size:11px;color:var(--text-dim)">03-design-direction-light.html</span>
+  <span class="mono" style="font-size:10px;color:var(--green)">● KZW OS · Light Mode</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrapper">
+    <div class="hero-eyebrow">// design direction · light mode · KZW OS</div>
+    <div class="hero-title">Light Mode Design Direction</div>
+    <div class="hero-sub">Complete visual specification for light mode — colors, typography, spacing, tokens, and Tailwind config</div>
+    <div class="hero-badges">
+      <span class="badge">Light Mode First</span>
+      <span class="badge">Stone / Zinc base</span>
+      <span class="badge">JetBrains Mono + Inter</span>
+      <span class="badge">Violet-700 Accent</span>
+      <span class="badge">Next.js + Tailwind CSS</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     01 — COLOR PALETTE
+══════════════════════════════ -->
+<div class="section">
+  <div class="wrapper">
+    <div class="eyebrow">// 01 — color.palette</div>
+    <div class="section-title">Color Palette — Light Mode</div>
+    <div class="section-desc">Light mode uses a warm off-white base (not pure white) so the page feels like high-quality paper, not a glaring screen. Accents shift one stop darker so they remain readable on light backgrounds.</div>
+
+    <!-- Palette strip -->
+    <div class="palette-strip">
+      <div style="flex:1;background:#F8F8F7"></div>
+      <div style="flex:1;background:#FFFFFF"></div>
+      <div style="flex:1;background:#F2F2F0"></div>
+      <div style="flex:1;background:#EBEBEA"></div>
+      <div style="flex:1;background:#E0DFDD"></div>
+      <div style="flex:1;background:#A8A8A4"></div>
+      <div style="flex:1;background:#1A1A18"></div>
+      <div style="width:1px;background:var(--border)"></div>
+      <div style="flex:1;background:#6D28D9"></div>
+      <div style="flex:1;background:#15803D"></div>
+      <div style="flex:1;background:#B45309"></div>
+      <div style="flex:1;background:#0369A1"></div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:16px">
+
+      <!-- Background scale -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">Background Scale</span>
+          <span class="card-head-sub">warm off-white · not pure white</span>
+        </div>
+        <div class="card-body">
+          <div class="swatch-row">
+            <div class="swatch" style="background:#F8F8F7"></div>
+            <div>
+              <span class="sw-name">bg-base</span>
+              <span class="sw-hex">#F8F8F7</span>
+              <span class="sw-tw">bg-stone-50 / bg-[#F8F8F7]</span>
+              <span class="sw-role">Page background — warm paper tone</span>
+            </div>
+          </div>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#FFFFFF;border-color:#E0DFDD"></div>
+            <div>
+              <span class="sw-name">bg-surface</span>
+              <span class="sw-hex">#FFFFFF</span>
+              <span class="sw-tw">bg-white</span>
+              <span class="sw-role">Cards, panels — sits above the base</span>
+            </div>
+          </div>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#F2F2F0"></div>
+            <div>
+              <span class="sw-name">bg-elevated</span>
+              <span class="sw-hex">#F2F2F0</span>
+              <span class="sw-tw">bg-stone-100</span>
+              <span class="sw-role">Hover states, code blocks, card headers</span>
+            </div>
+          </div>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#EBEBEA"></div>
+            <div>
+              <span class="sw-name">bg-hover</span>
+              <span class="sw-hex">#EBEBEA</span>
+              <span class="sw-tw">bg-[#EBEBEA]</span>
+              <span class="sw-role">Active list rows, command palette highlight</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Border & Text -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">Border & Text Scale</span>
+          <span class="card-head-sub">warm gray · never cool gray</span>
+        </div>
+        <div class="card-body">
+          <div class="swatch-row">
+            <div class="swatch" style="background:#ECEAE8"></div>
+            <div>
+              <span class="sw-name">border-dim</span>
+              <span class="sw-hex">#ECEAE8</span>
+              <span class="sw-tw">border-stone-200</span>
+              <span class="sw-role">Section dividers, subtle separators</span>
+            </div>
+          </div>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#E0DFDD"></div>
+            <div>
+              <span class="sw-name">border</span>
+              <span class="sw-hex">#E0DFDD</span>
+              <span class="sw-tw">border-[#E0DFDD]</span>
+              <span class="sw-role">Default border — all cards, inputs</span>
+            </div>
+          </div>
+          <div style="height:0.5px;background:var(--border-dim);margin:12px 0"></div>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#1A1A18"></div>
+            <div>
+              <span class="sw-name">text-primary</span>
+              <span class="sw-hex">#1A1A18</span>
+              <span class="sw-tw">text-[#1A1A18]</span>
+              <span class="sw-role">Headlines, important labels — warm black</span>
+            </div>
+          </div>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#6B6B67"></div>
+            <div>
+              <span class="sw-name">text-dim</span>
+              <span class="sw-hex">#6B6B67</span>
+              <span class="sw-tw">text-stone-500</span>
+              <span class="sw-role">Body, descriptions, subtitles</span>
+            </div>
+          </div>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#A8A8A4"></div>
+            <div>
+              <span class="sw-name">text-muted</span>
+              <span class="sw-hex">#A8A8A4</span>
+              <span class="sw-tw">text-stone-400</span>
+              <span class="sw-role">Comments, placeholders, inactive items</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Accent Colors -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-head">
+        <span class="card-head-title">Accent Colors — Light Mode Adjusted</span>
+        <span class="card-head-sub">One stop darker than dark mode — stays readable on white</span>
+      </div>
+      <div class="card-body">
+        <div class="two-col">
+          <div>
+            <div class="swatch-row">
+              <div class="swatch" style="background:#6D28D9"></div>
+              <div>
+                <span class="sw-name">violet — primary accent</span>
+                <span class="sw-hex">#6D28D9</span>
+                <span class="sw-tw">violet-700</span>
+                <span class="sw-role">Buttons, active nav, command palette, links</span>
+              </div>
+            </div>
+            <div class="swatch-row">
+              <div class="swatch" style="background:#EDE9FE"></div>
+              <div>
+                <span class="sw-name">violet-bg</span>
+                <span class="sw-hex">#EDE9FE</span>
+                <span class="sw-tw">violet-100</span>
+                <span class="sw-role">Active tag background, selected state fill</span>
+              </div>
+            </div>
+            <div class="swatch-row">
+              <div class="swatch" style="background:#15803D"></div>
+              <div>
+                <span class="sw-name">green — success / online</span>
+                <span class="sw-hex">#15803D</span>
+                <span class="sw-tw">green-700</span>
+                <span class="sw-role">Status dots, DEPLOYED badge text, 200 OK</span>
+              </div>
+            </div>
+            <div class="swatch-row">
+              <div class="swatch" style="background:#DCFCE7"></div>
+              <div>
+                <span class="sw-name">green-bg</span>
+                <span class="sw-hex">#DCFCE7</span>
+                <span class="sw-tw">green-100</span>
+                <span class="sw-role">DEPLOYED badge background</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="swatch-row">
+              <div class="swatch" style="background:#B45309"></div>
+              <div>
+                <span class="sw-name">amber — time / warning</span>
+                <span class="sw-hex">#B45309</span>
+                <span class="sw-tw">amber-700</span>
+                <span class="sw-role">Timestamps, section eyebrows, JSON keys</span>
+              </div>
+            </div>
+            <div class="swatch-row">
+              <div class="swatch" style="background:#FEF3C7"></div>
+              <div>
+                <span class="sw-name">amber-bg</span>
+                <span class="sw-hex">#FEF3C7</span>
+                <span class="sw-tw">amber-100</span>
+                <span class="sw-role">Warning badge background</span>
+              </div>
+            </div>
+            <div class="swatch-row">
+              <div class="swatch" style="background:#0369A1"></div>
+              <div>
+                <span class="sw-name">sky — paths / links</span>
+                <span class="sw-hex">#0369A1</span>
+                <span class="sw-tw">sky-700</span>
+                <span class="sw-role">API paths, external links, hex values in docs</span>
+              </div>
+            </div>
+            <div class="swatch-row">
+              <div class="swatch" style="background:#E0F2FE"></div>
+              <div>
+                <span class="sw-name">sky-bg</span>
+                <span class="sw-hex">#E0F2FE</span>
+                <span class="sw-tw">sky-100</span>
+                <span class="sw-role">Tag backgrounds, inline code backgrounds</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semantic usage -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-title">Semantic Color Usage</span>
+        <span class="card-head-sub">same meaning as dark mode — different values</span>
+      </div>
+      <div class="card-body">
+        <div class="two-col">
+          <div>
+            <div class="sem-pill" style="background:var(--violet-bg);border:0.5px solid var(--violet-bdr)">
+              <div class="sem-title" style="color:var(--violet)">VIOLET — interaction & navigation</div>
+              <div class="sem-desc">Command palette · Active nav items · Primary buttons · Timeline active dot · Selected states</div>
+            </div>
+            <div class="sem-pill" style="background:var(--green-bg);border:0.5px solid var(--green-bdr)">
+              <div class="sem-title" style="color:var(--green)">GREEN — status & success</div>
+              <div class="sem-desc">Online indicator · DEPLOYED badge · 200 OK response · Terminal output · Success messages</div>
+            </div>
+          </div>
+          <div>
+            <div class="sem-pill" style="background:var(--amber-bg);border:0.5px solid var(--amber-bdr)">
+              <div class="sem-title" style="color:var(--amber)">AMBER — time & metadata</div>
+              <div class="sem-desc">ISO timestamps · Section eyebrows · JSON keys · Loading states · Warning labels</div>
+            </div>
+            <div class="sem-pill" style="background:var(--sky-bg);border:0.5px solid var(--sky-bdr)">
+              <div class="sem-title" style="color:var(--sky)">SKY — paths & references</div>
+              <div class="sem-desc">API endpoint paths · Stack tag text · External links · Hex values · Code strings</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     02 — TYPOGRAPHY
+══════════════════════════════ -->
+<div class="section">
+  <div class="wrapper">
+    <div class="eyebrow">// 02 — typography</div>
+    <div class="section-title">Typography System</div>
+    <div class="section-desc">Same two typefaces as dark mode. Light mode makes no changes to font choices — only to color values. Inter stays Inter. JetBrains Mono stays JetBrains Mono.</div>
+
+    <div class="two-col" style="margin-bottom:16px">
+
+      <div class="type-block">
+        <div class="type-meta">INTER · display / headings · weight 500 only</div>
+        <div style="font-family:var(--font-sans);font-size:30px;font-weight:500;letter-spacing:-0.03em;color:var(--text-primary);line-height:1.1;margin-bottom:10px">KZW <span style="color:var(--violet)">_</span></div>
+        <div style="height:0.5px;background:var(--border-dim);margin:10px 0"></div>
+        <div style="font-family:var(--font-sans);font-size:18px;font-weight:500;letter-spacing:-0.02em;color:var(--text-primary);margin-bottom:10px">System architecture</div>
+        <div style="height:0.5px;background:var(--border-dim);margin:10px 0"></div>
+        <div style="font-family:var(--font-sans);font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:14px">Backend engineer</div>
+        <div>
+          <div class="type-pair"><span class="tp-label">Display — 40px</span><span class="tp-val">weight:500 · tracking:-0.03em</span></div>
+          <div class="type-pair"><span class="tp-label">Heading — 28px</span><span class="tp-val">weight:500 · tracking:-0.02em</span></div>
+          <div class="type-pair"><span class="tp-label">Title — 20px</span><span class="tp-val">weight:500 · tracking:-0.02em</span></div>
+          <div class="type-pair"><span class="tp-label">Body — 14px</span><span class="tp-val">weight:400 · line-height:1.6</span></div>
+        </div>
+      </div>
+
+      <div class="type-block">
+        <div class="type-meta">JETBRAINS MONO · all technical content</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--text-dim);line-height:2;margin-bottom:10px">$ init --role "backend engineer"</div>
+        <div style="height:0.5px;background:var(--border-dim);margin:10px 0"></div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--violet);margin-bottom:10px">about.sys · projects.log</div>
+        <div style="height:0.5px;background:var(--border-dim);margin:10px 0"></div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.1em;margin-bottom:14px">// 01 — section.label</div>
+        <div>
+          <div class="type-pair"><span class="tp-label">Nav labels — 13px</span><span class="tp-val">about.sys · projects.log</span></div>
+          <div class="type-pair"><span class="tp-label">Body mono — 12px</span><span class="tp-val">Terminal lines, bio text</span></div>
+          <div class="type-pair"><span class="tp-label">Labels — 11px</span><span class="tp-val">Stack tags, metadata</span></div>
+          <div class="type-pair"><span class="tp-label">Eyebrows — 10px</span><span class="tp-val">color:amber · tracking:0.1em</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Font import code -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-title">Font Import — same as dark mode</span>
+        <span class="card-head-sub">paste in globals.css</span>
+      </div>
+      <div class="card-body">
+        <div class="code-block">
+<span class="km">/* globals.css */</span>
+<span class="kc">@import</span> <span class="ks">url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap')</span><span class="kd">;</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     03 — SPACING & RADIUS
+══════════════════════════════ -->
+<div class="section">
+  <div class="wrapper">
+    <div class="eyebrow">// 03 — spacing & radius</div>
+    <div class="section-title">Spacing Scale & Border Radius</div>
+    <div class="section-desc">Identical to dark mode — spacing is structural, not visual. No changes needed between modes.</div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head"><span class="card-head-title">Spacing Scale</span></div>
+        <div class="card-body">
+          <div class="sp-item"><div class="sp-bar" style="width:4px"></div><span class="sp-info"><span class="sp-token">space-1</span><span class="sp-px">4px</span><span class="sp-use">icon-to-label gap</span></span></div>
+          <div class="sp-item"><div class="sp-bar" style="width:8px"></div><span class="sp-info"><span class="sp-token">space-2</span><span class="sp-px">8px</span><span class="sp-use">tag internal padding</span></span></div>
+          <div class="sp-item"><div class="sp-bar" style="width:12px"></div><span class="sp-info"><span class="sp-token">space-3</span><span class="sp-px">12px</span><span class="sp-use">card inner padding-x</span></span></div>
+          <div class="sp-item"><div class="sp-bar" style="width:16px"></div><span class="sp-info"><span class="sp-token">space-4</span><span class="sp-px">16px</span><span class="sp-use">grid gaps</span></span></div>
+          <div class="sp-item"><div class="sp-bar" style="width:24px"></div><span class="sp-info"><span class="sp-token">space-6</span><span class="sp-px">24px</span><span class="sp-use">section horizontal padding</span></span></div>
+          <div class="sp-item"><div class="sp-bar" style="width:32px"></div><span class="sp-info"><span class="sp-token">space-8</span><span class="sp-px">32px</span><span class="sp-use">section inner padding</span></span></div>
+          <div class="sp-item"><div class="sp-bar" style="width:48px"></div><span class="sp-info"><span class="sp-token">space-12</span><span class="sp-px">48px</span><span class="sp-use">section vertical padding</span></span></div>
+          <div class="sp-item"><div class="sp-bar" style="width:64px"></div><span class="sp-info"><span class="sp-token">space-16</span><span class="sp-px">64px</span><span class="sp-use">large section vertical</span></span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-head-title">Border Radius</span></div>
+        <div class="card-body">
+          <div class="radius-list">
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius:2px"></div>
+              <span class="radius-lbl">rounded-sm<br/>2px<br/>Tags, badges</span>
+            </div>
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius:4px"></div>
+              <span class="radius-lbl">rounded<br/>4px<br/>Buttons</span>
+            </div>
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius:8px"></div>
+              <span class="radius-lbl">rounded-lg<br/>8px<br/>Inputs</span>
+            </div>
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius:12px"></div>
+              <span class="radius-lbl">rounded-xl<br/>12px<br/>Cards</span>
+            </div>
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius:24px"></div>
+              <span class="radius-lbl">pill<br/>full<br/>Dock</span>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding-top:14px;border-top:0.5px solid var(--border-dim)">
+            <div class="mono" style="font-size:10px;color:var(--text-muted);margin-bottom:5px">BORDER WIDTH</div>
+            <div class="mono" style="font-size:11px;color:var(--text-dim)">Always <span style="color:var(--sky)">0.5px</span> — never 1px. Thinner reads as more precise.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     04 — LIGHT VS DARK COMPARE
+══════════════════════════════ -->
+<div class="section">
+  <div class="wrapper">
+    <div class="eyebrow">// 04 — dark vs light compare</div>
+    <div class="section-title">What Changes Between Modes</div>
+    <div class="section-desc">Only colors change. Layout, typography, spacing, radius, and component structure are identical in both modes.</div>
+
+    <!-- Background -->
+    <div class="compare-row" style="margin-bottom:12px">
+      <div class="compare-dark">
+        <div class="compare-label" style="color:#52525B">DARK — background</div>
+        <div class="mono" style="font-size:12px;color:#FAFAFA">bg-void: <span style="color:#38BDF8">#09090B</span></div>
+        <div class="mono" style="font-size:12px;color:#71717A">bg-surface: <span style="color:#38BDF8">#111113</span></div>
+        <div class="mono" style="font-size:12px;color:#71717A">border: <span style="color:#38BDF8">#27272A</span></div>
+      </div>
+      <div class="compare-light">
+        <div class="compare-label" style="color:var(--text-muted)">LIGHT — background</div>
+        <div class="mono" style="font-size:12px;color:var(--text-primary)">bg-base: <span style="color:var(--sky)">#F8F8F7</span></div>
+        <div class="mono" style="font-size:12px;color:var(--text-dim)">bg-surface: <span style="color:var(--sky)">#FFFFFF</span></div>
+        <div class="mono" style="font-size:12px;color:var(--text-dim)">border: <span style="color:var(--sky)">#E0DFDD</span></div>
+      </div>
+    </div>
+
+    <!-- Accents -->
+    <div class="compare-row" style="margin-bottom:12px">
+      <div class="compare-dark">
+        <div class="compare-label" style="color:#52525B">DARK — accents</div>
+        <div class="mono" style="font-size:12px;color:#8B5CF6">violet: #8B5CF6 (violet-500)</div>
+        <div class="mono" style="font-size:12px;color:#22C55E">green: #22C55E (green-500)</div>
+        <div class="mono" style="font-size:12px;color:#F59E0B">amber: #F59E0B (amber-400)</div>
+        <div class="mono" style="font-size:12px;color:#38BDF8">sky: #38BDF8 (sky-400)</div>
+      </div>
+      <div class="compare-light">
+        <div class="compare-label" style="color:var(--text-muted)">LIGHT — accents (one stop darker)</div>
+        <div class="mono" style="font-size:12px;color:var(--violet)">violet: #6D28D9 (violet-700)</div>
+        <div class="mono" style="font-size:12px;color:var(--green)">green: #15803D (green-700)</div>
+        <div class="mono" style="font-size:12px;color:var(--amber)">amber: #B45309 (amber-700)</div>
+        <div class="mono" style="font-size:12px;color:var(--sky)">sky: #0369A1 (sky-700)</div>
+      </div>
+    </div>
+
+    <!-- Tags preview -->
+    <div class="compare-row">
+      <div class="compare-dark">
+        <div class="compare-label" style="color:#52525B">DARK — tags</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+          <span style="display:inline-flex;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:10px;border:0.5px solid #3B3063;background:#1A1628;color:#8B5CF6">Laravel</span>
+          <span style="display:inline-flex;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:10px;border:0.5px solid #1A3A4A;background:#0F1F2A;color:#38BDF8">Livewire</span>
+          <span style="display:inline-flex;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:10px;border:0.5px solid #1A3A2A;background:#0F1F18;color:#22C55E">MySQL</span>
+          <span style="display:inline-flex;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:10px;border:0.5px solid #3A2E10;background:#1E1A0A;color:#F59E0B">REST API</span>
+        </div>
+      </div>
+      <div class="compare-light">
+        <div class="compare-label" style="color:var(--text-muted)">LIGHT — tags</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+          <span class="tag t-violet">Laravel</span>
+          <span class="tag t-sky">Livewire</span>
+          <span class="tag t-green">MySQL</span>
+          <span class="tag t-amber">REST API</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     05 — ANIMATION
+══════════════════════════════ -->
+<div class="section">
+  <div class="wrapper">
+    <div class="eyebrow">// 05 — animation</div>
+    <div class="section-title">Animation Direction</div>
+    <div class="section-desc">Animation values are identical in both modes. Only one difference: the grid background is removed in light mode — a plain warm white base is cleaner.</div>
+
+    <div class="anim-grid" style="margin-bottom:16px">
+      <div class="anim-card">
+        <div class="anim-title">Scroll reveal</div>
+        <div class="anim-val">cubic-bezier(0.16, 1, 0.3, 1)</div>
+        <div class="anim-use">Duration: 400ms · opacity + translateY(16px→0)</div>
+      </div>
+      <div class="anim-card">
+        <div class="anim-title">Command palette open</div>
+        <div class="anim-val">scale(0.96) → scale(1) + opacity</div>
+        <div class="anim-use">Duration: 120ms · ease-out · closes instantly</div>
+      </div>
+      <div class="anim-card">
+        <div class="anim-title">Boot typewriter cursor</div>
+        <div class="anim-val">blink · step-end · 530ms</div>
+        <div class="anim-use">In light mode: cursor color is violet-700 (#6D28D9)</div>
+      </div>
+      <div class="anim-card">
+        <div class="anim-title">Status dot pulse</div>
+        <div class="anim-val">opacity 1 → 0.4 → 1</div>
+        <div class="anim-use">Duration: 2s · infinite · green-700 in light mode</div>
+      </div>
+      <div class="anim-card">
+        <div class="anim-title">Hover transitions</div>
+        <div class="anim-val">transition: all 150ms ease</div>
+        <div class="anim-use">bg shift: transparent → bg-hover (#EBEBEA)</div>
+      </div>
+      <div class="anim-card">
+        <div class="anim-title">Grid background</div>
+        <div class="anim-val" style="color:var(--amber)">REMOVED in light mode</div>
+        <div class="anim-use">Too noisy on white. Replace with a plain bg-base (#F8F8F7) base only.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     06 — TAILWIND CONFIG
+══════════════════════════════ -->
+<div class="section">
+  <div class="wrapper">
+    <div class="eyebrow">// 06 — tailwind.config</div>
+    <div class="section-title">Tailwind Configuration — Light Mode</div>
+    <div class="section-desc">Use CSS variables + Tailwind's dark: modifier so both modes share one config. The class="dark" on &lt;html&gt; switches the whole palette.</div>
+
+    <div class="code-block" style="margin-bottom:16px">
+<span class="km">// globals.css — CSS variable approach (recommended)</span>
+<span class="kc">:root</span> <span class="kd">{</span>
+  <span class="km">/* Light mode — default */</span>
+  <span class="kk">--bg-base</span><span class="kd">:</span>      <span class="ks">#F8F8F7</span><span class="kd">;</span>
+  <span class="kk">--bg-surface</span><span class="kd">:</span>   <span class="ks">#FFFFFF</span><span class="kd">;</span>
+  <span class="kk">--bg-elevated</span><span class="kd">:</span>  <span class="ks">#F2F2F0</span><span class="kd">;</span>
+  <span class="kk">--border</span><span class="kd">:</span>       <span class="ks">#E0DFDD</span><span class="kd">;</span>
+  <span class="kk">--text-primary</span><span class="kd">:</span> <span class="ks">#1A1A18</span><span class="kd">;</span>
+  <span class="kk">--text-dim</span><span class="kd">:</span>     <span class="ks">#6B6B67</span><span class="kd">;</span>
+  <span class="kk">--text-muted</span><span class="kd">:</span>   <span class="ks">#A8A8A4</span><span class="kd">;</span>
+  <span class="kk">--accent</span><span class="kd">:</span>       <span class="ks">#6D28D9</span><span class="kd">;</span>  <span class="km">/* violet-700 */</span>
+  <span class="kk">--online</span><span class="kd">:</span>       <span class="ks">#15803D</span><span class="kd">;</span>  <span class="km">/* green-700  */</span>
+  <span class="kk">--warn</span><span class="kd">:</span>         <span class="ks">#B45309</span><span class="kd">;</span>  <span class="km">/* amber-700  */</span>
+  <span class="kk">--link</span><span class="kd">:</span>         <span class="ks">#0369A1</span><span class="kd">;</span>  <span class="km">/* sky-700    */</span>
+<span class="kd">}</span>
+
+<span class="kc">.dark</span> <span class="kd">{</span>
+  <span class="km">/* Dark mode — activated by class="dark" on &lt;html&gt; */</span>
+  <span class="kk">--bg-base</span><span class="kd">:</span>      <span class="ks">#09090B</span><span class="kd">;</span>
+  <span class="kk">--bg-surface</span><span class="kd">:</span>   <span class="ks">#111113</span><span class="kd">;</span>
+  <span class="kk">--bg-elevated</span><span class="kd">:</span>  <span class="ks">#18181B</span><span class="kd">;</span>
+  <span class="kk">--border</span><span class="kd">:</span>       <span class="ks">#27272A</span><span class="kd">;</span>
+  <span class="kk">--text-primary</span><span class="kd">:</span> <span class="ks">#FAFAFA</span><span class="kd">;</span>
+  <span class="kk">--text-dim</span><span class="kd">:</span>     <span class="ks">#71717A</span><span class="kd">;</span>
+  <span class="kk">--text-muted</span><span class="kd">:</span>   <span class="ks">#3F3F46</span><span class="kd">;</span>
+  <span class="kk">--accent</span><span class="kd">:</span>       <span class="ks">#8B5CF6</span><span class="kd">;</span>  <span class="km">/* violet-500 */</span>
+  <span class="kk">--online</span><span class="kd">:</span>       <span class="ks">#22C55E</span><span class="kd">;</span>  <span class="km">/* green-500  */</span>
+  <span class="kk">--warn</span><span class="kd">:</span>         <span class="ks">#F59E0B</span><span class="kd">;</span>  <span class="km">/* amber-400  */</span>
+  <span class="kk">--link</span><span class="kd">:</span>         <span class="ks">#38BDF8</span><span class="kd">;</span>  <span class="km">/* sky-400    */</span>
+<span class="kd">}</span>
+    </div>
+
+    <div class="code-block">
+<span class="km">// tailwind.config.ts</span>
+<span class="kc">const</span> <span class="kk">config</span><span class="kd">: Config = {</span>
+  <span class="kk">darkMode</span><span class="kd">: </span><span class="ks">'class'</span><span class="kd">,</span>  <span class="km">// toggle with class="dark" on &lt;html&gt;</span>
+  <span class="kk">theme</span><span class="kd">: {</span>
+    <span class="kk">extend</span><span class="kd">: {</span>
+      <span class="kk">colors</span><span class="kd">: {</span>
+        <span class="km">/* Map CSS vars → Tailwind classes */</span>
+        <span class="ks">'base'</span><span class="kd">:    </span><span class="ks">'var(--bg-base)'</span><span class="kd">,</span>
+        <span class="ks">'surface'</span><span class="kd">: </span><span class="ks">'var(--bg-surface)'</span><span class="kd">,</span>
+        <span class="ks">'rim'</span><span class="kd">:     </span><span class="ks">'var(--border)'</span><span class="kd">,</span>
+        <span class="ks">'accent'</span><span class="kd">:  </span><span class="ks">'var(--accent)'</span><span class="kd">,</span>
+        <span class="ks">'online'</span><span class="kd">:  </span><span class="ks">'var(--online)'</span><span class="kd">,</span>
+        <span class="ks">'warn'</span><span class="kd">:    </span><span class="ks">'var(--warn)'</span><span class="kd">,</span>
+        <span class="ks">'link'</span><span class="kd">:    </span><span class="ks">'var(--link)'</span><span class="kd">,</span>
+      <span class="kd">},</span>
+      <span class="kk">fontFamily</span><span class="kd">: {</span>
+        <span class="ks">'sans'</span><span class="kd">: [</span><span class="ks">'Inter'</span><span class="kd">,</span> <span class="ks">'system-ui'</span><span class="kd">,</span> <span class="ks">'sans-serif'</span><span class="kd">],</span>
+        <span class="ks">'mono'</span><span class="kd">: [</span><span class="ks">'JetBrains Mono'</span><span class="kd">,</span> <span class="ks">'monospace'</span><span class="kd">],</span>
+      <span class="kd">},</span>
+    <span class="kd">},</span>
+  <span class="kd">},</span>
+<span class="kd">}</span>
+
+<span class="km">// Usage in your components:</span>
+<span class="km">// bg-base        → uses --bg-base  (light: #F8F8F7 / dark: #09090B)</span>
+<span class="km">// text-accent    → uses --accent   (light: violet-700 / dark: violet-500)</span>
+<span class="km">// border-rim     → uses --border   (light: #E0DFDD  / dark: #27272A)</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     07 — NAVIGATION PREVIEW
+══════════════════════════════ -->
+<div class="section">
+  <div class="wrapper">
+    <div class="eyebrow">// 07 — navigation preview</div>
+    <div class="section-title">Navigation Labels — Light Mode</div>
+    <div class="section-desc">Command palette and status bar labels. Active item uses violet-700 text on violet-100 background with violet-300 border.</div>
+
+    <div class="nav-preview">
+      <div class="nav-item nav-active">about.sys</div>
+      <div class="nav-item">projects.log</div>
+      <div class="nav-item">system.notes</div>
+      <div class="nav-item">contact.endpoint</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head"><span class="card-head-title">Tag styles — light mode</span></div>
+        <div class="card-body" style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="tag t-violet">Laravel</span>
+          <span class="tag t-sky">Livewire</span>
+          <span class="tag t-sky">Alpine.js</span>
+          <span class="tag t-green">MySQL</span>
+          <span class="tag t-amber">REST APIs</span>
+          <span class="tag t-dim">PHP</span>
+          <span class="tag t-violet">Next.js</span>
+          <span class="tag t-dim">Git</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-head-title">Status badges — light mode</span></div>
+        <div class="card-body" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <span style="display:inline-flex;align-items:center;gap:4px;background:var(--green-bg);border:0.5px solid var(--green-bdr);border-radius:4px;padding:3px 10px;font-family:var(--font-mono);font-size:10px;color:var(--green)">● DEPLOYED</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;background:var(--amber-bg);border:0.5px solid var(--amber-bdr);border-radius:4px;padding:3px 10px;font-family:var(--font-mono);font-size:10px;color:var(--amber)">● PRODUCTION</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;background:var(--sky-bg);border:0.5px solid var(--sky-bdr);border-radius:4px;padding:3px 10px;font-family:var(--font-mono);font-size:10px;color:var(--sky)">● ONLINE</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="wrapper">
+    <p class="footer-text">03-design-direction-light.html · KZW OS Light Mode Design System · v1.0.0</p>
+  </div>
+</div>
+
+</body>
+</html>

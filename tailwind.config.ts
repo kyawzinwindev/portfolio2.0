@@ -12,35 +12,41 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        void: "#09090B",
-        surface: "#111113",
-        elevated: "#18181B",
-        "bg-hover": "#1C1C1F",
+        void: "var(--bg-void)",
+        base: "var(--bg-base)",
+        surface: "var(--bg-surface)",
+        elevated: "var(--bg-elevated)",
+        "bg-hover": "var(--bg-hover)",
         border: {
-          DEFAULT: "#27272A",
-          dim: "#1E1E21",
+          DEFAULT: "var(--border)",
+          dim: "var(--border-dim)",
         },
         text: {
-          primary: "#FAFAFA",
-          dim: "#71717A",
-          muted: "#3F3F46",
-          subtle: "#52525B",
+          primary: "var(--text-primary)",
+          dim: "var(--text-dim)",
+          muted: "var(--text-muted)",
+          subtle: "var(--text-subtle)",
         },
         violet: {
-          DEFAULT: "#8B5CF6",
-          glow: "rgba(139, 92, 246, 0.10)",
+          DEFAULT: "var(--violet)",
+          bg: "var(--violet-bg)",
+          bdr: "var(--violet-bdr)",
+          glow: "var(--glow-violet)",
         },
         green: {
-          DEFAULT: "#22C55E",
+          DEFAULT: "var(--green)",
+          bg: "var(--green-bg)",
+          bdr: "var(--green-bdr)",
         },
         amber: {
-          DEFAULT: "#F59E0B",
+          DEFAULT: "var(--amber)",
+          bg: "var(--amber-bg)",
+          bdr: "var(--amber-bdr)",
         },
         sky: {
-          DEFAULT: "#38BDF8",
-        },
-        teal: {
-          DEFAULT: "#2DD4BF",
+          DEFAULT: "var(--sky)",
+          bg: "var(--sky-bg)",
+          bdr: "var(--sky-bdr)",
         },
       },
       fontFamily: {
@@ -48,9 +54,9 @@ const config: Config = {
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
       borderRadius: {
-        sm: "4px",
-        DEFAULT: "8px",
-        lg: "12px",
+        sm: "var(--radius-sm)",
+        DEFAULT: "var(--radius)",
+        lg: "var(--radius-lg)",
       },
     },
   },

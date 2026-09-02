@@ -5,7 +5,10 @@ import prisma from "./prisma";
 
 const JWT_SECRET_STRING =
   process.env.JWT_SECRET || "kzw_os_super_secret_jwt_key_92837492817498127391";
-const JWT_SECRET = new TextEncoder().encode(JWT_SECRET_STRING);
+
+export function getJwtSecretKey(): Uint8Array {
+  return new Uint8Array(new TextEncoder().encode(JWT_SECRET_STRING));
+}
 
 export const SESSION_COOKIE_NAME = "admin_session";
 const SESSION_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
@@ -41,11 +44,12 @@ export async function signSessionToken(
   payload: { userId: string; email: string },
   expiresIn = "7d"
 ): Promise<string> {
+  const secretKey = getJwtSecretKey();
   return await new SignJWT({ ...payload })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(expiresIn)
-    .sign(JWT_SECRET);
+    .sign(secretKey);
 }
 
 /**
@@ -55,7 +59,8 @@ export async function verifySessionToken(
   token: string
 ): Promise<SessionPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET, {
+    const secretKey = getJwtSecretKey();
+    const { payload } = await jwtVerify(token, secretKey, {
       algorithms: ["HS256"],
     });
     return payload as unknown as SessionPayload;
@@ -111,9 +116,17 @@ export async function setSessionCookie(token: string) {
 }
 
 /**
- * Clear the session cookie
+ * Clear the session cookie with explicit expiry
  */
 export async function clearSessionCookie() {
   const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE_NAME, "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+    expires: new Date(0),
+  });
   cookieStore.delete(SESSION_COOKIE_NAME);
 }

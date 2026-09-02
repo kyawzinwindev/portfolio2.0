@@ -173,19 +173,19 @@ export default function CommandPalette({
   return (
     <>
       {/* Sticky Quick Nav Bar */}
-      <div className="bg-[#111113] border-t border-b border-[#1E1E21] py-[10px]">
+      <div className="bg-[var(--bg-surface)] border-t border-b border-[var(--border-dim)] py-[10px] transition-colors duration-200">
         <div className="wrapper">
           <div className="flex flex-col sm:flex-row sm:items-center gap-[10px]">
             <div
               onClick={openPalette}
               className="flex-1 flex items-center gap-[10px] cursor-pointer group"
             >
-              <span className="font-mono text-[11px] text-[#8B5CF6] group-hover:text-[#A78BFA] transition-colors font-medium">
+              <span className="font-mono text-[11px] text-[var(--violet)] group-hover:opacity-80 transition-opacity font-medium">
                 ⌘K
               </span>
-              <div className="flex-1 bg-[#09090B] border border-[#27272A] group-hover:border-[#3F3F46] rounded-[8px] py-[7px] px-3 flex items-center gap-2 transition-all">
-                <span className="font-mono text-[13px] text-[#3F3F46]">/</span>
-                <span className="font-mono text-[11px] text-[#3F3F46] truncate group-hover:text-[#71717A] transition-colors">
+              <div className="flex-1 bg-[var(--bg-base)] border border-[var(--border)] group-hover:border-[var(--text-muted)] rounded-[8px] py-[7px] px-3 flex items-center gap-2 transition-all">
+                <span className="font-mono text-[13px] text-[var(--text-muted)]">/</span>
+                <span className="font-mono text-[11px] text-[var(--text-muted)] truncate group-hover:text-[var(--text-dim)] transition-colors">
                   type a command — about.sys · projects.log · system.notes · contact.endpoint · admin
                 </span>
               </div>
@@ -194,25 +194,25 @@ export default function CommandPalette({
             <nav className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0" aria-label="Quick navigation">
               <a
                 href="#about"
-                className="font-mono text-[11px] text-[#3F3F46] hover:text-[#FAFAFA] hover:bg-[#18181B] py-1 px-[10px] rounded-[4px] transition-colors whitespace-nowrap"
+                className="font-mono text-[11px] text-[var(--text-dim)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] py-1 px-[10px] rounded-[4px] transition-colors whitespace-nowrap"
               >
                 about.sys
               </a>
               <a
                 href="#projects"
-                className="font-mono text-[11px] text-[#3F3F46] hover:text-[#FAFAFA] hover:bg-[#18181B] py-1 px-[10px] rounded-[4px] transition-colors whitespace-nowrap"
+                className="font-mono text-[11px] text-[var(--text-dim)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] py-1 px-[10px] rounded-[4px] transition-colors whitespace-nowrap"
               >
                 projects.log
               </a>
               <a
                 href="#notes"
-                className="font-mono text-[11px] text-[#3F3F46] hover:text-[#FAFAFA] hover:bg-[#18181B] py-1 px-[10px] rounded-[4px] transition-colors whitespace-nowrap"
+                className="font-mono text-[11px] text-[var(--text-dim)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] py-1 px-[10px] rounded-[4px] transition-colors whitespace-nowrap"
               >
                 system.notes
               </a>
               <a
                 href="#contact"
-                className="font-mono text-[11px] text-[#3F3F46] hover:text-[#FAFAFA] hover:bg-[#18181B] py-1 px-[10px] rounded-[4px] transition-colors whitespace-nowrap"
+                className="font-mono text-[11px] text-[var(--text-dim)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] py-1 px-[10px] rounded-[4px] transition-colors whitespace-nowrap"
               >
                 contact.endpoint
               </a>
@@ -228,13 +228,13 @@ export default function CommandPalette({
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="w-full max-w-xl bg-[#111113] border border-[#27272A] rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150"
+            className="w-full max-w-xl bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Input Header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-[#1E1E21] bg-[#09090B]">
-              <span className="font-mono text-[#8B5CF6] text-xs font-semibold">⌘K</span>
-              <span className="font-mono text-[#3F3F46] text-sm">/</span>
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--border-dim)] bg-[var(--bg-elevated)]">
+              <span className="font-mono text-[var(--violet)] text-xs font-semibold">⌘K</span>
+              <span className="font-mono text-[var(--text-muted)] text-sm">/</span>
               <input
                 ref={inputRef}
                 type="text"
@@ -245,11 +245,11 @@ export default function CommandPalette({
                 }}
                 onKeyDown={handleKeyNavigation}
                 placeholder="Type a command or jump to system module..."
-                className="w-full bg-transparent border-none outline-none font-mono text-xs text-[#FAFAFA] placeholder:text-[#3F3F46]"
+                className="w-full bg-transparent border-none outline-none font-mono text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
               />
               <button
                 onClick={() => setIsOpen(false)}
-                className="kbd text-[10px] text-[#71717A] hover:text-[#FAFAFA] transition-colors"
+                className="kbd text-[10px] text-[var(--text-dim)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
               >
                 ESC
               </button>
@@ -258,7 +258,7 @@ export default function CommandPalette({
             {/* Command Results */}
             <div className="max-h-80 overflow-y-auto p-2">
               {filtered.length === 0 ? (
-                <div className="py-8 text-center font-mono text-xs text-[#71717A]">
+                <div className="py-8 text-center font-mono text-xs text-[var(--text-dim)]">
                   No matching system commands found.
                 </div>
               ) : (
@@ -272,38 +272,38 @@ export default function CommandPalette({
                         onMouseEnter={() => setSelectedIndex(index)}
                         className={`px-3 py-2.5 rounded-lg flex items-center justify-between cursor-pointer transition-colors ${
                           isSelected
-                            ? "bg-[#18181B] border border-[#3F3F46]"
-                            : "border border-transparent hover:bg-[#18181B]/50"
+                            ? "bg-[var(--bg-elevated)] border border-[var(--border)] font-medium"
+                            : "border border-transparent hover:bg-[var(--bg-hover)]"
                         }`}
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           <span
                             className={`font-mono text-xs ${
-                              isSelected ? "text-[#8B5CF6]" : "text-[#71717A]"
+                              isSelected ? "text-[var(--violet)]" : "text-[var(--text-dim)]"
                             }`}
                           >
                             $
                           </span>
                           <div className="min-w-0">
-                            <div className="font-mono text-xs font-medium text-[#FAFAFA] flex items-center gap-2">
+                            <div className="font-mono text-xs font-medium text-[var(--text-primary)] flex items-center gap-2">
                               <span>{item.label}</span>
                               {item.badge && (
-                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#09090B] text-[#F59E0B] border border-[#27272A] font-mono">
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-[var(--bg-base)] text-[var(--amber)] border border-[var(--border)] font-mono">
                                   {item.badge}
                                 </span>
                               )}
                             </div>
-                            <div className="font-mono text-[10px] text-[#71717A] truncate mt-0.5">
+                            <div className="font-mono text-[10px] text-[var(--text-dim)] truncate mt-0.5">
                               {item.description}
                             </div>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
-                          <span className="font-mono text-[9px] text-[#52525B] uppercase tracking-wider">
+                          <span className="font-mono text-[9px] text-[var(--text-muted)] uppercase tracking-wider">
                             {item.category}
                           </span>
                           {isSelected && (
-                            <span className="font-mono text-[10px] text-[#22C55E]">↵</span>
+                            <span className="font-mono text-[10px] text-[var(--green)]">↵</span>
                           )}
                         </div>
                       </div>
@@ -314,11 +314,11 @@ export default function CommandPalette({
             </div>
 
             {/* Footer Tips */}
-            <div className="px-4 py-2 border-t border-[#1E1E21] bg-[#09090B] flex items-center justify-between font-mono text-[10px] text-[#52525B]">
+            <div className="px-4 py-2 border-t border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between font-mono text-[10px] text-[var(--text-dim)]">
               <div className="flex items-center gap-2">
-                <span>Use <kbd className="text-[#A1A1AA]">↑</kbd> <kbd className="text-[#A1A1AA]">↓</kbd> to navigate</span>
+                <span>Use <kbd className="text-[var(--text-primary)]">↑</kbd> <kbd className="text-[var(--text-primary)]">↓</kbd> to navigate</span>
                 <span>·</span>
-                <span><kbd className="text-[#A1A1AA]">↵</kbd> to select</span>
+                <span><kbd className="text-[var(--text-primary)]">↵</kbd> to select</span>
               </div>
               <div>KZW OS Terminal</div>
             </div>

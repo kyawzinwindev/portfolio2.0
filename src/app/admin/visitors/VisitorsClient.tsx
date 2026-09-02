@@ -56,34 +56,34 @@ export default function VisitorsClient({
   const getDeviceBadge = (type: string) => {
     switch (type.toLowerCase()) {
       case "mobile":
-        return "bg-[#0F1F2A] border-[#1A3A4A] text-[#38BDF8]";
+        return "bg-[var(--sky)]/10 border-[var(--sky)]/30 text-[var(--sky)]";
       case "tablet":
-        return "bg-[#1E1A0A] border-[#3A2E10] text-[#F59E0B]";
+        return "bg-[var(--amber)]/10 border-[var(--amber)]/30 text-[var(--amber)]";
       default:
-        return "bg-[#1A1628] border-[#3B3063] text-[#8B5CF6]";
+        return "bg-[var(--violet)]/10 border-[var(--violet)]/30 text-[var(--violet)]";
     }
   };
 
   return (
     <div className="space-y-6">
       {/* ── HEADER ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#1E1E21]">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--border-dim)]">
         <div>
-          <div className="font-mono text-[10px] text-[#38BDF8] tracking-wider mb-1 uppercase">
+          <div className="font-mono text-[10px] text-[var(--sky)] tracking-wider mb-1 uppercase">
             // Module 03 · TRAFFIC_TELEMETRY
           </div>
-          <h1 className="font-sans text-2xl font-semibold text-[#FAFAFA] flex items-center gap-2">
+          <h1 className="font-sans text-2xl font-semibold text-[var(--text-primary)] flex items-center gap-2">
             <span>Traffic & Visitor Logs</span>
             <span className="boot-cursor">_</span>
           </h1>
-          <p className="font-mono text-xs text-[#71717A] mt-1">
+          <p className="font-mono text-xs text-[var(--text-dim)] mt-1">
             Real-time IP logs, parsed device types, operating systems, and requested routes.
           </p>
         </div>
 
-        <div className="font-mono text-xs text-[#71717A] bg-[#111113] border border-[#27272A] px-3.5 py-2 rounded-lg">
+        <div className="font-mono text-xs text-[var(--text-dim)] bg-[var(--bg-surface)] border border-[var(--border)] px-3.5 py-2 rounded-lg shadow-xs">
           Total Logs Recorded:{" "}
-          <span className="text-[#38BDF8] font-semibold">{total}</span>
+          <span className="text-[var(--sky)] font-semibold">{total}</span>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default function VisitorsClient({
         {deviceCounts.map((dc) => (
           <div
             key={dc.deviceType}
-            className="p-3 bg-[#111113] border border-[#27272A] rounded-xl font-mono text-xs flex items-center justify-between"
+            className="p-3 bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl font-mono text-xs flex items-center justify-between shadow-xs"
           >
             <div className="flex items-center gap-2">
               <span className="text-sm">
@@ -102,9 +102,9 @@ export default function VisitorsClient({
                   ? "📟"
                   : "💻"}
               </span>
-              <span className="text-[#FAFAFA]">{dc.deviceType}</span>
+              <span className="text-[var(--text-primary)]">{dc.deviceType}</span>
             </div>
-            <span className="text-[#38BDF8] font-medium">
+            <span className="text-[var(--sky)] font-medium">
               {dc._count.deviceType}
             </span>
           </div>
@@ -114,15 +114,15 @@ export default function VisitorsClient({
       {/* ── SEARCH BAR ── */}
       <form
         onSubmit={handleSearch}
-        className="flex items-center gap-2 bg-[#111113] border border-[#27272A] p-3 rounded-xl"
+        className="flex items-center gap-2 bg-[var(--bg-surface)] border border-[var(--border)] p-3 rounded-xl shadow-xs"
       >
-        <span className="font-mono text-xs text-[#8B5CF6] pl-2">$</span>
+        <span className="font-mono text-xs text-[var(--violet)] pl-2">$</span>
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Filter traffic by IP address, path (/), browser, or OS..."
-          className="flex-1 bg-transparent border-none outline-none font-mono text-xs text-[#FAFAFA] placeholder:text-[#3F3F46]"
+          className="flex-1 bg-transparent border-none outline-none font-mono text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
         />
         <button
           type="submit"
@@ -137,7 +137,7 @@ export default function VisitorsClient({
               setSearchTerm("");
               router.push("/admin/visitors");
             }}
-            className="font-mono text-xs text-[#71717A] hover:text-[#FAFAFA] px-2"
+            className="font-mono text-xs text-[var(--text-dim)] hover:text-[var(--text-primary)] px-2"
           >
             Clear
           </button>
@@ -145,21 +145,21 @@ export default function VisitorsClient({
       </form>
 
       {/* ── LOGS TABLE ── */}
-      <div className="bg-[#111113] border border-[#27272A] rounded-xl overflow-hidden shadow-xl">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden shadow-xl">
         {initialLogs.length === 0 ? (
           <div className="p-12 text-center">
             <div className="font-mono text-3xl mb-3">🛰️</div>
-            <div className="font-mono text-sm text-[#FAFAFA] font-medium">
+            <div className="font-mono text-sm text-[var(--text-primary)] font-medium">
               No traffic logs found
             </div>
-            <p className="font-mono text-xs text-[#71717A] mt-1 max-w-sm mx-auto">
+            <p className="font-mono text-xs text-[var(--text-dim)] mt-1 max-w-sm mx-auto">
               Visit the public portfolio or clear filters to populate real-time visitor records.
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left font-mono text-xs">
-              <thead className="bg-[#09090B] border-b border-[#1E1E21] text-[#71717A] text-[10px] uppercase tracking-wider">
+              <thead className="bg-[var(--bg-elevated)] border-b border-[var(--border-dim)] text-[var(--text-dim)] text-[10px] uppercase tracking-wider">
                 <tr>
                   <th className="px-4 py-3">IP Address</th>
                   <th className="px-4 py-3">Device Type</th>
@@ -169,21 +169,21 @@ export default function VisitorsClient({
                   <th className="px-4 py-3 text-right">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1E1E21]">
+              <tbody className="divide-y divide-[var(--border-dim)]">
                 {initialLogs.map((log) => (
                   <tr
                     key={log.id}
-                    className="hover:bg-[#18181B]/40 transition-colors"
+                    className="hover:bg-[var(--bg-hover)] transition-colors"
                   >
                     {/* IP */}
-                    <td className="px-4 py-3 font-medium text-[#FAFAFA]">
+                    <td className="px-4 py-3 font-medium text-[var(--text-primary)]">
                       {log.ipAddress}
                     </td>
 
                     {/* Device Badge */}
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span
-                        className={`text-[10px] px-2 py-0.5 rounded border ${getDeviceBadge(
+                        className={`text-[10px] px-2 py-0.5 rounded border font-mono ${getDeviceBadge(
                           log.deviceType
                         )}`}
                       >
@@ -192,20 +192,20 @@ export default function VisitorsClient({
                     </td>
 
                     {/* Browser */}
-                    <td className="px-4 py-3 text-[#A1A1AA]">{log.browser}</td>
+                    <td className="px-4 py-3 text-[var(--text-dim)]">{log.browser}</td>
 
                     {/* OS */}
-                    <td className="px-4 py-3 text-[#71717A]">{log.os}</td>
+                    <td className="px-4 py-3 text-[var(--text-muted)]">{log.os}</td>
 
                     {/* Path */}
                     <td className="px-4 py-3">
-                      <span className="text-[#38BDF8] bg-[#09090B] px-1.5 py-0.5 rounded border border-[#1E1E21]">
+                      <span className="text-[var(--sky)] bg-[var(--bg-elevated)] px-1.5 py-0.5 rounded border border-[var(--border)]">
                         {log.visitedPath}
                       </span>
                     </td>
 
                     {/* Timestamp */}
-                    <td className="px-4 py-3 text-right text-[#71717A] text-[11px] whitespace-nowrap">
+                    <td className="px-4 py-3 text-right text-[var(--text-dim)] text-[11px] whitespace-nowrap">
                       {new Date(log.createdAt).toLocaleString()}
                     </td>
                   </tr>
@@ -217,24 +217,24 @@ export default function VisitorsClient({
 
         {/* Pagination Footer */}
         {totalPages > 1 && (
-          <div className="px-4 py-3 border-t border-[#1E1E21] bg-[#09090B] flex items-center justify-between font-mono text-xs">
-            <span className="text-[#71717A]">
-              Page <span className="text-[#FAFAFA]">{page}</span> of{" "}
-              <span className="text-[#FAFAFA]">{totalPages}</span>
+          <div className="px-4 py-3 border-t border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between font-mono text-xs">
+            <span className="text-[var(--text-dim)]">
+              Page <span className="text-[var(--text-primary)] font-medium">{page}</span> of{" "}
+              <span className="text-[var(--text-primary)] font-medium">{totalPages}</span>
             </span>
 
             <div className="flex items-center gap-2">
               <button
                 disabled={page <= 1}
                 onClick={() => handlePageChange(page - 1)}
-                className="px-3 py-1 rounded bg-[#18181B] disabled:opacity-30 hover:bg-[#27272A] border border-[#27272A] text-[#FAFAFA] transition-colors cursor-pointer"
+                className="px-3 py-1 rounded bg-[var(--bg-surface)] disabled:opacity-30 hover:bg-[var(--bg-hover)] border border-[var(--border)] text-[var(--text-primary)] transition-colors cursor-pointer"
               >
                 ← Prev
               </button>
               <button
                 disabled={page >= totalPages}
                 onClick={() => handlePageChange(page + 1)}
-                className="px-3 py-1 rounded bg-[#18181B] disabled:opacity-30 hover:bg-[#27272A] border border-[#27272A] text-[#FAFAFA] transition-colors cursor-pointer"
+                className="px-3 py-1 rounded bg-[var(--bg-surface)] disabled:opacity-30 hover:bg-[var(--bg-hover)] border border-[var(--border)] text-[var(--text-primary)] transition-colors cursor-pointer"
               >
                 Next →
               </button>

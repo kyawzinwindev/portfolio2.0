@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("kyawzinw469@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,38 +52,38 @@ export default function AdminLoginPage() {
     <div className="min-h-[calc(100vh-140px)] flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-md">
         {/* Terminal OS Frame */}
-        <div className="bg-[#111113] border border-[#27272A] rounded-xl overflow-hidden shadow-2xl shadow-black/80">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden shadow-2xl shadow-black/20">
           {/* Terminal Titlebar */}
-          <div className="px-4 py-3 border-b border-[#1E1E21] bg-[#09090B] flex items-center justify-between">
+          <div className="px-4 py-3 border-b border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
               <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
               <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-              <span className="font-mono text-[11px] text-[#71717A] ml-2">
+              <span className="font-mono text-[11px] text-[var(--text-dim)] ml-2">
                 auth.session // login.sh
               </span>
             </div>
-            <span className="font-mono text-[10px] text-[#8B5CF6]">v1.0.0</span>
+            <ThemeToggle showLabel={false} />
           </div>
 
           {/* Terminal Body */}
           <div className="p-6">
             <div className="mb-6">
-              <div className="font-mono text-[10px] text-[#3F3F46] mb-1">
+              <div className="font-mono text-[10px] text-[var(--text-muted)] mb-1">
                 {"// SECURE ACCESS GATEWAY"}
               </div>
-              <h1 className="font-mono text-xl font-medium text-[#FAFAFA] flex items-center gap-2">
+              <h1 className="font-mono text-xl font-medium text-[var(--text-primary)] flex items-center gap-2">
                 <span>System Root Login</span>
                 <span className="boot-cursor">_</span>
               </h1>
-              <p className="font-mono text-xs text-[#71717A] mt-1">
+              <p className="font-mono text-xs text-[var(--text-dim)] mt-1">
                 Enter your administrative credentials to initialize control plane.
               </p>
             </div>
 
             {/* Error Message Box */}
             {errorMessage && (
-              <div className="mb-5 p-3 rounded-lg bg-[#7F1D1D]/20 border border-[#DC2626]/40 text-[#EF4444] font-mono text-xs flex items-start gap-2">
+              <div className="mb-5 p-3 rounded-lg bg-red-500/10 border border-red-500/40 text-red-500 font-mono text-xs flex items-start gap-2">
                 <span className="text-sm">⚠</span>
                 <span>{errorMessage}</span>
               </div>
@@ -91,8 +92,8 @@ export default function AdminLoginPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email field */}
               <div>
-                <label className="block font-mono text-xs text-[#FAFAFA] mb-1.5">
-                  <span className="text-[#8B5CF6]">$</span> admin.email
+                <label className="block font-mono text-xs text-[var(--text-primary)] mb-1.5">
+                  <span className="text-[var(--violet)]">$</span> admin.email
                 </label>
                 <div className="relative">
                   <input
@@ -100,8 +101,8 @@ export default function AdminLoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    placeholder="kyawzinw469@gmail.com"
-                    className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2.5 font-mono text-xs text-[#FAFAFA] outline-none transition-colors"
+                    placeholder="example@gmail.com"
+                    className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2.5 font-mono text-xs text-[var(--text-primary)] outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -109,13 +110,13 @@ export default function AdminLoginPage() {
               {/* Password field */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="font-mono text-xs text-[#FAFAFA]">
-                    <span className="text-[#8B5CF6]">$</span> admin.password
+                  <label className="font-mono text-xs text-[var(--text-primary)]">
+                    <span className="text-[var(--violet)]">$</span> admin.password
                   </label>
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="font-mono text-[10px] text-[#71717A] hover:text-[#FAFAFA] transition-colors"
+                    className="font-mono text-[10px] text-[var(--text-dim)] hover:text-[var(--text-primary)] transition-colors"
                   >
                     {showPassword ? "hide" : "show"}
                   </button>
@@ -127,7 +128,7 @@ export default function AdminLoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="••••••••••••"
-                    className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2.5 font-mono text-xs text-[#FAFAFA] outline-none transition-colors"
+                    className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2.5 font-mono text-xs text-[var(--text-primary)] outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -149,22 +150,11 @@ export default function AdminLoginPage() {
               </button>
             </form>
 
-            {/* Quick credentials hint note */}
-            <div className="mt-6 p-3 bg-[#18181B] border border-[#27272A] rounded-lg">
-              <div className="font-mono text-[10px] text-[#71717A] mb-1 font-medium">
-                Default Seeded Credentials:
-              </div>
-              <div className="font-mono text-[11px] text-[#F59E0B] space-y-0.5">
-                <div>Email: <span className="text-[#FAFAFA]">kyawzinw469@gmail.com</span></div>
-                <div>Password: <span className="text-[#FAFAFA]">k29z8w2002</span></div>
-              </div>
-            </div>
-
             {/* Back link */}
-            <div className="mt-4 text-center">
+            <div className="mt-6 text-center">
               <Link
                 href="/"
-                className="font-mono text-[11px] text-[#71717A] hover:text-[#FAFAFA] transition-colors"
+                className="font-mono text-[11px] text-[var(--text-dim)] hover:text-[var(--text-primary)] transition-colors"
               >
                 ← Return to Public Portfolio
               </Link>

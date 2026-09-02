@@ -18,63 +18,63 @@ export default function HeroBoot({ onOpenPalette }: HeroBootProps) {
   };
 
   return (
-    <section className="relative min-h-[calc(100vh-42px)] flex flex-col justify-center py-20 grid-bg border-b border-[#1E1E21]">
+    <section className="relative min-h-[calc(100vh-42px)] flex flex-col justify-center py-20 grid-bg border-b border-[var(--border-dim)] transition-colors duration-200">
       <div className="wrapper relative z-10">
         {/* System eyebrow */}
-        <div className="font-mono text-[11px] text-[#3F3F46] mb-5 tracking-wide">
+        <div className="font-mono text-[11px] text-[var(--amber)] mb-5 tracking-wide">
           {"// system init · 2025 · v1.0.0"}
         </div>
 
         {/* Display title */}
-        <h1 className="font-sans text-4xl sm:text-[42px] font-medium tracking-[-0.03em] text-[#FAFAFA] leading-[1.1] mb-[6px]">
-          KZW <span className="boot-cursor">_</span>
+        <h1 className="font-sans text-4xl sm:text-[42px] font-medium tracking-[-0.03em] text-[var(--text-primary)] leading-[1.1] mb-[6px]">
+          KYAW ZIN WIN <span className="boot-cursor">_</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="font-mono text-[13px] text-[#71717A] mb-8">
-          Backend engineer · System thinker · Myanmar
+        <p className="font-mono text-[13px] text-[var(--text-dim)] mb-8">
+          Full Stack engineer · System thinker · Myanmar
         </p>
 
         {/* Terminal block */}
-        <div className="bg-[#111113] border border-[#27272A] rounded-xl p-5 max-w-[500px] mb-8 shadow-xl shadow-black/40">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-5 max-w-[500px] mb-8 shadow-xl shadow-black/10">
           <div className="font-mono text-xs leading-[2.2] flex items-center gap-2 flex-wrap">
-            <span className="text-[#3F3F46] select-none">$</span>
-            <span className="text-[#22C55E]">init</span>
-            <span className="text-[#71717A]">
+            <span className="text-[var(--text-muted)] select-none">$</span>
+            <span className="text-[var(--green)]">init</span>
+            <span className="text-[var(--text-dim)]">
               --role &quot;backend engineer&quot; --mode &quot;system thinker&quot;
             </span>
           </div>
 
           <div className="font-mono text-xs leading-[2.2] flex items-center gap-2 flex-wrap">
-            <span className="text-[#3F3F46] select-none">$</span>
-            <span className="text-[#22C55E]">loading modules</span>
-            <span className="inline-block text-[#F59E0B] tracking-[-2px] select-none">
+            <span className="text-[var(--text-muted)] select-none">$</span>
+            <span className="text-[var(--green)]">loading modules</span>
+            <span className="inline-block text-[var(--amber)] tracking-[-2px] select-none">
               ████████████
             </span>
-            <span className="text-[#71717A]">100%</span>
+            <span className="text-[var(--text-dim)]">100%</span>
           </div>
 
           <div className="font-mono text-xs leading-[2.2] flex items-center gap-2 flex-wrap">
-            <span className="text-[#3F3F46] select-none">$</span>
-            <span className="text-[#38BDF8]">ready</span>
-            <span className="text-[#71717A]">· press</span>
+            <span className="text-[var(--text-muted)] select-none">$</span>
+            <span className="text-[var(--sky)]">ready</span>
+            <span className="text-[var(--text-dim)]">· press</span>
             <button
               onClick={triggerPalette}
-              className="kbd cursor-pointer hover:border-[#8B5CF6] transition-colors"
+              className="kbd cursor-pointer hover:border-[var(--violet)] hover:text-[var(--violet)] transition-colors"
               title="Click to open command palette"
             >
               ⌘K
             </button>
-            <span className="text-[#71717A]">to navigate or scroll ↓</span>
+            <span className="text-[var(--text-dim)]">to navigate or scroll ↓</span>
           </div>
         </div>
 
         {/* Command hint button */}
         <div
           onClick={triggerPalette}
-          className="inline-flex items-center gap-2 bg-[#111113] border border-[#27272A] hover:border-[#3F3F46] hover:bg-[#18181B] rounded-lg py-[7px] px-[14px] font-mono text-xs text-[#71717A] hover:text-[#FAFAFA] cursor-pointer transition-all duration-150"
+          className="inline-flex items-center gap-2 bg-[var(--bg-surface)] border border-[var(--border)] hover:border-[var(--text-muted)] hover:bg-[var(--bg-hover)] rounded-lg py-[7px] px-[14px] font-mono text-xs text-[var(--text-dim)] hover:text-[var(--text-primary)] cursor-pointer transition-all duration-150 shadow-xs"
         >
-          <span className="kbd text-[11px] text-[#A1A1AA]">⌘K</span>
+          <span className="kbd text-[11px] text-[var(--text-dim)]">⌘K</span>
           <span>open command palette</span>
         </div>
       </div>

@@ -63,7 +63,7 @@ const projects: ProjectItem[] = [
 
 export default function ProjectsLog() {
   return (
-    <section id="projects" className="py-16 scroll-mt-12">
+    <section id="projects" className="py-16 scroll-mt-12 transition-colors duration-200">
       <div className="wrapper">
         {/* Section label */}
         <div className="sec-label">{"// 03 — projects.log"}</div>
@@ -73,20 +73,20 @@ export default function ProjectsLog() {
           {projects.map((project) => (
             <div
               key={project.name}
-              className="bg-[#111113] border border-[#27272A] hover:border-[#3F3F46] rounded-xl overflow-hidden transition-all duration-200 flex flex-col group"
+              className="bg-[var(--bg-surface)] border border-[var(--border)] hover:border-[var(--text-muted)] rounded-xl overflow-hidden transition-all duration-200 flex flex-col group shadow-xs"
             >
               {/* Project Card Header */}
-              <div className="px-[14px] py-[10px] border-b border-[#1E1E21] flex items-center justify-between">
-                <span className="font-mono text-[13px] font-medium text-[#FAFAFA]">
+              <div className="px-[14px] py-[10px] border-b border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between">
+                <span className="font-mono text-[13px] font-medium text-[var(--text-primary)]">
                   {project.name}
                 </span>
 
                 {project.badge.type === "deployed" ? (
-                  <span className="inline-flex items-center gap-1 bg-[#052010] border border-[#14532D] rounded-[4px] px-2 py-0.5 font-mono text-[9px] text-[#22C55E]">
+                  <span className="inline-flex items-center gap-1 bg-[var(--green-bg)] border border-[var(--green-bdr)] rounded-[4px] px-2 py-0.5 font-mono text-[9px] text-[var(--green)]">
                     <span className="text-[7px]">●</span> {project.badge.label}
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 bg-[#1C1006] border border-[#78350F] rounded-[4px] px-2 py-0.5 font-mono text-[9px] text-[#F59E0B]">
+                  <span className="inline-flex items-center gap-1 bg-[var(--amber-bg)] border border-[var(--amber-bdr)] rounded-[4px] px-2 py-0.5 font-mono text-[9px] text-[var(--amber)]">
                     <span className="text-[7px]">●</span> {project.badge.label}
                   </span>
                 )}
@@ -94,7 +94,7 @@ export default function ProjectsLog() {
 
               {/* Project Card Body */}
               <div className="p-[14px] flex-1 flex flex-col">
-                <div className="font-mono text-[11px] text-[#71717A] mb-[10px]">
+                <div className="font-mono text-[11px] text-[var(--text-dim)] mb-[10px]">
                   {project.description}
                 </div>
 
@@ -102,16 +102,16 @@ export default function ProjectsLog() {
                   {project.architecturePoints.map((point) => (
                     <li
                       key={point}
-                      className="font-mono text-[10px] text-[#52525B] leading-[2.0] flex items-center gap-[6px]"
+                      className="font-mono text-[10px] text-[var(--text-dim)] leading-[2.0] flex items-center gap-[6px]"
                     >
-                      <span className="text-[#38BDF8] select-none">→</span>
+                      <span className="text-[var(--sky)] select-none">→</span>
                       <span>{point}</span>
                     </li>
                   ))}
                 </ul>
 
                 {/* Tech Stack */}
-                <div className="pt-[10px] border-t border-[#1E1E21] font-mono text-[10px] text-[#8B5CF6]">
+                <div className="pt-[10px] border-t border-[var(--border-dim)] font-mono text-[10px] text-[var(--violet)]">
                   {project.stack}
                 </div>
               </div>
@@ -120,23 +120,23 @@ export default function ProjectsLog() {
         </div>
 
         {/* Request Flow Strip */}
-        <div className="bg-[#0D0D10] border border-[#1E1E21] rounded-lg p-[10px_14px] flex items-center gap-[6px] flex-wrap">
-          <span className="font-mono text-[10px] text-[#3F3F46] mr-1">
+        <div className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-[10px_14px] flex items-center gap-[6px] flex-wrap shadow-xs">
+          <span className="font-mono text-[10px] text-[var(--text-muted)] mr-1">
             request flow
           </span>
-          <span className="font-mono text-[10px] text-[#3F3F46]">·</span>
+          <span className="font-mono text-[10px] text-[var(--text-muted)]">·</span>
           <span className="tag tag-dim text-[9px]">HTTP</span>
-          <span className="font-mono text-[10px] text-[#3F3F46]">→</span>
+          <span className="font-mono text-[10px] text-[var(--text-muted)]">→</span>
           <span className="tag tag-violet text-[9px]">Auth middleware</span>
-          <span className="font-mono text-[10px] text-[#3F3F46]">→</span>
+          <span className="font-mono text-[10px] text-[var(--text-muted)]">→</span>
           <span className="tag tag-sky text-[9px]">Controller</span>
-          <span className="font-mono text-[10px] text-[#3F3F46]">→</span>
+          <span className="font-mono text-[10px] text-[var(--text-muted)]">→</span>
           <span className="tag tag-sky text-[9px]">Service</span>
-          <span className="font-mono text-[10px] text-[#3F3F46]">→</span>
+          <span className="font-mono text-[10px] text-[var(--text-muted)]">→</span>
           <span className="tag tag-green text-[9px]">Model</span>
-          <span className="font-mono text-[10px] text-[#3F3F46]">→</span>
+          <span className="font-mono text-[10px] text-[var(--text-muted)]">→</span>
           <span className="tag tag-green text-[9px]">Database</span>
-          <span className="font-mono text-[10px] text-[#3F3F46]">→</span>
+          <span className="font-mono text-[10px] text-[var(--text-muted)]">→</span>
           <span className="tag tag-amber text-[9px]">200 OK</span>
         </div>
       </div>

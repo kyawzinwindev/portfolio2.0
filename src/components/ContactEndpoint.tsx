@@ -79,7 +79,7 @@ export default function ContactEndpoint({
   };
 
   return (
-    <section id="contact" className="py-16 scroll-mt-12">
+    <section id="contact" className="py-16 scroll-mt-12 transition-colors duration-200">
       <div className="wrapper">
         {/* Section label */}
         <div className="sec-label">{"// 05 — contact.endpoint"}</div>
@@ -88,12 +88,12 @@ export default function ContactEndpoint({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Request Panel */}
           <div>
-            <div className="font-mono text-[10px] text-[#F59E0B] tracking-[0.08em] mb-2 font-medium">
+            <div className="font-mono text-[10px] text-[var(--amber)] tracking-[0.08em] mb-2 font-medium">
               REQUEST
             </div>
-            <div className="bg-[#111113] border border-[#27272A] rounded-xl overflow-hidden shadow-lg">
-              <div className="px-[14px] py-2 border-b border-[#1E1E21] bg-[#09090B]">
-                <span className="font-mono text-[10px] text-[#71717A]">
+            <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden shadow-lg">
+              <div className="px-[14px] py-2 border-b border-[var(--border-dim)] bg-[var(--bg-elevated)]">
+                <span className="font-mono text-[10px] text-[var(--text-dim)]">
                   POST /api/contact HTTP/1.1
                 </span>
               </div>
@@ -101,26 +101,26 @@ export default function ContactEndpoint({
               <form onSubmit={handleSubmit} className="p-[14px]">
                 <div className="font-mono text-[11px] leading-[2.2]">
                   <div>
-                    <span className="text-[#8B5CF6]">POST</span>{" "}
-                    <span className="text-[#38BDF8]">/api/contact</span>{" "}
-                    <span className="text-[#71717A]">HTTP/1.1</span>
+                    <span className="text-[var(--violet)]">POST</span>{" "}
+                    <span className="text-[var(--sky)]">/api/contact</span>{" "}
+                    <span className="text-[var(--text-dim)]">HTTP/1.1</span>
                   </div>
                   <div>
-                    <span className="text-[#71717A]">Host:</span>{" "}
-                    <span className="text-[#FAFAFA]">kyawzinwin.dev</span>
+                    <span className="text-[var(--text-dim)]">Host:</span>{" "}
+                    <span className="text-[var(--text-primary)]">kyawzinwin.dev</span>
                   </div>
                   <div>
-                    <span className="text-[#71717A]">Content-Type:</span>{" "}
-                    <span className="text-[#FAFAFA]">application/json</span>
+                    <span className="text-[var(--text-dim)]">Content-Type:</span>{" "}
+                    <span className="text-[var(--text-primary)]">application/json</span>
                   </div>
 
-                  <div className="mt-1.5 text-[#3F3F46]">{"{"}</div>
+                  <div className="mt-1.5 text-[var(--text-muted)]">{"{"}</div>
 
                   {/* Name field */}
                   <div className="pl-[14px] flex items-center">
-                    <span className="text-[#F59E0B]">&quot;name&quot;</span>
-                    <span className="text-[#71717A] mr-1">:</span>
-                    <span className="text-[#22C55E]">&quot;</span>
+                    <span className="text-[var(--amber)]">&quot;name&quot;</span>
+                    <span className="text-[var(--text-dim)] mr-1">:</span>
+                    <span className="text-[var(--green)]">&quot;</span>
                     <input
                       type="text"
                       value={formData.name}
@@ -129,17 +129,17 @@ export default function ContactEndpoint({
                       }
                       placeholder="Your Name"
                       required
-                      className="bg-transparent border-none outline-none font-mono text-[11px] text-[#22C55E] placeholder:text-[#3F3F46] w-full px-0.5 focus:bg-[#18181B]/40 rounded"
+                      className="bg-transparent border-none outline-none font-mono text-[11px] text-[var(--green)] placeholder:text-[var(--text-muted)] w-full px-0.5 focus:bg-[var(--bg-elevated)] rounded"
                     />
-                    <span className="text-[#22C55E]">&quot;</span>
-                    <span className="text-[#3F3F46]">,</span>
+                    <span className="text-[var(--green)]">&quot;</span>
+                    <span className="text-[var(--text-muted)]">,</span>
                   </div>
 
                   {/* Email field */}
                   <div className="pl-[14px] flex items-center">
-                    <span className="text-[#F59E0B]">&quot;email&quot;</span>
-                    <span className="text-[#71717A] mr-1">:</span>
-                    <span className="text-[#22C55E]">&quot;</span>
+                    <span className="text-[var(--amber)]">&quot;email&quot;</span>
+                    <span className="text-[var(--text-dim)] mr-1">:</span>
+                    <span className="text-[var(--green)]">&quot;</span>
                     <input
                       type="email"
                       value={formData.email}
@@ -148,17 +148,17 @@ export default function ContactEndpoint({
                       }
                       placeholder="your.email@domain.com"
                       required
-                      className="bg-transparent border-none outline-none font-mono text-[11px] text-[#22C55E] placeholder:text-[#3F3F46] w-full px-0.5 focus:bg-[#18181B]/40 rounded"
+                      className="bg-transparent border-none outline-none font-mono text-[11px] text-[var(--green)] placeholder:text-[var(--text-muted)] w-full px-0.5 focus:bg-[var(--bg-elevated)] rounded"
                     />
-                    <span className="text-[#22C55E]">&quot;</span>
-                    <span className="text-[#3F3F46]">,</span>
+                    <span className="text-[var(--green)]">&quot;</span>
+                    <span className="text-[var(--text-muted)]">,</span>
                   </div>
 
                   {/* Message field */}
                   <div className="pl-[14px] flex items-center">
-                    <span className="text-[#F59E0B]">&quot;message&quot;</span>
-                    <span className="text-[#71717A] mr-1">:</span>
-                    <span className="text-[#22C55E]">&quot;</span>
+                    <span className="text-[var(--amber)]">&quot;message&quot;</span>
+                    <span className="text-[var(--text-dim)] mr-1">:</span>
+                    <span className="text-[var(--green)]">&quot;</span>
                     <input
                       type="text"
                       value={formData.message}
@@ -167,12 +167,12 @@ export default function ContactEndpoint({
                       }
                       placeholder="Let's build something scalable..."
                       required
-                      className="bg-transparent border-none outline-none font-mono text-[11px] text-[#22C55E] placeholder:text-[#3F3F46] w-full px-0.5 focus:bg-[#18181B]/40 rounded"
+                      className="bg-transparent border-none outline-none font-mono text-[11px] text-[var(--green)] placeholder:text-[var(--text-muted)] w-full px-0.5 focus:bg-[var(--bg-elevated)] rounded"
                     />
-                    <span className="text-[#22C55E]">&quot;</span>
+                    <span className="text-[var(--green)]">&quot;</span>
                   </div>
 
-                  <div className="text-[#3F3F46]">{"}"}</div>
+                  <div className="text-[var(--text-muted)]">{"}"}</div>
                 </div>
 
                 <button
@@ -195,12 +195,12 @@ export default function ContactEndpoint({
 
           {/* Response Panel */}
           <div>
-            <div className="font-mono text-[10px] text-[#22C55E] tracking-[0.08em] mb-2 font-medium">
+            <div className="font-mono text-[10px] text-[var(--green)] tracking-[0.08em] mb-2 font-medium">
               RESPONSE
             </div>
-            <div className="bg-[#0A100A] border border-[#166534] rounded-xl overflow-hidden shadow-lg">
-              <div className="px-[14px] py-2 border-b border-[#14532D] bg-[#071307]">
-                <span className="font-mono text-[10px] text-[#22C55E]">
+            <div className="bg-[var(--green-bg)]/30 border border-[var(--green-bdr)] rounded-xl overflow-hidden shadow-lg">
+              <div className="px-[14px] py-2 border-b border-[var(--green-bdr)]/70 bg-[var(--green-bg)]/50">
+                <span className="font-mono text-[10px] text-[var(--green)]">
                   HTTP/1.1 {responseState.statusCode} OK
                 </span>
               </div>
@@ -208,48 +208,48 @@ export default function ContactEndpoint({
               <div className="p-[14px]">
                 <div className="font-mono text-[11px] leading-[2.2]">
                   <div>
-                    <span className="text-[#22C55E]">
+                    <span className="text-[var(--green)]">
                       HTTP/1.1 {responseState.statusCode} OK
                     </span>
                   </div>
                   <div>
-                    <span className="text-[#71717A]">Content-Type:</span>{" "}
-                    <span className="text-[#FAFAFA]">application/json</span>
+                    <span className="text-[var(--text-dim)]">Content-Type:</span>{" "}
+                    <span className="text-[var(--text-primary)]">application/json</span>
                   </div>
 
-                  <div className="mt-1.5 text-[#3F3F46]">{"{"}</div>
+                  <div className="mt-1.5 text-[var(--text-muted)]">{"{"}</div>
 
                   <div className="pl-[14px]">
-                    <span className="text-[#F59E0B]">&quot;status&quot;</span>
-                    <span className="text-[#71717A]">: </span>
-                    <span className="text-[#22C55E]">
+                    <span className="text-[var(--amber)]">&quot;status&quot;</span>
+                    <span className="text-[var(--text-dim)]">: </span>
+                    <span className="text-[var(--green)]">
                       &quot;{responseState.status}&quot;
                     </span>
-                    <span className="text-[#3F3F46]">,</span>
+                    <span className="text-[var(--text-muted)]">,</span>
                   </div>
 
                   <div className="pl-[14px]">
-                    <span className="text-[#F59E0B]">&quot;reply_within&quot;</span>
-                    <span className="text-[#71717A]">: </span>
-                    <span className="text-[#22C55E]">
+                    <span className="text-[var(--amber)]">&quot;reply_within&quot;</span>
+                    <span className="text-[var(--text-dim)]">: </span>
+                    <span className="text-[var(--green)]">
                       &quot;{responseState.replyWithin}&quot;
                     </span>
-                    <span className="text-[#3F3F46]">,</span>
+                    <span className="text-[var(--text-muted)]">,</span>
                   </div>
 
                   <div className="pl-[14px]">
-                    <span className="text-[#F59E0B]">&quot;timestamp&quot;</span>
-                    <span className="text-[#71717A]">: </span>
-                    <span className="text-[#38BDF8]">
+                    <span className="text-[var(--amber)]">&quot;timestamp&quot;</span>
+                    <span className="text-[var(--text-dim)]">: </span>
+                    <span className="text-[var(--sky)]">
                       &quot;{responseState.timestamp}&quot;
                     </span>
                     {responseState.sender && (
                       <>
-                        <span className="text-[#3F3F46]">,</span>
+                        <span className="text-[var(--text-muted)]">,</span>
                         <div className="mt-0.5">
-                          <span className="text-[#F59E0B]">&quot;sender&quot;</span>
-                          <span className="text-[#71717A]">: </span>
-                          <span className="text-[#22C55E]">
+                          <span className="text-[var(--amber)]">&quot;sender&quot;</span>
+                          <span className="text-[var(--text-dim)]">: </span>
+                          <span className="text-[var(--green)]">
                             &quot;{responseState.sender}&quot;
                           </span>
                         </div>
@@ -257,17 +257,17 @@ export default function ContactEndpoint({
                     )}
                   </div>
 
-                  <div className="text-[#3F3F46]">{"}"}</div>
+                  <div className="text-[var(--text-muted)]">{"}"}</div>
                 </div>
               </div>
             </div>
 
             {/* Also Reachable Via Bar */}
-            <div className="mt-[10px] p-[10px_12px] bg-[#111113] border border-[#27272A] rounded-lg">
-              <div className="font-mono text-[10px] text-[#71717A] mb-1">
+            <div className="mt-[10px] p-[10px_12px] bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg shadow-xs">
+              <div className="font-mono text-[10px] text-[var(--text-dim)] mb-1">
                 Also reachable via
               </div>
-              <div className="font-mono text-[11px] text-[#38BDF8] flex items-center gap-2 flex-wrap">
+              <div className="font-mono text-[11px] text-[var(--sky)] flex items-center gap-2 flex-wrap">
                 <a
                   href={githubUrl}
                   target="_blank"
@@ -276,7 +276,7 @@ export default function ContactEndpoint({
                 >
                   {githubUrl.replace(/^https?:\/\//, "")}
                 </a>
-                <span className="text-[#3F3F46]">·</span>
+                <span className="text-[var(--text-muted)]">·</span>
                 <a
                   href={linkedinUrl}
                   target="_blank"
@@ -285,10 +285,10 @@ export default function ContactEndpoint({
                 >
                   LinkedIn
                 </a>
-                <span className="text-[#3F3F46]">·</span>
+                <span className="text-[var(--text-muted)]">·</span>
                 <a
                   href={`mailto:${contactEmail}`}
-                  className="hover:underline text-[#22C55E]"
+                  className="hover:underline text-[var(--green)] font-medium"
                 >
                   {contactEmail}
                 </a>

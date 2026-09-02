@@ -28,7 +28,7 @@ export default function SettingsClient({
     initialSettings.site_title || "Kyaw Zin Win — Backend Engineer | KZW OS"
   );
   const [siteTagline, setSiteTagline] = useState(
-    initialSettings.site_tagline || "Backend engineer · System thinker · Myanmar"
+    initialSettings.site_tagline || "Full Stack engineer · System thinker · Myanmar"
   );
 
   const [isSavingSettings, setIsSavingSettings] = useState(false);
@@ -109,41 +109,41 @@ export default function SettingsClient({
   return (
     <div className="space-y-8">
       {/* ── HEADER ── */}
-      <div className="pb-4 border-b border-[#1E1E21]">
-        <div className="font-mono text-[10px] text-[#71717A] tracking-wider mb-1 uppercase">
+      <div className="pb-4 border-b border-[var(--border-dim)]">
+        <div className="font-mono text-[10px] text-[var(--text-dim)] tracking-wider mb-1 uppercase">
           // Module 05 · SYSTEM_CONFIGURATION
         </div>
-        <h1 className="font-sans text-2xl font-semibold text-[#FAFAFA] flex items-center gap-2">
+        <h1 className="font-sans text-2xl font-semibold text-[var(--text-primary)] flex items-center gap-2">
           <span>Settings & Security Access</span>
           <span className="boot-cursor">_</span>
         </h1>
-        <p className="font-mono text-xs text-[#71717A] mt-1">
+        <p className="font-mono text-xs text-[var(--text-dim)] mt-1">
           Dynamically configure public links, metadata parameters, and manage administrative credentials.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* ── SECTION 1: DYNAMIC SITE LINKS & CONFIG ── */}
-        <div className="bg-[#111113] border border-[#27272A] rounded-xl overflow-hidden shadow-xl">
-          <div className="px-4 py-3 border-b border-[#1E1E21] bg-[#09090B] flex items-center justify-between">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden shadow-xl">
+          <div className="px-4 py-3 border-b border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-[#8B5CF6]">⚙</span>
-              <h2 className="font-mono text-xs font-semibold text-[#FAFAFA]">
+              <span className="text-[var(--violet)]">⚙</span>
+              <h2 className="font-mono text-xs font-semibold text-[var(--text-primary)]">
                 Dynamic Site Links & Info
               </h2>
             </div>
-            <span className="font-mono text-[10px] text-[#22C55E]">live sync</span>
+            <span className="font-mono text-[10px] text-[var(--green)]">live sync</span>
           </div>
 
           <form onSubmit={handleSaveSettings} className="p-5 space-y-4">
             {settingsSuccess && (
-              <div className="p-3 rounded-lg bg-[#052E16]/40 border border-[#16A34A]/40 text-[#22C55E] font-mono text-xs flex items-center gap-2">
+              <div className="p-3 rounded-lg bg-[var(--green)]/10 border border-[var(--green)]/40 text-[var(--green)] font-mono text-xs flex items-center gap-2">
                 <span>✓</span>
                 <span>{settingsSuccess}</span>
               </div>
             )}
             {settingsError && (
-              <div className="p-3 rounded-lg bg-[#7F1D1D]/20 border border-[#DC2626]/40 text-[#EF4444] font-mono text-xs flex items-center gap-2">
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/40 text-red-500 font-mono text-xs flex items-center gap-2">
                 <span>⚠</span>
                 <span>{settingsError}</span>
               </div>
@@ -151,8 +151,8 @@ export default function SettingsClient({
 
             {/* GitHub URL */}
             <div>
-              <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-                <span className="text-[#8B5CF6]">$</span> settings.github_url
+              <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+                <span className="text-[var(--violet)]">$</span> settings.github_url
               </label>
               <input
                 type="url"
@@ -160,14 +160,14 @@ export default function SettingsClient({
                 onChange={(e) => setGithubUrl(e.target.value)}
                 required
                 placeholder="https://github.com/kyawzinwin"
-                className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#38BDF8] outline-none"
+                className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--sky)] outline-none"
               />
             </div>
 
             {/* LinkedIn URL */}
             <div>
-              <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-                <span className="text-[#8B5CF6]">$</span> settings.linkedin_url
+              <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+                <span className="text-[var(--violet)]">$</span> settings.linkedin_url
               </label>
               <input
                 type="url"
@@ -175,14 +175,14 @@ export default function SettingsClient({
                 onChange={(e) => setLinkedinUrl(e.target.value)}
                 required
                 placeholder="https://linkedin.com/in/kyawzinwin"
-                className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#38BDF8] outline-none"
+                className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--sky)] outline-none"
               />
             </div>
 
             {/* Contact Email */}
             <div>
-              <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-                <span className="text-[#8B5CF6]">$</span> settings.contact_email
+              <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+                <span className="text-[var(--violet)]">$</span> settings.contact_email
               </label>
               <input
                 type="email"
@@ -190,33 +190,33 @@ export default function SettingsClient({
                 onChange={(e) => setContactEmail(e.target.value)}
                 required
                 placeholder="contact@kyawzinwin.dev"
-                className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#22C55E] outline-none"
+                className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--green)] outline-none"
               />
             </div>
 
             {/* Site Title */}
             <div>
-              <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-                <span className="text-[#8B5CF6]">$</span> settings.site_title
+              <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+                <span className="text-[var(--violet)]">$</span> settings.site_title
               </label>
               <input
                 type="text"
                 value={siteTitle}
                 onChange={(e) => setSiteTitle(e.target.value)}
-                className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#FAFAFA] outline-none"
+                className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--text-primary)] outline-none"
               />
             </div>
 
             {/* Site Tagline */}
             <div>
-              <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-                <span className="text-[#8B5CF6]">$</span> settings.site_tagline
+              <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+                <span className="text-[var(--violet)]">$</span> settings.site_tagline
               </label>
               <input
                 type="text"
                 value={siteTagline}
                 onChange={(e) => setSiteTagline(e.target.value)}
-                className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#8B5CF6] rounded-lg px-3 py-2 font-mono text-xs text-[#FAFAFA] outline-none"
+                className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--violet)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--text-primary)] outline-none"
               />
             </div>
 
@@ -238,30 +238,30 @@ export default function SettingsClient({
         </div>
 
         {/* ── SECTION 2: CHANGE ADMIN PASSWORD ── */}
-        <div className="bg-[#111113] border border-[#27272A] rounded-xl overflow-hidden shadow-xl">
-          <div className="px-4 py-3 border-b border-[#1E1E21] bg-[#09090B] flex items-center justify-between">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden shadow-xl">
+          <div className="px-4 py-3 border-b border-[var(--border-dim)] bg-[var(--bg-elevated)] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-[#F59E0B]">🔒</span>
-              <h2 className="font-mono text-xs font-semibold text-[#FAFAFA]">
+              <span className="text-[var(--amber)]">🔒</span>
+              <h2 className="font-mono text-xs font-semibold text-[var(--text-primary)]">
                 Change Admin Password
               </h2>
             </div>
-            <span className="font-mono text-[10px] text-[#F59E0B]">bcrypt hashing</span>
+            <span className="font-mono text-[10px] text-[var(--amber)]">bcrypt hashing</span>
           </div>
 
           <form onSubmit={handleChangePassword} className="p-5 space-y-4">
-            <div className="p-3 bg-[#09090B] border border-[#1E1E21] rounded-lg font-mono text-xs text-[#71717A]">
-              Account: <span className="text-[#FAFAFA]">{userEmail}</span>
+            <div className="p-3 bg-[var(--bg-elevated)] border border-[var(--border-dim)] rounded-lg font-mono text-xs text-[var(--text-dim)]">
+              Account: <span className="text-[var(--text-primary)] font-medium">{userEmail}</span>
             </div>
 
             {passSuccess && (
-              <div className="p-3 rounded-lg bg-[#052E16]/40 border border-[#16A34A]/40 text-[#22C55E] font-mono text-xs flex items-center gap-2">
+              <div className="p-3 rounded-lg bg-[var(--green)]/10 border border-[var(--green)]/40 text-[var(--green)] font-mono text-xs flex items-center gap-2">
                 <span>✓</span>
                 <span>{passSuccess}</span>
               </div>
             )}
             {passError && (
-              <div className="p-3 rounded-lg bg-[#7F1D1D]/20 border border-[#DC2626]/40 text-[#EF4444] font-mono text-xs flex items-center gap-2">
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/40 text-red-500 font-mono text-xs flex items-center gap-2">
                 <span>⚠</span>
                 <span>{passError}</span>
               </div>
@@ -269,8 +269,8 @@ export default function SettingsClient({
 
             {/* Current Password */}
             <div>
-              <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-                <span className="text-[#8B5CF6]">$</span> auth.current_password *
+              <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+                <span className="text-[var(--violet)]">$</span> auth.current_password *
               </label>
               <input
                 type="password"
@@ -278,14 +278,14 @@ export default function SettingsClient({
                 onChange={(e) => setCurrentPass(e.target.value)}
                 required
                 placeholder="Enter existing password..."
-                className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#F59E0B] rounded-lg px-3 py-2 font-mono text-xs text-[#FAFAFA] outline-none"
+                className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--amber)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--text-primary)] outline-none"
               />
             </div>
 
             {/* New Password */}
             <div>
-              <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-                <span className="text-[#8B5CF6]">$</span> auth.new_password (min 6 chars) *
+              <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+                <span className="text-[var(--violet)]">$</span> auth.new_password (min 6 chars) *
               </label>
               <input
                 type="password"
@@ -293,14 +293,14 @@ export default function SettingsClient({
                 onChange={(e) => setNewPass(e.target.value)}
                 required
                 placeholder="Enter new strong password..."
-                className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#F59E0B] rounded-lg px-3 py-2 font-mono text-xs text-[#FAFAFA] outline-none"
+                className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--amber)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--text-primary)] outline-none"
               />
             </div>
 
             {/* Confirm New Password */}
             <div>
-              <label className="block font-mono text-xs text-[#FAFAFA] mb-1">
-                <span className="text-[#8B5CF6]">$</span> auth.confirm_new_password *
+              <label className="block font-mono text-xs text-[var(--text-primary)] mb-1">
+                <span className="text-[var(--violet)]">$</span> auth.confirm_new_password *
               </label>
               <input
                 type="password"
@@ -308,14 +308,14 @@ export default function SettingsClient({
                 onChange={(e) => setConfirmPass(e.target.value)}
                 required
                 placeholder="Re-enter new password..."
-                className="w-full bg-[#09090B] border border-[#27272A] focus:border-[#F59E0B] rounded-lg px-3 py-2 font-mono text-xs text-[#FAFAFA] outline-none"
+                className="w-full bg-[var(--bg-base)] border border-[var(--border)] focus:border-[var(--amber)] rounded-lg px-3 py-2 font-mono text-xs text-[var(--text-primary)] outline-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={isChangingPass}
-              className="w-full py-2.5 rounded-lg bg-[#18181B] hover:bg-[#27272A] border border-[#27272A] text-[#FAFAFA] font-mono text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer mt-2"
+              className="w-full py-2.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] border border-[var(--border)] text-[var(--text-primary)] font-mono text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer mt-2 shadow-xs"
             >
               {isChangingPass ? (
                 <>

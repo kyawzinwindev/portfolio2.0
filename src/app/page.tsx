@@ -64,7 +64,7 @@ export default async function Home() {
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#09090B] text-[#FAFAFA]">
+    <div className="min-h-screen flex flex-col bg-[var(--bg-base)] text-[var(--text-primary)] transition-colors duration-200">
       {/* ── CHROME BAR ── */}
       <ChromeHeader />
 
