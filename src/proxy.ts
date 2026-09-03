@@ -20,7 +20,7 @@ async function isUserAuthenticated(req: NextRequest): Promise<boolean> {
   }
 }
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // 1. ADMIN ROUTE PROTECTION
