@@ -183,7 +183,7 @@ export default function CommandPalette({
               <span className="font-mono text-[11px] text-[var(--violet)] group-hover:opacity-80 transition-opacity font-medium">
                 ⌘K
               </span>
-              <div className="flex-1 bg-[var(--bg-base)] border border-[var(--border)] group-hover:border-[var(--text-muted)] rounded-[8px] py-[7px] px-3 flex items-center gap-2 transition-all">
+              <div className="flex-1 bg-[var(--bg-base)] border border-[var(--border)] group-hover:border-[var(--text-muted)] rounded-[8px] py-[7px] px-3 flex overflow-x-auto items-center gap-2 transition-all">
                 <span className="font-mono text-[13px] text-[var(--text-muted)]">/</span>
                 <span className="font-mono text-[11px] text-[var(--text-muted)] truncate group-hover:text-[var(--text-dim)] transition-colors">
                   type a command — about.sys · projects.log · system.notes · contact.endpoint · admin

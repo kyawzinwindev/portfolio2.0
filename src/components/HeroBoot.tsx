@@ -22,7 +22,7 @@ export default function HeroBoot({ onOpenPalette }: HeroBootProps) {
       <div className="wrapper relative z-10">
         {/* System eyebrow */}
         <div className="font-mono text-[11px] text-[var(--amber)] mb-5 tracking-wide">
-          {"// system init · 2025 · v1.0.0"}
+          {"// system init · 2026 · v1.0.0"}
         </div>
 
         {/* Display title */}
@@ -41,7 +41,7 @@ export default function HeroBoot({ onOpenPalette }: HeroBootProps) {
             <span className="text-[var(--text-muted)] select-none">$</span>
             <span className="text-[var(--green)]">init</span>
             <span className="text-[var(--text-dim)]">
-              --role &quot;backend engineer&quot; --mode &quot;system thinker&quot;
+              --role &quot;full stack engineer&quot; --mode &quot;system thinker&quot;
             </span>
           </div>
 

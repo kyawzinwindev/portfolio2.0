@@ -160,7 +160,7 @@ body {
 /* Section label */
 .sec-label {
   font-family: var(--font-mono), monospace;
-  font-size: 10px;
+  font-size: 14px;
   color: var(--amber);
   letter-spacing: 0.1em;
   margin-bottom: 24px;
