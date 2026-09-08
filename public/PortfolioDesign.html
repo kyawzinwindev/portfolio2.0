@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-canvas">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kyaw Zin Win — Backend & Systems Engineer</title>
+  <meta name="description" content="Backend & Systems Engineer. Laravel services, versioned APIs, and AWS deployments that stay up. Open to full-time and contract roles." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            canvas: 'rgb(var(--canvas) / <alpha-value>)',
+            ink: 'rgb(var(--ink) / <alpha-value>)',
+            mute: 'rgb(var(--mute) / <alpha-value>)',
+            line: 'rgb(var(--line) / <alpha-value>)',
+            volt: 'rgb(var(--volt) / <alpha-value>)',
+          },
+          letterSpacing: { hero: '-0.045em' },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root { --canvas: 246 246 243; --ink: 12 13 16; --mute: 108 112 122; --line: 220 221 218; --volt: 43 76 255; }
+    .dark { --canvas: 11 12 14; --ink: 240 240 236; --mute: 140 144 153; --line: 38 40 46; --volt: 96 122 255; }
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing: antialiased; }
+
+    /* cursor-following spotlight on the canvas */
+    #stage { background:
+      radial-gradient(600px circle at var(--mx, 50%) var(--my, 40%), rgb(var(--volt) / 0.10), transparent 60%),
+      linear-gradient(rgb(var(--line) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--line) / 0.5) 1px, transparent 1px);
+      background-size: 100% 100%, 80px 80px, 80px 80px; }
+
+    /* hero word hover */
+    .w { display: inline-block; transition: transform .45s cubic-bezier(.2,.8,.2,1), color .3s; will-change: transform; }
+    .w:hover { transform: translateY(-6px) skewX(-4deg); color: rgb(var(--volt)); }
+
+    /* entrance */
+    .rise { opacity: 0; transform: translateY(24px); animation: rise .9s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: calc(var(--d, 0) * 110ms); }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+
+    /* project panels */
+    .panel { transition: flex-grow .7s cubic-bezier(.2,.8,.2,1), background-color .4s, color .4s; }
+    .panel .detail { opacity: 0; transform: translateY(16px); transition: opacity .35s ease, transform .5s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+    .panel[data-open="true"] { flex-grow: 4; }
+    .panel[data-open="true"] .detail { opacity: 1; transform: none; pointer-events: auto; transition-delay: .25s; }
+    .panel[data-open="true"] .rail { opacity: 0; }
+    .panel[data-open="false"] .idx { opacity: .55; }
+    .vtext { writing-mode: vertical-rl; transform: rotate(180deg); }
+    @media (min-width: 768px) { .detail-wrap { flex: 1; display: flex; min-height: 0; } .detail-wrap > .detail { flex: 1; } }
+    @media (max-width: 767px) {
+      .panel { flex-grow: 0 !important; }
+      .panel[data-open="true"] .detail-wrap { grid-template-rows: 1fr; }
+      .detail-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s cubic-bezier(.2,.8,.2,1); }
+      .detail-wrap > div { overflow: hidden; }
+    }
+
+    /* drawer */
+    #drawer { transform: translateY(110%); transition: transform .55s cubic-bezier(.2,.8,.2,1); }
+    #drawer[data-open="true"] { transform: none; }
+    @media (min-width: 640px) { #drawer { transform: translateX(110%); } }
+    #scrim { opacity: 0; pointer-events: none; transition: opacity .4s; }
+    #scrim[data-open="true"] { opacity: 1; pointer-events: auto; }
+
+    /* scroll reveal */
+    .rv { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+    .rv.in { opacity: 1; transform: none; }
+
+    .pulse::before { content: ''; position: absolute; inset: -4px; border-radius: 9999px; background: rgb(var(--volt) / .35); animation: ping 1.8s cubic-bezier(0,0,.2,1) infinite; }
+    @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rise, .rv, .pulse::before { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-canvas text-ink font-sans selection:bg-volt selection:text-canvas">
+
+  <!-- Floating status widget (replaces nav) -->
+  <div class="fixed top-4 left-4 sm:top-6 sm:left-6 z-40 rise" style="--d:0">
+    <div class="flex items-center gap-3 rounded-full border border-line bg-canvas/80 backdrop-blur-md pl-4 pr-1.5 py-1.5 shadow-sm">
+      <span class="relative flex h-2 w-2 pulse"><span class="relative inline-flex h-2 w-2 rounded-full bg-volt"></span></span>
+      <span class="text-sm font-medium">Kyaw Zin Win</span>
+      <span class="hidden sm:inline font-mono text-xs text-mute" id="clock" aria-live="off">--:-- GMT+6:30</span>
+      <span class="hidden sm:inline font-mono text-xs text-volt">open to work</span>
+      <button id="theme" class="grid h-8 w-8 place-items-center rounded-full hover:bg-line/60 transition-colors" aria-label="Toggle dark mode">
+        <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <svg class="hidden dark:block" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Section indicator (right edge, desktop) -->
+  <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-4 font-mono text-[11px] text-mute" aria-label="Sections">
+    <a href="#stage" data-dot class="group flex items-center gap-3 justify-end"><span class="opacity-0 group-hover:opacity-100 transition-opacity">intro</span><span class="h-1.5 w-1.5 rounded-full bg-current transition-all"></span></a>
+    <a href="#work" data-dot class="group flex items-center gap-3 justify-end"><span class="opacity-0 group-hover:opacity-100 transition-opacity">work</span><span class="h-1.5 w-1.5 rounded-full bg-current transition-all"></span></a>
+    <a href="#signal" data-dot class="group flex items-center gap-3 justify-end"><span class="opacity-0 group-hover:opacity-100 transition-opacity">stack</span><span class="h-1.5 w-1.5 rounded-full bg-current transition-all"></span></a>
+    <a href="#reach" data-dot class="group flex items-center gap-3 justify-end"><span class="opacity-0 group-hover:opacity-100 transition-opacity">reach</span><span class="h-1.5 w-1.5 rounded-full bg-current transition-all"></span></a>
+  </nav>
+
+  <!-- Floating connect button -->
+  <button id="open-drawer" class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 inline-flex items-center gap-2.5 rounded-full bg-ink text-canvas pl-5 pr-2 py-2 text-sm font-semibold shadow-lg shadow-ink/15 hover:scale-[1.03] active:scale-95 transition-transform rise" style="--d:2">
+    Connect
+    <span class="grid h-8 w-8 place-items-center rounded-full bg-volt text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+    </span>
+  </button>
+
+  <main>
+    <!-- HERO CANVAS -->
+    <section id="stage" class="relative min-h-[100svh] flex flex-col justify-between px-5 sm:px-10 lg:px-16 pt-28 pb-10 overflow-hidden">
+      <p class="rise font-mono text-xs sm:text-sm text-mute" style="--d:1">Yangon · remote-first · Laravel / AWS / systems design</p>
+
+      <div class="flex flex-col gap-8">
+        <h1 class="rise text-[clamp(3.25rem,11.5vw,11rem)] font-bold leading-[0.88] tracking-hero text-balance max-w-[16ch]" style="--d:2" id="headline">
+          <span class="block"><span class="w">Backend</span> <span class="w text-mute">&amp;</span></span>
+          <span class="block"><span class="w">Systems</span></span>
+          <span class="block"><span class="w">Engineer<span class="text-volt">.</span></span></span>
+        </h1>
+
+        <div class="rise flex flex-col md:flex-row md:items-end md:justify-between gap-8" style="--d:3">
+          <p class="text-lg sm:text-xl text-mute leading-relaxed max-w-md text-pretty">
+            I design the parts of a product that have to keep working — APIs, permission systems, queues and the AWS underneath them. Three systems in production.
+          </p>
+          <div class="flex flex-wrap items-center gap-3">
+            <a href="#work" class="magnet inline-flex items-center gap-2 rounded-full bg-ink text-canvas px-6 py-3.5 text-sm font-semibold hover:bg-volt hover:text-white transition-colors">
+              See the work
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+            </a>
+            <button data-copy="hello@kyawzinwin.dev" class="magnet inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 text-sm font-semibold hover:border-ink transition-colors">
+              <span class="copy-label">Copy email</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="rise flex items-end justify-between font-mono text-xs text-mute" style="--d:4">
+        <div class="flex gap-8 sm:gap-14">
+          <div><span class="block text-2xl sm:text-3xl font-sans font-bold text-ink tabular-nums">3</span>systems live</div>
+          <div><span class="block text-2xl sm:text-3xl font-sans font-bold text-ink tabular-nums">99.9<span class="text-base">%</span></span>uptime · 90d</div>
+          <div><span class="block text-2xl sm:text-3xl font-sans font-bold text-ink tabular-nums">2<span class="text-base">y</span></span>shipping in prod</div>
+        </div>
+        <span class="hidden sm:flex items-center gap-2">scroll <span class="block h-px w-10 bg-mute animate-pulse"></span></span>
+      </div>
+    </section>
+
+    <!-- PROJECT SHOWCASE -->
+    <section id="work" class="min-h-[100svh] flex flex-col px-5 sm:px-10 lg:px-16 py-16 lg:py-20 gap-8">
+      <div class="rv flex items-end justify-between gap-6">
+        <h2 class="text-3xl sm:text-5xl font-bold tracking-tight">Selected work</h2>
+        <p class="font-mono text-xs text-mute text-right max-w-[22ch]">Hover or tap a panel. One opens, the rest step aside.</p>
+      </div>
+
+      <div id="panels" class="rv flex flex-col md:flex-row gap-3 flex-1 min-h-0 md:min-h-[68svh]">
+        <!-- CareNest -->
+        <article class="panel group relative flex-1 md:basis-0 rounded-3xl border border-line bg-canvas overflow-hidden flex flex-col cursor-pointer" data-open="true" data-idx="01">
+          <button class="panel-btn absolute inset-0 z-10 md:cursor-pointer" aria-expanded="true" aria-controls="p1"><span class="sr-only">Expand CareNest</span></button>
+          <div class="rail absolute inset-0 hidden md:flex flex-col items-center justify-between py-6 transition-opacity duration-300" aria-hidden="true">
+            <span class="font-mono text-xs text-mute idx">01</span>
+            <span class="vtext text-2xl font-bold tracking-tight">CareNest</span>
+            <span class="font-mono text-xs text-mute vtext">Laravel</span>
+          </div>
+          <div class="relative z-0 flex md:hidden items-center justify-between p-5">
+            <span class="text-2xl font-bold tracking-tight">CareNest</span><span class="font-mono text-xs text-mute">01 · Laravel</span>
+          </div>
+          <div id="p1" class="detail-wrap"><div class="detail relative z-20 flex flex-col gap-6 p-5 sm:p-8 h-full pointer-events-none">
+            <div class="hidden md:flex items-start justify-between gap-4">
+              <div><span class="font-mono text-xs text-mute">01 · Healthcare · 2024</span><h3 class="text-3xl lg:text-5xl font-bold tracking-tight mt-1">CareNest</h3></div>
+              <span class="rounded-full bg-volt/10 text-volt font-mono text-xs px-3 py-1">live</span>
+            </div>
+            <p class="text-base lg:text-lg text-mute leading-relaxed max-w-xl text-pretty">Clinic appointment platform. Appointments are a guarded state machine (7 states, 11 transitions) — never raw status writes. Replaced a single <code class="font-mono text-sm text-ink">is_admin</code> flag with a 4-role, 23-permission matrix while real clinics were live. Zero downtime.</p>
+            <dl class="grid grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs text-mute border-t border-line pt-5">
+              <div><dt>uptime · 90d</dt><dd class="font-sans text-2xl font-bold text-ink tabular-nums">99.9%</dd></div>
+              <div><dt>p95 latency</dt><dd class="font-sans text-2xl font-bold text-ink tabular-nums">142ms</dd></div>
+              <div><dt>coverage</dt><dd class="font-sans text-2xl font-bold text-ink tabular-nums">91%</dd></div>
+              <div><dt>migration downtime</dt><dd class="font-sans text-2xl font-bold text-ink tabular-nums">0 min</dd></div>
+            </dl>
+            <div class="mt-auto flex flex-wrap items-center justify-between gap-4">
+              <ul class="flex flex-wrap gap-2 font-mono text-xs text-mute" aria-label="Stack"><li>Laravel</li><li>·</li><li>Livewire</li><li>·</li><li>MySQL</li><li>·</li><li>Redis</li><li>·</li><li>AWS</li></ul>
+              <div class="flex gap-4 text-sm font-semibold pointer-events-auto">
+                <a href="#" class="inline-flex items-center gap-1 hover:text-volt transition-colors">Live site <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+                <a href="#" class="inline-flex items-center gap-1 hover:text-volt transition-colors">Source <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+              </div>
+            </div>
+          </div></div>
+        </article>
+
+        <!-- Chatbot API -->
+        <article class="panel group relative flex-1 md:basis-0 rounded-3xl border border-line bg-canvas overflow-hidden flex flex-col cursor-pointer" data-open="false" data-idx="02">
+          <button class="panel-btn absolute inset-0 z-10" aria-expanded="false" aria-controls="p2"><span class="sr-only">Expand Chatbot API</span></button>
+          <div class="rail absolute inset-0 hidden md:flex flex-col items-center justify-between py-6 transition-opacity duration-300" aria-hidden="true">
+            <span class="font-mono text-xs text-mute idx">02</span>
+            <span class="vtext text-2xl font-bold tracking-tight">Chatbot API</span>
+            <span class="font-mono text-xs text-mute vtext">REST · AWS</span>
+          </div>
+          <div class="relative z-0 flex md:hidden items-center justify-between p-5">
+            <span class="text-2xl font-bold tracking-tight">Chatbot API</span><span class="font-mono text-xs text-mute">02 · REST · AWS</span>
+          </div>
+          <div id="p2" class="detail-wrap"><div class="detail relative z-20 flex flex-col gap-6 p-5 sm:p-8 h-full pointer-events-none">
+            <div class="hidden md:flex items-start justify-between gap-4">
+              <div><span class="font-mono text-xs text-mute">02 · Customer support · 2025</span><h3 class="text-3xl lg:text-5xl font-bold tracking-tight mt-1">Chatbot API</h3></div>
+              <span class="rounded-full bg-volt/10 text-volt font-mono text-xs px-3 py-1">live</span>
+            </div>
+            <p class="text-base lg:text-lg text-mute leading-relaxed max-w-xl text-pretty">Versioned multi-channel REST backend. Every inbound message returns <code class="font-mono text-sm text-ink">202 Accepted</code>, is queued, and replies by webhook — channel outages never block the API. Token auth with per-channel scopes, idempotent ingestion, PHPUnit gating every deploy on AWS.</p>
+            <pre class="font-mono text-[13px] leading-relaxed rounded-2xl bg-ink text-canvas p-5 overflow-x-auto"><span class="text-volt">POST</span> /v1/sessions/{id}/messages   → 202 · queued
+<span class="text-volt">GET </span> /v1/sessions/{id}            → 200 · 38ms · cached 30s</pre>
+            <div class="mt-auto flex flex-wrap items-center justify-between gap-4">
+              <ul class="flex flex-wrap gap-2 font-mono text-xs text-mute" aria-label="Stack"><li>Laravel</li><li>·</li><li>REST v1</li><li>·</li><li>PHPUnit</li><li>·</li><li>Docker</li><li>·</li><li>GitHub Actions</li><li>·</li><li>AWS</li></ul>
+              <div class="flex gap-4 text-sm font-semibold pointer-events-auto">
+                <a href="#" class="inline-flex items-center gap-1 hover:text-volt transition-colors">API docs <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+                <a href="#" class="inline-flex items-center gap-1 hover:text-volt transition-colors">Source <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+              </div>
+            </div>
+          </div></div>
+        </article>
+
+        <!-- Jaraye -->
+        <article class="panel group relative flex-1 md:basis-0 rounded-3xl border border-line bg-canvas overflow-hidden flex flex-col cursor-pointer" data-open="false" data-idx="03">
+          <button class="panel-btn absolute inset-0 z-10" aria-expanded="false" aria-controls="p3"><span class="sr-only">Expand Jaraye</span></button>
+          <div class="rail absolute inset-0 hidden md:flex flex-col items-center justify-between py-6 transition-opacity duration-300" aria-hidden="true">
+            <span class="font-mono text-xs text-mute idx">03</span>
+            <span class="vtext text-2xl font-bold tracking-tight">Jaraye</span>
+            <span class="font-mono text-xs text-mute vtext">Architecture</span>
+          </div>
+          <div class="relative z-0 flex md:hidden items-center justify-between p-5">
+            <span class="text-2xl font-bold tracking-tight">Jaraye</span><span class="font-mono text-xs text-mute">03 · Architecture</span>
+          </div>
+          <div id="p3" class="detail-wrap"><div class="detail relative z-20 flex flex-col gap-6 p-5 sm:p-8 h-full pointer-events-none">
+            <div class="hidden md:flex items-start justify-between gap-4">
+              <div><span class="font-mono text-xs text-mute">03 · Education · 2024</span><h3 class="text-3xl lg:text-5xl font-bold tracking-tight mt-1">Jaraye</h3></div>
+              <span class="rounded-full bg-volt/10 text-volt font-mono text-xs px-3 py-1">live</span>
+            </div>
+            <p class="text-base lg:text-lg text-mute leading-relaxed max-w-xl text-pretty">Education platform designed for the reports the school would need in year two, not just day-one CRUD. Denormalised read models, cached aggregates in Redis, role-scoped query builders so each of 5 admin roles sees exactly its slice — fast past 10k users.</p>
+            <dl class="grid grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs text-mute border-t border-line pt-5">
+              <div><dt>report · before</dt><dd class="font-sans text-2xl font-bold text-mute line-through tabular-nums">2.4s</dd></div>
+              <div><dt>report · after</dt><dd class="font-sans text-2xl font-bold text-volt tabular-nums">210ms</dd></div>
+              <div><dt>active users</dt><dd class="font-sans text-2xl font-bold text-ink tabular-nums">10k+</dd></div>
+              <div><dt>admin roles</dt><dd class="font-sans text-2xl font-bold text-ink tabular-nums">5</dd></div>
+            </dl>
+            <div class="mt-auto flex flex-wrap items-center justify-between gap-4">
+              <ul class="flex flex-wrap gap-2 font-mono text-xs text-mute" aria-label="Stack"><li>Laravel</li><li>·</li><li>Alpine.js</li><li>·</li><li>MySQL</li><li>·</li><li>Redis</li></ul>
+              <div class="flex gap-4 text-sm font-semibold pointer-events-auto">
+                <a href="#" class="inline-flex items-center gap-1 hover:text-volt transition-colors">Live site <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+                <a href="#" class="inline-flex items-center gap-1 hover:text-volt transition-colors">Source <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+              </div>
+            </div>
+          </div></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SIGNAL: Clean Static Tech Stack & Experience -->
+    <section id="signal" class="min-h-[100svh] flex flex-col justify-center gap-12 px-5 sm:px-10 lg:px-16 py-20 border-t border-line">
+      
+      <!-- Static Tech Stack Showcase -->
+      <div class="rv flex flex-col gap-6">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-line pb-4">
+          <h2 class="text-2xl sm:text-4xl font-bold tracking-tight">Core Technical Stack</h2>
+          <span class="font-mono text-xs text-mute">Primary Frameworks &amp; Infrastructure</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- TALL Stack Card -->
+          <div class="rounded-2xl border border-line p-6 flex flex-col justify-between gap-4 hover:border-ink transition-colors bg-canvas">
+            <div>
+              <span class="font-mono text-xs text-volt uppercase tracking-wider block mb-1">Full-Stack Ecosystem</span>
+              <h3 class="text-2xl font-bold tracking-tight">TALL Stack</h3>
+            </div>
+            <p class="text-sm text-mute leading-relaxed">
+              Tailwind CSS, Alpine.js, Laravel &amp; Livewire. High-productivity, reactive web applications with server-driven state.
+            </p>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs text-mute pt-2 border-t border-line/60">
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">Tailwind</span>
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">Alpine.js</span>
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">Laravel</span>
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">Livewire</span>
+            </div>
+          </div>
+
+          <!-- MERN Stack Card -->
+          <div class="rounded-2xl border border-line p-6 flex flex-col justify-between gap-4 hover:border-ink transition-colors bg-canvas">
+            <div>
+              <span class="font-mono text-xs text-volt uppercase tracking-wider block mb-1">JavaScript Ecosystem</span>
+              <h3 class="text-2xl font-bold tracking-tight">MERN Stack</h3>
+            </div>
+            <p class="text-sm text-mute leading-relaxed">
+              MongoDB, Express.js, React &amp; Node.js. Scalable full-stack JavaScript architectures with document-based data flow.
+            </p>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs text-mute pt-2 border-t border-line/60">
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">MongoDB</span>
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">Express</span>
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">React</span>
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">Node.js</span>
+            </div>
+          </div>
+
+          <!-- Next + Nest Card -->
+          <div class="rounded-2xl border border-line p-6 flex flex-col justify-between gap-4 hover:border-ink transition-colors bg-canvas">
+            <div>
+              <span class="font-mono text-xs text-volt uppercase tracking-wider block mb-1">Modern Enterprise JS</span>
+              <h3 class="text-2xl font-bold tracking-tight">Next.js + NestJS</h3>
+            </div>
+            <p class="text-sm text-mute leading-relaxed">
+              SSR/SSG React frontend powered by a structured, strongly-typed TypeScript NestJS backend architecture.
+            </p>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs text-mute pt-2 border-t border-line/60">
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">Next.js</span>
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">NestJS</span>
+              <span class="rounded-md bg-line/40 px-2 py-0.5 text-ink">TypeScript</span>
+            </div>
+          </div>
+
+          <!-- Cloud & DevOps (AWS + Docker) -->
+          <div class="md:col-span-2 lg:col-span-3 rounded-2xl border border-line p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-ink transition-colors bg-canvas">
+            <div class="max-w-xl">
+              <span class="font-mono text-xs text-volt uppercase tracking-wider block mb-1">Cloud Infrastructure &amp; DevOps</span>
+              <h3 class="text-2xl font-bold tracking-tight">AWS &amp; Docker Containerization</h3>
+              <p class="text-sm text-mute leading-relaxed mt-2">
+                Production deployment pipelines utilizing Docker containers, AWS EC2 instances, RDS relational databases, S3 storage, Nginx reverse proxying, and automated CI/CD workflows.
+              </p>
+            </div>
+            <div class="flex flex-wrap md:flex-col gap-2 shrink-0 font-mono text-xs">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-ink">AWS:</span>
+                <span class="text-mute">EC2 · RDS · S3</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-ink">DevOps:</span>
+                <span class="text-mute">Docker · Nginx · CI/CD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-24 pt-6">
+        <div class="rv flex flex-col gap-6">
+          <h2 class="font-mono text-xs text-mute uppercase tracking-widest">What I actually do</h2>
+          <ul class="flex flex-col divide-y divide-line text-lg sm:text-xl">
+            <li class="flex justify-between gap-6 py-4"><span>Laravel services &amp; versioned REST APIs</span><span class="font-mono text-xs text-mute shrink-0 pt-2">daily</span></li>
+            <li class="flex justify-between gap-6 py-4"><span>Permission systems, state machines, domain models</span><span class="font-mono text-xs text-mute shrink-0 pt-2">daily</span></li>
+            <li class="flex justify-between gap-6 py-4"><span>MySQL schema &amp; query performance, Redis queues</span><span class="font-mono text-xs text-mute shrink-0 pt-2">daily</span></li>
+            <li class="flex justify-between gap-6 py-4"><span>AWS deployment, Docker, Nginx, CI/CD pipelines</span><span class="font-mono text-xs text-mute shrink-0 pt-2">weekly</span></li>
+            <li class="flex justify-between gap-6 py-4"><span>Architecture reviews for small product teams</span><span class="font-mono text-xs text-mute shrink-0 pt-2">on request</span></li>
+          </ul>
+        </div>
+        <div class="rv flex flex-col gap-6" style="transition-delay:.15s">
+          <h2 class="font-mono text-xs text-mute uppercase tracking-widest">Where I&apos;ve been</h2>
+          <ol class="flex flex-col divide-y divide-line">
+            <li class="grid grid-cols-[6rem_1fr] gap-4 py-4"><span class="font-mono text-xs text-mute pt-1.5">2025 — now</span><div><p class="text-lg sm:text-xl font-semibold">Backend &amp; Systems Engineer</p><p class="text-mute">Freelance &amp; consulting · Remote. Laravel backends, AWS, architecture reviews.</p></div></li>
+            <li class="grid grid-cols-[6rem_1fr] gap-4 py-4"><span class="font-mono text-xs text-mute pt-1.5">2023 — 2025</span><div><p class="text-lg sm:text-xl font-semibold">Junior Backend Developer</p><p class="text-mute">Airyno · Yangon. Shipped CareNest and Jaraye to production.</p></div></li>
+            <li class="grid grid-cols-[6rem_1fr] gap-4 py-4"><span class="font-mono text-xs text-mute pt-1.5">2020 — 2023</span><div><p class="text-lg sm:text-xl font-semibold">BSc (Hons) Computing</p><p class="text-mute">NCC Education. Distributed systems, databases, algorithms.</p></div></li>
+          </ol>
+          <a href="#" class="inline-flex items-center gap-2 self-start text-sm font-semibold hover:text-volt transition-colors">Download CV (PDF)
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- REACH: one-click hotspots -->
+    <section id="reach" class="min-h-[100svh] flex flex-col justify-center gap-10 px-5 sm:px-10 lg:px-16 py-20 border-t border-line">
+      <p class="rv font-mono text-xs text-mute uppercase tracking-widest">Reach · replies within 48h</p>
+      <button data-copy="hello@kyawzinwin.dev" class="rv group text-left text-[clamp(2rem,7vw,6.5rem)] font-bold leading-[0.95] tracking-hero break-all sm:break-normal hover:text-volt transition-colors">
+        <span class="copy-label">hello@kyawzinwin.dev</span>
+        <span class="block font-mono text-xs sm:text-sm text-mute font-normal tracking-normal mt-4 group-hover:text-volt">click to copy →</span>
+      </button>
+      <div class="rv flex flex-wrap gap-3" style="transition-delay:.1s">
+        <a href="https://linkedin.com/in/kyawzinwin" class="inline-flex items-center gap-2 rounded-full border border-line px-5 py-3 text-sm font-semibold hover:border-ink hover:bg-ink hover:text-canvas transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+        <a href="https://github.com/kyawzinwin" class="inline-flex items-center gap-2 rounded-full border border-line px-5 py-3 text-sm font-semibold hover:border-ink hover:bg-ink hover:text-canvas transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>GitHub</a>
+        <a href="mailto:hello@kyawzinwin.dev?subject=Quick%20intro%20call&body=Hi%20Kyaw%2C%0A%0AI%27d%20like%20to%20set%20up%20a%20quick%20call%20about%20a%20backend%20role%2Fproject.%0A%0ARole%2Fproject%3A%0ATimeline%3A%0ABest%20times%3A%0A" class="inline-flex items-center gap-2 rounded-full bg-volt text-white px-5 py-3 text-sm font-semibold hover:opacity-90 transition-opacity">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>Quick intro call</a>
+      </div>
+      <footer class="rv flex flex-wrap justify-between gap-4 pt-16 font-mono text-xs text-mute">
+        <span>© <span id="year"></span> Kyaw Zin Win</span>
+        <span>Yangon · GMT+6:30 · remote-first</span>
+      </footer>
+    </section>
+  </main>
+
+  <!-- CONNECT DRAWER -->
+  <div id="scrim" class="fixed inset-0 z-40 bg-ink/40 backdrop-blur-[2px]" data-open="false"></div>
+  <aside id="drawer" class="fixed z-50 bottom-0 inset-x-0 sm:inset-x-auto sm:inset-y-0 sm:right-0 sm:w-[400px] bg-canvas border-t sm:border-t-0 sm:border-l border-line rounded-t-3xl sm:rounded-none p-6 sm:p-8 flex flex-col gap-6" data-open="false" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <p class="font-mono text-xs text-volt">open to full-time &amp; contract</p>
+        <h2 id="drawer-title" class="text-2xl font-bold tracking-tight mt-1">Reach me directly.</h2>
+        <p class="text-sm text-mute mt-1">No form. Pick a channel.</p>
+      </div>
+      <button id="close-drawer" class="grid h-9 w-9 place-items-center rounded-full border border-line hover:bg-line/60 transition-colors" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="flex flex-col gap-2">
+      <button data-copy="hello@kyawzinwin.dev" class="flex items-center justify-between rounded-2xl border border-line px-4 py-4 text-left hover:border-ink transition-colors">
+        <span class="flex flex-col"><span class="font-mono text-xs text-mute">Email</span><span class="font-semibold copy-label">Copy hello@kyawzinwin.dev</span></span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+      </button>
+      <a href="mailto:hello@kyawzinwin.dev?subject=Quick%20intro%20call" class="flex items-center justify-between rounded-2xl bg-ink text-canvas px-4 py-4 hover:bg-volt hover:text-white transition-colors">
+        <span class="flex flex-col"><span class="font-mono text-xs opacity-70">Quick connect</span><span class="font-semibold">Open pre-filled email</span></span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+      </a>
+      <a href="https://linkedin.com/in/kyawzinwin" class="flex items-center justify-between rounded-2xl border border-line px-4 py-4 hover:border-ink transition-colors">
+        <span class="flex flex-col"><span class="font-mono text-xs text-mute">LinkedIn</span><span class="font-semibold">/in/kyawzinwin</span></span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+      </a>
+      <a href="https://github.com/kyawzinwin" class="flex items-center justify-between rounded-2xl border border-line px-4 py-4 hover:border-ink transition-colors">
+        <span class="flex flex-col"><span class="font-mono text-xs text-mute">GitHub</span><span class="font-semibold">@kyawzinwin</span></span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+      </a>
+      <a href="#" class="flex items-center justify-between rounded-2xl border border-line px-4 py-4 hover:border-ink transition-colors">
+        <span class="flex flex-col"><span class="font-mono text-xs text-mute">CV</span><span class="font-semibold">Download PDF</span></span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+      </a>
+    </div>
+    <p class="mt-auto font-mono text-xs text-mute">Yangon · <span class="drawer-clock"></span> local · usually replies within 48h</p>
+  </aside>
+
+  <div id="toast" role="status" aria-live="polite" class="fixed left-1/2 -translate-x-1/2 bottom-24 sm:bottom-8 z-50 rounded-full bg-ink text-canvas px-4 py-2 text-sm font-medium opacity-0 translate-y-2 transition-all pointer-events-none">Email copied</div>
+
+  <script>
+    // Theme: system default, manual toggle persisted
+    const root = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches)) root.classList.add('dark');
+    document.getElementById('theme').addEventListener('click', () => {
+      root.classList.toggle('dark');
+      localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Local clock (Yangon, GMT+6:30)
+    const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Yangon' });
+    const tick = () => {
+      const t = fmt.format(new Date());
+      document.getElementById('clock').textContent = t + ' GMT+6:30';
+      document.querySelectorAll('.drawer-clock').forEach(el => el.textContent = t);
+    };
+    tick(); setInterval(tick, 30000);
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Spotlight follows the cursor across the hero canvas
+    const stage = document.getElementById('stage');
+    stage.addEventListener('pointermove', e => {
+      const r = stage.getBoundingClientRect();
+      stage.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      stage.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+
+    // Magnetic buttons
+    document.querySelectorAll('.magnet').forEach(el => {
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width / 2) * 0.18, y = (e.clientY - r.top - r.height / 2) * 0.28;
+        el.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+    });
+
+    // Expanding project panels
+    const panels = [...document.querySelectorAll('.panel')];
+    const openPanel = target => panels.forEach(p => {
+      const on = p === target;
+      p.dataset.open = on;
+      p.querySelector('.panel-btn').setAttribute('aria-expanded', on);
+    });
+    panels.forEach(p => {
+      p.querySelector('.panel-btn').addEventListener('click', () => {
+        const isMobile = matchMedia('(max-width: 767px)').matches;
+        if (isMobile && p.dataset.open === 'true') { p.dataset.open = 'false'; p.querySelector('.panel-btn').setAttribute('aria-expanded', 'false'); return; }
+        openPanel(p);
+      });
+      p.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && matchMedia('(min-width: 768px)').matches) openPanel(p); });
+    });
+
+    // Copy-to-clipboard hotspots
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    const showToast = msg => {
+      toast.textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.add('opacity-0', 'translate-y-2'), 1800);
+    };
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy);
+          const label = btn.querySelector('.copy-label');
+          if (label) { const prev = label.textContent; label.textContent = 'Copied'; setTimeout(() => label.textContent = prev, 1600); }
+          showToast('Email copied to clipboard');
+        } catch { location.href = 'mailto:' + btn.dataset.copy; }
+      });
+    });
+
+    // Drawer
+    const drawer = document.getElementById('drawer'), scrim = document.getElementById('scrim'), openBtn = document.getElementById('open-drawer');
+    const setDrawer = open => {
+      drawer.dataset.open = scrim.dataset.open = open;
+      drawer.setAttribute('aria-hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+      (open ? document.getElementById('close-drawer') : openBtn).focus();
+    };
+    openBtn.addEventListener('click', () => setDrawer(true));
+    document.getElementById('close-drawer').addEventListener('click', () => setDrawer(false));
+    scrim.addEventListener('click', () => setDrawer(false));
+    addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.dataset.open === 'true') setDrawer(false); });
+
+    // Scroll reveal + section dots
+    const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: 0.15 });
+    document.querySelectorAll('.rv').forEach(el => io.observe(el));
+    const dots = [...document.querySelectorAll('[data-dot]')];
+    const so = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      dots.forEach(d => {
+        const on = d.getAttribute('href') === '#' + e.target.id;
+        d.classList.toggle('text-ink', on);
+        d.lastElementChild.classList.toggle('w-5', on);
+      });
+    }), { threshold: 0.5 });
+    document.querySelectorAll('main > section').forEach(s => so.observe(s));
+  </script>
+</body>
+</html>

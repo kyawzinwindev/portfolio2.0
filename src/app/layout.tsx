@@ -1,47 +1,45 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
+  variable: "--font-jetbrains",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "Kyaw Zin Win — Backend Engineer | KZW OS",
+  title: "Kyaw Zin Win — Backend & Systems Engineer",
   description:
-    "Portfolio and system architecture log of Kyaw Zin Win — Backend Engineer specializing in Laravel, Livewire, MySQL, and scalable systems.",
+    "Backend & Systems Engineer. Laravel services, versioned APIs, and AWS deployments that stay up. Open to full-time and contract roles.",
   keywords: [
     "Kyaw Zin Win",
     "Backend Engineer",
+    "Systems Engineer",
     "Laravel",
-    "Livewire",
-    "PHP",
-    "MySQL",
-    "System Architecture",
-    "KZW OS",
+    "AWS",
+    "REST APIs",
   ],
   authors: [{ name: "Kyaw Zin Win", url: "https://kyawzinwin.dev" }],
   openGraph: {
-    title: "Kyaw Zin Win — Backend Engineer | KZW OS",
+    title: "Kyaw Zin Win — Backend & Systems Engineer",
     description:
-      "Backend engineer · System thinker · Architecture case studies and build records.",
+      "Backend & Systems Engineer. Laravel services, versioned APIs, and AWS deployments that stay up.",
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#09090B",
+  themeColor: "#F6F6F3",
 };
 
 export default function RootLayout({
@@ -53,9 +51,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${jetbrainsMono.variable} dark`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} bg-canvas`}
     >
-      <body className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] font-sans antialiased flex flex-col selection:bg-[#8B5CF6]/30 selection:text-white transition-colors duration-200">
+      <body className="min-h-screen bg-canvas text-ink font-sans antialiased selection:bg-volt selection:text-canvas">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

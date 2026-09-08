@@ -1,78 +1,45 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext } from "react";
 
 type Theme = "dark" | "light";
 
 interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function applyTheme(next: Theme) {
+  const root = document.documentElement;
+  root.classList.toggle("dark", next === "dark");
+  root.style.colorScheme = next;
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    // Check localStorage or default to dark
-    const stored = localStorage.getItem("kzw_theme") as Theme | null;
-    if (stored === "light" || stored === "dark") {
-      setThemeState(stored);
-      applyTheme(stored);
-    } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const initial = prefersDark ? "dark" : "light";
-      setThemeState(initial);
-      applyTheme(initial);
-    }
-    setMounted(true);
-  }, []);
-
-  const applyTheme = (newTheme: Theme) => {
-    const root = document.documentElement;
-    if (newTheme === "dark") {
-      root.classList.add("dark");
-      root.classList.remove("light");
-      root.style.colorScheme = "dark";
-    } else {
-      root.classList.add("light");
-      root.classList.remove("dark");
-      root.style.colorScheme = "light";
-    }
-  };
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem("kzw_theme", newTheme);
-    applyTheme(newTheme);
-  };
-
   const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
+    const next: Theme = document.documentElement.classList.contains("dark")
+      ? "light"
+      : "dark";
+    localStorage.setItem("theme", next);
+    applyTheme(next);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-      {/* Inline script to prevent flash before hydration */}
+    <ThemeContext.Provider value={{ toggleTheme }}>
       <script
         dangerouslySetInnerHTML={{
           __html: `
             (function() {
               try {
-                var stored = localStorage.getItem('kzw_theme');
-                var supportDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                if (stored === 'light' || (!stored && !supportDark)) {
-                  document.documentElement.classList.remove('dark');
-                  document.documentElement.classList.add('light');
-                  document.documentElement.style.colorScheme = 'light';
-                } else {
+                var stored = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (stored === 'dark' || (!stored && prefersDark)) {
                   document.documentElement.classList.add('dark');
-                  document.documentElement.classList.remove('light');
                   document.documentElement.style.colorScheme = 'dark';
+                } else {
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.style.colorScheme = 'light';
                 }
               } catch (e) {}
             })();

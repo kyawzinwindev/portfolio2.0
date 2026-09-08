@@ -11,16 +11,7 @@ const customJestConfig = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
-  testMatch: [
-    "**/__tests__/**/*.[jt]s?(x)",
-    "**/?(*.)+(spec|test).[jt]s?(x)",
-  ],
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)"],
 };
 
-module.exports = async () => {
-  const config = await createJestConfig(customJestConfig)();
-  config.transformIgnorePatterns = [
-    "/node_modules/(?!(jose|ua-parser-js)/)",
-  ];
-  return config;
-};
+module.exports = createJestConfig(customJestConfig);
