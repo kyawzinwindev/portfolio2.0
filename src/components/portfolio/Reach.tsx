@@ -21,7 +21,7 @@ export function Reach({ year, copyHint, onCopyEmail }: ReachProps) {
       <button
         type="button"
         onClick={onCopyEmail}
-        className="rv group text-left text-[clamp(2rem,7vw,6.5rem)] font-bold leading-[0.95] tracking-hero break-all sm:break-normal hover:text-volt transition-colors"
+        className="rv group text-left text-2xl sm:text-[clamp(2rem,7vw,6.5rem)] font-bold leading-[0.95] tracking-hero break-all sm:break-normal hover:text-volt transition-colors"
       >
         <span className="copy-label">{copyHint}</span>
         <span className="block font-mono text-xs sm:text-sm text-mute font-normal tracking-normal mt-4 group-hover:text-volt">

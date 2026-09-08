@@ -25,7 +25,7 @@ export function Hero({
       className="relative min-h-[100svh] flex flex-col justify-between px-5 sm:px-10 lg:px-16 pt-28 pb-10 overflow-hidden"
     >
       <p className="rise font-mono text-xs sm:text-sm text-mute" style={{ "--d": 1 } as CSSProperties}>
-        {SITE.location} · remote-first · Laravel / AWS / systems design
+        {SITE.location} · remote-first · Next.js / NestJS / Laravel / AWS / systems design
       </p>
 
       <div className="flex flex-col gap-8">

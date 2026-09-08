@@ -1,13 +1,13 @@
 export const SITE = {
   name: "Kyaw Zin Win",
-  email: "hello@kyawzinwin.dev",
-  github: "https://github.com/kyawzinwin",
-  githubHandle: "@kyawzinwin",
-  linkedin: "https://linkedin.com/in/kyawzinwin",
+  email: "kyawzinwindev@gmail.com",
+  github: "https://github.com/kyawzinwindev",
+  githubHandle: "@kyawzinwindev",
+  linkedin: "https://www.linkedin.com/in/kyaw-zin-win-aa8194259/",
   linkedinHandle: "/in/kyawzinwin",
-  location: "Yangon",
-  timezone: "Asia/Yangon",
-  timezoneLabel: "GMT+6:30",
+  location: "Chiang Mai",
+  timezone: "Asia/Bangkok",
+  timezoneLabel: "GMT+7",
 } as const;
 
 export const INTRO_MAIL = `mailto:${SITE.email}?subject=${encodeURIComponent("Quick intro call")}&body=${encodeURIComponent(
