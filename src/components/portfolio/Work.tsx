@@ -6,10 +6,53 @@ const PROJECTS = [
   {
     id: "p1",
     idx: "01",
+    name: "Jaraye",
+    railMeta: "Architecture",
+    meta: "01 · Education · 2024",
+    mobileMeta: "01 · Architecture",
+    status: "core-built",
+    blurb:
+      "Architected a comprehensive admin dashboard and core domain services for course, curriculum, student, teacher, report management, and audit activity logs. Optimized system performance using denormalized read models, and role-scoped query builders for 3 distinct user roles.",
+    highlightCode: null,
+    stats: [
+      { dt: "report · before", dd: "2.4s", tone: "strike" as const },
+      { dt: "report · after", dd: "210ms", tone: "volt" as const },
+      { dt: "roles", dd: "3", tone: "ink" as const },
+    ],
+    stack: ["Tailwind", "Alpine.js", "Laravel", "Livewire", "MySQL"],
+    links: [
+      { href: "#", label: "Architecture" },
+    ],
+    snippet: null,
+  },
+  {
+    id: "p2",
+    idx: "02",
+    name: "Chatbot API",
+    railMeta: "REST · AWS",
+    meta: "02 · Customer support · 2025",
+    mobileMeta: "02 · REST · AWS",
+    status: "v1.0-complete",
+    blurb:
+      "Engineered an AI-powered conversational commerce backend for Bagisto, enabling end-to-end English/Burmese order processing across Viber, Messenger, and Telegram. Built an asynchronous RAG pipeline using Laravel Reverb WebSockets, Redis queues, and OpenAI APIs to handle real-time inventory queries and automated order placement.",
+    highlightCode: "202 Accepted",
+    stats: null,
+    stack: ["Laravel", "Bagisto", "Reverb", "OpenAI API", "RAG flow", "Redis", "Docker", "Webhook", "WebSocket", "AWS"],
+    links: [
+      { href: "#", label: "Architecture" },
+    ],
+    snippet: `POST /v1/webhooks/viber            → 202 · queued · async-job
+    
+WS   /reverb/chat/orders           → 101 · stream · RAG-response`,
+  },
+  {
+    id: "p3",
+    idx: "03",
     name: "CareNest",
     railMeta: "Laravel",
-    meta: "01 · Healthcare · 2024",
-    mobileMeta: "01 · Laravel",
+    meta: "03 · Healthcare · 2024",
+    mobileMeta: "03 · Laravel",
+    status: "live",
     blurb:
       "Clinic appointment platform. Appointments are a guarded state machine (7 states, 11 transitions) — never raw status writes. Replaced a single is_admin flag with a 4-role, 23-permission matrix while real clinics were live. Zero downtime.",
     highlightCode: "is_admin",
@@ -19,54 +62,12 @@ const PROJECTS = [
       { dt: "coverage", dd: "91%", tone: "ink" as const },
       { dt: "migration downtime", dd: "0 min", tone: "ink" as const },
     ],
-    stack: ["Laravel", "Livewire", "MySQL", "Redis", "AWS"],
+    stack: ["Tailwind", "Alpine.js", "Laravel", "Livewire", "Brevo", "MySQL"],
     links: [
       { href: "#", label: "Live site" },
       { href: "#", label: "Source" },
     ],
     snippet: null as string | null,
-  },
-  {
-    id: "p2",
-    idx: "02",
-    name: "Chatbot API",
-    railMeta: "REST · AWS",
-    meta: "02 · Customer support · 2025",
-    mobileMeta: "02 · REST · AWS",
-    blurb:
-      "Versioned multi-channel REST backend. Every inbound message returns 202 Accepted, is queued, and replies by webhook — channel outages never block the API. Token auth with per-channel scopes, idempotent ingestion, PHPUnit gating every deploy on AWS.",
-    highlightCode: "202 Accepted",
-    stats: null,
-    stack: ["Laravel", "REST v1", "PHPUnit", "Docker", "GitHub Actions", "AWS"],
-    links: [
-      { href: "#", label: "API docs" },
-      { href: "#", label: "Source" },
-    ],
-    snippet: `POST /v1/sessions/{id}/messages   → 202 · queued
-GET  /v1/sessions/{id}            → 200 · 38ms · cached 30s`,
-  },
-  {
-    id: "p3",
-    idx: "03",
-    name: "Jaraye",
-    railMeta: "Architecture",
-    meta: "03 · Education · 2024",
-    mobileMeta: "03 · Architecture",
-    blurb:
-      "Education platform designed for the reports the school would need in year two, not just day-one CRUD. Denormalised read models, cached aggregates in Redis, role-scoped query builders so each of 5 admin roles sees exactly its slice — fast past 10k users.",
-    highlightCode: null,
-    stats: [
-      { dt: "report · before", dd: "2.4s", tone: "strike" as const },
-      { dt: "report · after", dd: "210ms", tone: "volt" as const },
-      { dt: "active users", dd: "10k+", tone: "ink" as const },
-      { dt: "admin roles", dd: "5", tone: "ink" as const },
-    ],
-    stack: ["Laravel", "Alpine.js", "MySQL", "Redis"],
-    links: [
-      { href: "#", label: "Live site" },
-      { href: "#", label: "Source" },
-    ],
-    snippet: null,
   },
 ];
 
@@ -172,18 +173,15 @@ export function Work({ openIndex, onSelect }: WorkProps) {
                       </h3>
                     </div>
                     <span className="rounded-full bg-volt/10 text-volt font-mono text-xs px-3 py-1">
-                      live
+                      {project.status}
                     </span>
                   </div>
                   <p className="text-base lg:text-lg text-mute leading-relaxed max-w-xl text-pretty">
                     <Blurb text={project.blurb} highlight={project.highlightCode} />
                   </p>
                   {project.snippet ? (
-                    <pre className="font-mono text-[13px] leading-relaxed rounded-2xl bg-ink text-canvas p-5 overflow-x-auto">
-                      <span className="text-volt">POST</span>
-                      {" /v1/sessions/{id}/messages   → 202 · queued\n"}
-                      <span className="text-volt">GET </span>
-                      {" /v1/sessions/{id}            → 200 · 38ms · cached 30s"}
+                    <pre className="font-mono text-[13px] leading-relaxed rounded-2xl bg-ink text-canvas p-5 overflow-x-auto whitespace-pre-wrap">
+                      <code className="text-canvas/90">{project.snippet}</code>
                     </pre>
                   ) : null}
                   {project.stats ? (
@@ -202,9 +200,9 @@ export function Work({ openIndex, onSelect }: WorkProps) {
                         i === 0
                           ? [<li key={item}>{item}</li>]
                           : [
-                              <li key={`${item}-dot`}>·</li>,
-                              <li key={item}>{item}</li>,
-                            ],
+                            <li key={`${item}-dot`}>·</li>,
+                            <li key={item}>{item}</li>,
+                          ],
                       )}
                     </ul>
                     <div className="flex gap-4 text-sm font-semibold pointer-events-auto">

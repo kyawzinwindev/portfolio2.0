@@ -105,7 +105,10 @@ export function ConnectDrawer({
             <ArrowUpRightIcon size={18} />
           </a>
           <a
-            href="#"
+            href="/resume.pdf"
+            download="Kyaw_Zin_Win_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center justify-between rounded-2xl border border-line px-4 py-4 hover:border-ink transition-colors"
           >
             <span className="flex flex-col">
@@ -115,7 +118,7 @@ export function ConnectDrawer({
             <DownloadIcon />
           </a>
         </div>
-        <p className="mt-auto font-mono text-xs text-mute">
+        <p className="mt-auto font-mono text-xs text-mute" suppressHydrationWarning>
           {SITE.location} · {clock.replace(` ${SITE.timezoneLabel}`, "")} local · usually replies
           within 48h
         </p>

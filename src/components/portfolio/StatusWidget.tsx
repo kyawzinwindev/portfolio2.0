@@ -17,7 +17,11 @@ export function StatusWidget({ clock, onToggleTheme }: StatusWidgetProps) {
           <span className="relative inline-flex h-2 w-2 rounded-full bg-volt" />
         </span>
         <span className="text-sm font-medium">{SITE.name}</span>
-        <span className="hidden sm:inline font-mono text-xs text-mute" aria-live="off">
+        <span
+          className="hidden sm:inline font-mono text-xs text-mute"
+          aria-live="off"
+          suppressHydrationWarning
+        >
           {clock}
         </span>
         <span className="hidden sm:inline font-mono text-xs text-volt">open to work</span>

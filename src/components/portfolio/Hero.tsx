@@ -25,7 +25,7 @@ export function Hero({
       className="relative min-h-[100svh] flex flex-col justify-between px-5 sm:px-10 lg:px-16 pt-28 pb-10 overflow-hidden"
     >
       <p className="rise font-mono text-xs sm:text-sm text-mute" style={{ "--d": 1 } as CSSProperties}>
-        {SITE.location} · remote-first · Next.js / NestJS / Laravel / AWS / systems design
+        {SITE.location} · remote-first · JS ecosystem / Laravel / AWS / systems design
       </p>
 
       <div className="flex flex-col gap-8">
@@ -52,8 +52,7 @@ export function Hero({
           style={{ "--d": 3 } as CSSProperties}
         >
           <p className="text-lg sm:text-xl text-mute leading-relaxed max-w-md text-pretty">
-            I design the parts of a product that have to keep working — APIs, permission
-            systems, queues and the AWS underneath them. Three systems in production.
+          I build resilient backend systems including APIs, access control, queues, and AWS infrastructure. Currently 3 systems live in production.
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <a

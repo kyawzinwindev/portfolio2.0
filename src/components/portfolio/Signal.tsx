@@ -33,17 +33,17 @@ const HISTORY = [
   {
     when: "2025 — now",
     title: "Backend & Systems Engineer",
-    detail: "Freelance & consulting · Remote. Laravel backends, AWS, architecture reviews.",
+    detail: "Freelance & consulting · Remote. Laravel backends and project management.",
   },
   {
-    when: "2023 — 2025",
+    when: "2024 — 2025",
     title: "Junior Backend Developer",
-    detail: "Airyno · Yangon. Shipped CareNest and Jaraye to production.",
+    detail: "Airyno · Yangon. Shipped Jaraye and ChatbotAPI to production.",
   },
   {
-    when: "2020 — 2023",
+    when: "2024 — now",
     title: "BSc (Hons) Computing",
-    detail: "NCC Education. Distributed systems, databases, algorithms.",
+    detail: "NCC Education. Computer Science , distributed systems, databases, algorithms.",
   },
 ];
 
@@ -134,7 +134,10 @@ export function Signal() {
             ))}
           </ol>
           <a
-            href="#"
+            href="/resume.pdf"
+            download="Kyaw_Zin_Win_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 self-start text-sm font-semibold hover:text-volt transition-colors"
           >
             Download CV (PDF)
