@@ -94,6 +94,7 @@ body {
 
 .panel[data-open="true"] .rail {
   opacity: 0;
+  pointer-events: none;
 }
 
 .panel[data-open="false"] .idx {
@@ -112,7 +113,13 @@ body {
     min-height: 0;
   }
 
-  .detail-wrap > .detail {
+  .detail-wrap > .detail-inner {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+  }
+
+  .detail-wrap .detail {
     flex: 1;
   }
 }
@@ -129,11 +136,12 @@ body {
   .detail-wrap {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: grid-template-rows 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .detail-wrap > div {
+  .detail-wrap > .detail-inner {
     overflow: hidden;
+    min-height: 0;
   }
 }
 

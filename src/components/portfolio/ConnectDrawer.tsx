@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { SITE, QUICK_MAIL } from "@/lib/site";
+import { SITE, INTRO_MAIL } from "@/lib/site";
 import { ArrowUpRightIcon, CloseIcon, CopyIcon, DownloadIcon } from "./icons";
 
 type ConnectDrawerProps = {
@@ -75,7 +75,7 @@ export function ConnectDrawer({
             <CopyIcon />
           </button>
           <a
-            href={QUICK_MAIL}
+            href={INTRO_MAIL}
             className="flex items-center justify-between rounded-2xl bg-ink text-canvas px-4 py-4 hover:bg-volt hover:text-white transition-colors"
           >
             <span className="flex flex-col">
@@ -86,6 +86,7 @@ export function ConnectDrawer({
           </a>
           <a
             href={SITE.linkedin}
+            target="blank"
             className="flex items-center justify-between rounded-2xl border border-line px-4 py-4 hover:border-ink transition-colors"
           >
             <span className="flex flex-col">
@@ -96,6 +97,7 @@ export function ConnectDrawer({
           </a>
           <a
             href={SITE.github}
+            target="blank"
             className="flex items-center justify-between rounded-2xl border border-line px-4 py-4 hover:border-ink transition-colors"
           >
             <span className="flex flex-col">

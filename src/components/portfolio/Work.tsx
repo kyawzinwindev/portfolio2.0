@@ -135,86 +135,91 @@ export function Work({ openIndex, onSelect }: WorkProps) {
                 }
               }}
             >
+              {/* Mobile Accordion Header */}
               <button
                 type="button"
-                className="panel-btn absolute inset-0 z-10 md:cursor-pointer"
+                className="panel-btn md:hidden relative z-20 flex items-center justify-between p-5 w-full text-left cursor-pointer"
                 aria-expanded={open}
                 aria-controls={project.id}
                 onClick={() => {
-                  const isMobile = window.matchMedia("(max-width: 767px)").matches;
-                  if (isMobile && open) {
+                  if (open) {
                     onSelect(-1);
-                    return;
+                  } else {
+                    onSelect(index);
                   }
-                  onSelect(index);
                 }}
               >
-                <span className="sr-only">Expand {project.name}</span>
+                <span className="text-2xl font-bold tracking-tight">{project.name}</span>
+                <span className="font-mono text-xs text-mute">{project.mobileMeta}</span>
               </button>
-              <div
-                className="rail absolute inset-0 hidden md:flex flex-col items-center justify-between py-6 transition-opacity duration-300"
-                aria-hidden="true"
+
+              {/* Desktop Rail Trigger */}
+              <button
+                type="button"
+                className="rail absolute inset-0 hidden md:flex flex-col items-center justify-between py-6 transition-opacity duration-300 cursor-pointer z-10"
+                aria-expanded={open}
+                aria-controls={project.id}
+                onClick={() => onSelect(index)}
               >
                 <span className="font-mono text-xs text-mute idx">{project.idx}</span>
                 <span className="vtext text-2xl font-bold tracking-tight">{project.name}</span>
                 <span className="font-mono text-xs text-mute vtext">{project.railMeta}</span>
-              </div>
-              <div className="relative z-0 flex md:hidden items-center justify-between p-5">
-                <span className="text-2xl font-bold tracking-tight">{project.name}</span>
-                <span className="font-mono text-xs text-mute">{project.mobileMeta}</span>
-              </div>
+              </button>
+
               <div id={project.id} className="detail-wrap">
-                <div className="detail relative z-20 flex flex-col gap-6 p-5 sm:p-8 h-full pointer-events-none">
-                  <div className="hidden md:flex items-start justify-between gap-4">
-                    <div>
-                      <span className="font-mono text-xs text-mute">{project.meta}</span>
-                      <h3 className="text-3xl lg:text-5xl font-bold tracking-tight mt-1">
-                        {project.name}
-                      </h3>
+                <div className="detail-inner">
+                  <div className="detail relative z-20 flex flex-col gap-6 p-5 sm:p-8 h-full pointer-events-none">
+                    <div className="hidden md:flex items-start justify-between gap-4">
+                      <div>
+                        <span className="font-mono text-xs text-mute">{project.meta}</span>
+                        <h3 className="text-3xl lg:text-5xl font-bold tracking-tight mt-1">
+                          {project.name}
+                        </h3>
+                      </div>
+                      <span className="rounded-full bg-volt/10 text-volt font-mono text-xs px-3 py-1">
+                        {project.status}
+                      </span>
                     </div>
-                    <span className="rounded-full bg-volt/10 text-volt font-mono text-xs px-3 py-1">
-                      {project.status}
-                    </span>
-                  </div>
-                  <p className="text-base lg:text-lg text-mute leading-relaxed max-w-xl text-pretty">
-                    <Blurb text={project.blurb} highlight={project.highlightCode} />
-                  </p>
-                  {project.snippet ? (
-                    <pre className="font-mono text-[13px] leading-relaxed rounded-2xl bg-ink text-canvas p-5 overflow-x-auto whitespace-pre-wrap">
-                      <code className="text-canvas/90">{project.snippet}</code>
-                    </pre>
-                  ) : null}
-                  {project.stats ? (
-                    <dl className="grid grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs text-mute border-t border-line pt-5">
-                      {project.stats.map((stat) => (
-                        <div key={stat.dt}>
-                          <dt>{stat.dt}</dt>
-                          <StatValue dd={stat.dd} tone={stat.tone} />
-                        </div>
-                      ))}
-                    </dl>
-                  ) : null}
-                  <div className="mt-auto flex flex-wrap items-center justify-between gap-4">
-                    <ul className="flex flex-wrap gap-2 font-mono text-xs text-mute" aria-label="Stack">
-                      {project.stack.flatMap((item, i) =>
-                        i === 0
-                          ? [<li key={item}>{item}</li>]
-                          : [
-                            <li key={`${item}-dot`}>·</li>,
-                            <li key={item}>{item}</li>,
-                          ],
-                      )}
-                    </ul>
-                    <div className="flex gap-4 text-sm font-semibold pointer-events-auto">
-                      {project.links.map((link) => (
-                        <a
-                          key={link.label}
-                          href={link.href}
-                          className="inline-flex items-center gap-1 hover:text-volt transition-colors"
-                        >
-                          {link.label} <ExternalIcon />
-                        </a>
-                      ))}
+                    <p className="text-base lg:text-lg text-mute leading-relaxed max-w-xl text-pretty">
+                      <Blurb text={project.blurb} highlight={project.highlightCode} />
+                    </p>
+                    {project.snippet ? (
+                      <pre className="font-mono text-[13px] leading-relaxed rounded-2xl bg-ink text-canvas p-5 overflow-x-auto whitespace-pre-wrap">
+                        <code className="text-canvas/90">{project.snippet}</code>
+                      </pre>
+                    ) : null}
+                    {project.stats ? (
+                      <dl className="grid grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs text-mute border-t border-line pt-5">
+                        {project.stats.map((stat) => (
+                          <div key={stat.dt}>
+                            <dt>{stat.dt}</dt>
+                            <StatValue dd={stat.dd} tone={stat.tone} />
+                          </div>
+                        ))}
+                      </dl>
+                    ) : null}
+                    <div className="mt-auto flex flex-wrap items-center justify-between gap-4">
+                      <ul className="flex flex-wrap gap-2 font-mono text-xs text-mute" aria-label="Stack">
+                        {project.stack.flatMap((item, i) =>
+                          i === 0
+                            ? [<li key={item}>{item}</li>]
+                            : [
+                              <li key={`${item}-dot`}>·</li>,
+                              <li key={item}>{item}</li>,
+                            ],
+                        )}
+                      </ul>
+                      <div className="flex gap-4 text-sm font-semibold pointer-events-auto">
+                        {project.links.map((link) => (
+                          <a
+                            key={link.label}
+                            href={link.href}
+                            className="inline-flex items-center gap-1 hover:text-volt transition-colors"
+                          >
+                            {link.label} <ExternalIcon />
+                          </a>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -31,6 +31,7 @@ export function Reach({ year, copyHint, onCopyEmail }: ReachProps) {
       <div className="rv flex flex-wrap gap-3" style={{ transitionDelay: ".1s" }}>
         <a
           href={SITE.linkedin}
+          target="blank"
           className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-3 text-sm font-semibold hover:border-ink hover:bg-ink hover:text-canvas transition-colors"
         >
           <LinkedInIcon />
@@ -38,6 +39,7 @@ export function Reach({ year, copyHint, onCopyEmail }: ReachProps) {
         </a>
         <a
           href={SITE.github}
+          target="blank"
           className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-3 text-sm font-semibold hover:border-ink hover:bg-ink hover:text-canvas transition-colors"
         >
           <GitHubIcon />
