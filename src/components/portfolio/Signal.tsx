@@ -25,7 +25,7 @@ const WORK = [
   ["Laravel services & versioned REST APIs", "daily"],
   ["Permission systems, state machines, domain models", "daily"],
   ["MySQL schema & query performance, Redis queues", "daily"],
-  ["AWS deployment, Docker, Nginx, CI/CD pipelines", "weekly"],
+  ["AWS deployment, Docker, Nginx", "weekly"],
 ];
 
 const HISTORY = [
@@ -96,11 +96,11 @@ export function Signal() {
             <div className="flex flex-wrap md:flex-col gap-2 shrink-0 font-mono text-xs">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-ink">AWS:</span>
-                <span className="text-mute">EC2 · RDS · S3</span>
+                <span className="text-mute">EC2 · RDS</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold text-ink">DevOps:</span>
-                <span className="text-mute">Docker · Nginx · CI/CD</span>
+                <span className="text-mute">Docker · Nginx</span>
               </div>
             </div>
           </div>
