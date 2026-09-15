@@ -21,7 +21,7 @@ const PROJECTS = [
     ],
     stack: ["Tailwind", "Alpine.js", "Laravel", "Livewire", "MySQL"],
     links: [
-      { href: "#", label: "Architecture" },
+      { href: "/learning-dashboard-architecture.png", label: "Architecture" },
     ],
     snippet: null,
   },
@@ -39,7 +39,8 @@ const PROJECTS = [
     stats: null,
     stack: ["Laravel", "Bagisto", "Reverb", "OpenAI API", "RAG flow", "Redis", "Docker", "Webhook", "WebSocket", "AWS"],
     links: [
-      { href: "#", label: "Architecture" },
+      { href: "/chatbot-architecture.png", label: "Old Architecture" },
+      { href: "https://github.com/kyawzinwindev/omnichannel-commerce-ai", label: "Work in Progress: Building the Future." },
     ],
     snippet: `POST /v1/webhooks/viber            → 202 · queued · async-job
     
@@ -64,8 +65,8 @@ WS   /reverb/chat/orders           → 101 · stream · RAG-response`,
     ],
     stack: ["Tailwind", "Alpine.js", "Laravel", "Livewire", "Brevo", "MySQL"],
     links: [
-      { href: "#", label: "Live site" },
-      { href: "#", label: "Source" },
+      // { href: "#", label: "Live site" },
+      { href: "https://github.com/kyawzinwindev/CareNest", label: "Source" },
     ],
     snippet: null as string | null,
   },
@@ -212,6 +213,8 @@ export function Work({ openIndex, onSelect }: WorkProps) {
                       <div className="flex gap-4 text-sm font-semibold pointer-events-auto">
                         {project.links.map((link) => (
                           <a
+                            target="_blank"
+                            
                             key={link.label}
                             href={link.href}
                             className="inline-flex items-center gap-1 hover:text-volt transition-colors"

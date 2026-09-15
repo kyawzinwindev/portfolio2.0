@@ -26,7 +26,6 @@ const WORK = [
   ["Permission systems, state machines, domain models", "daily"],
   ["MySQL schema & query performance, Redis queues", "daily"],
   ["AWS deployment, Docker, Nginx, CI/CD pipelines", "weekly"],
-  ["Architecture reviews for small product teams", "on request"],
 ];
 
 const HISTORY = [
